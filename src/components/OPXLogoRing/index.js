@@ -13,31 +13,76 @@ export default function OPXLogoRing() {
   const ringRef = useRef(null)
   const particlesRef = useRef([])
 
-  // Initialize square particles spread across full screen
+  // Initialize particles in structured cosmic patterns
   useEffect(() => {
-    const particleCount = 100
     const particles = []
 
-    for (let i = 0; i < particleCount; i++) {
-      const x = Math.random() * 100
-      const y = Math.random() * 100
-      particles.push({
-        id: i,
-        x: x,
-        y: y,
-        originalX: x,
-        originalY: y,
-        size: Math.random() * 6 + 3,
-        speed: Math.random() * 0.5 + 0.2,
-        opacity: 0.1,
-        baseOpacity: Math.random() * 0.3 + 0.1,
-        color: '#666666',
-        blinkSpeed: Math.random() * 1.5 + 0.5,
-        phase: Math.random() * Math.PI * 2,
-        floatDirection: Math.random() * Math.PI * 2,
-        distanceFromCenter: Math.sqrt(Math.pow(x - 50, 2) + Math.pow(y - 50, 2))
-      })
+    // Create particle clusters like in the image
+    const createCluster = (centerX, centerY, count, spread, sizeRange) => {
+      for (let i = 0; i < count; i++) {
+        const angle = (i / count) * Math.PI * 2 + Math.random() * 0.5
+        const distance = Math.random() * spread
+        const x = Math.max(5, Math.min(95, centerX + Math.cos(angle) * distance))
+        const y = Math.max(5, Math.min(95, centerY + Math.sin(angle) * distance))
+
+        particles.push({
+          id: particles.length,
+          x: x,
+          y: y,
+          originalX: x,
+          originalY: y,
+          size: Math.random() * sizeRange[1] + sizeRange[0],
+          speed: Math.random() * 0.3 + 0.1,
+          opacity: Math.random() * 0.4 + 0.2,
+          baseOpacity: Math.random() * 0.4 + 0.2,
+          color: '#4a90e2',
+          blinkSpeed: Math.random() * 1.0 + 0.3,
+          phase: Math.random() * Math.PI * 2,
+          floatDirection: angle,
+          distanceFromCenter: Math.sqrt(Math.pow(x - 50, 2) + Math.pow(y - 50, 2)),
+          clusterType: 'main'
+        })
+      }
     }
+
+    // Create scattered background particles
+    const createScattered = (count) => {
+      for (let i = 0; i < count; i++) {
+        const x = Math.random() * 90 + 5 // Keep within bounds
+        const y = Math.random() * 90 + 5
+
+        particles.push({
+          id: particles.length,
+          x: x,
+          y: y,
+          originalX: x,
+          originalY: y,
+          size: Math.random() * 3 + 1,
+          speed: Math.random() * 0.2 + 0.05,
+          opacity: Math.random() * 0.3 + 0.1,
+          baseOpacity: Math.random() * 0.3 + 0.1,
+          color: '#64b5f6',
+          blinkSpeed: Math.random() * 0.8 + 0.2,
+          phase: Math.random() * Math.PI * 2,
+          floatDirection: Math.random() * Math.PI * 2,
+          distanceFromCenter: Math.sqrt(Math.pow(x - 50, 2) + Math.pow(y - 50, 2)),
+          clusterType: 'background'
+        })
+      }
+    }
+
+    // Create clusters like in the reference image
+    createCluster(25, 25, 15, 8, [2, 4])    // Top-left cluster
+    createCluster(75, 25, 12, 6, [1, 3])    // Top-right cluster
+    createCluster(25, 75, 14, 7, [2, 5])    // Bottom-left cluster
+    createCluster(75, 75, 13, 8, [1, 4])    // Bottom-right cluster
+    createCluster(50, 20, 10, 5, [1, 3])    // Top center
+    createCluster(50, 80, 11, 6, [2, 4])    // Bottom center
+    createCluster(15, 50, 8, 4, [1, 2])     // Left center
+    createCluster(85, 50, 9, 5, [1, 3])     // Right center
+
+    // Add scattered background particles
+    createScattered(25)
 
     particlesRef.current = particles
   }, [])
