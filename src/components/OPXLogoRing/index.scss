@@ -1,0 +1,331 @@
+.opx-logo-ring-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
+  overflow: hidden;
+  z-index: 10;
+}
+
+.particles-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: particleFloat 6s linear infinite;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: inherit;
+      border-radius: 50%;
+      filter: blur(2px);
+      opacity: 0.3;
+    }
+  }
+}
+
+.dynamic-light {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  transition: background 0.3s ease;
+}
+
+.ring-wrapper {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  transform-style: preserve-3d;
+  animation: floatRing 4s ease-in-out infinite;
+  transition: transform 0.1s ease-out;
+  z-index: 5;
+}
+
+.logo-ring {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.logo-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  margin: -40px 0 0 -40px;
+  transform-style: preserve-3d;
+  animation: logoRotate 8s linear infinite;
+  
+  .logo-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff4500 0%, #ff6b35 50%, #ffa500 100%);
+    border: 3px solid #ffcc00;
+    box-shadow: 
+      0 0 20px rgba(255, 69, 0, 0.6),
+      inset 0 0 20px rgba(255, 204, 0, 0.3);
+    transform-style: preserve-3d;
+    transition: all 0.3s ease;
+    
+    &.front {
+      transform: translateZ(20px);
+    }
+    
+    &.back {
+      transform: translateZ(-20px) rotateY(180deg);
+      background: linear-gradient(135deg, #0066cc 0%, #4488ff 50%, #66aaff 100%);
+      border-color: #00ccff;
+      box-shadow: 
+        0 0 20px rgba(0, 102, 204, 0.6),
+        inset 0 0 20px rgba(0, 204, 255, 0.3);
+    }
+    
+    .opx-text {
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(255, 255, 255, 0.4);
+      letter-spacing: 1px;
+    }
+  }
+  
+  &:hover .logo-face {
+    transform: scale(1.2);
+    box-shadow: 
+      0 0 40px rgba(255, 69, 0, 0.8),
+      inset 0 0 30px rgba(255, 204, 0, 0.5);
+    
+    &.back {
+      box-shadow: 
+        0 0 40px rgba(0, 102, 204, 0.8),
+        inset 0 0 30px rgba(0, 204, 255, 0.5);
+    }
+  }
+}
+
+.center-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  margin: -50px 0 0 -50px;
+  background: radial-gradient(circle, rgba(255, 69, 0, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: centerPulse 3s ease-in-out infinite;
+}
+
+.ring-light {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  margin: -150px 0 0 -150px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: linear-gradient(45deg, transparent, rgba(255, 69, 0, 0.2), transparent);
+  animation: ringRotate 6s linear infinite;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  z-index: 10;
+  
+  .scroll-text {
+    font-size: 14px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+  
+  .scroll-arrow {
+    font-size: 24px;
+    animation: bounce 2s infinite;
+  }
+}
+
+// Animations
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes floatRing {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes logoRotate {
+  0% {
+    transform: rotateY(0deg) rotateX(0deg);
+  }
+  25% {
+    transform: rotateY(90deg) rotateX(15deg);
+  }
+  50% {
+    transform: rotateY(180deg) rotateX(0deg);
+  }
+  75% {
+    transform: rotateY(270deg) rotateX(-15deg);
+  }
+  100% {
+    transform: rotateY(360deg) rotateX(0deg);
+  }
+}
+
+@keyframes centerPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.6;
+  }
+}
+
+@keyframes ringRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .ring-wrapper {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .logo-item {
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
+    
+    .logo-face .opx-text {
+      font-size: 14px;
+    }
+  }
+  
+  .ring-light {
+    width: 200px;
+    height: 200px;
+    margin: -100px 0 0 -100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ring-wrapper {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .logo-item {
+    width: 50px;
+    height: 50px;
+    margin: -25px 0 0 -25px;
+    
+    .logo-face .opx-text {
+      font-size: 12px;
+    }
+  }
+  
+  .scroll-indicator {
+    bottom: 30px;
+    
+    .scroll-text {
+      font-size: 12px;
+    }
+    
+    .scroll-arrow {
+      font-size: 20px;
+    }
+  }
+}
+
+// Enhanced lighting effects
+.logo-item:nth-child(odd) .logo-face {
+  animation-delay: -0.5s;
+}
+
+.logo-item:nth-child(even) .logo-face {
+  animation-delay: -1s;
+}
+
+.logo-item:nth-child(3n) .logo-face {
+  background: linear-gradient(135deg, #9d4edd 0%, #c77dff 50%, #e0aaff 100%);
+  border-color: #dda0dd;
+  box-shadow: 
+    0 0 20px rgba(157, 78, 221, 0.6),
+    inset 0 0 20px rgba(221, 160, 221, 0.3);
+    
+  &.back {
+    background: linear-gradient(135deg, #f72585 0%, #b5179e 50%, #7209b7 100%);
+    border-color: #f72585;
+    box-shadow: 
+      0 0 20px rgba(247, 37, 133, 0.6),
+      inset 0 0 20px rgba(247, 37, 133, 0.3);
+  }
+}
