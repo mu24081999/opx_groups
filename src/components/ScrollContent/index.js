@@ -46,6 +46,107 @@ export default function ScrollContent() {
         </div>
       </section>
 
+      <section className="content-section calling-services">
+        <h2>Professional Calling Services</h2>
+        <div className="services-content">
+          <div className="service-intro">
+            <p>OPX Groups specializes in comprehensive calling services, providing businesses with professional communication solutions that drive results and enhance customer relationships.</p>
+
+            <div className="service-highlights">
+              <div className="highlight-card">
+                <div className="card-icon">📞</div>
+                <h3>24/7 Call Center</h3>
+                <p>Round-the-clock support with multilingual agents ready to handle your customer inquiries and support needs.</p>
+              </div>
+
+              <div className="highlight-card">
+                <div className="card-icon">💼</div>
+                <h3>Business Development</h3>
+                <p>Strategic outbound calling campaigns to generate leads, nurture prospects, and grow your business pipeline.</p>
+              </div>
+
+              <div className="highlight-card">
+                <div className="card-icon">🎯</div>
+                <h3>Sales Acceleration</h3>
+                <p>Professional sales calling services to convert leads into customers with proven conversion strategies.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="service-details">
+            <h3>Our Calling Service Portfolio</h3>
+            <div className="service-grid">
+              <div className="service-item">
+                <span className="service-icon">🔄</span>
+                <div className="service-info">
+                  <h4>Inbound Call Handling</h4>
+                  <p>Professional reception and customer support services</p>
+                </div>
+              </div>
+
+              <div className="service-item">
+                <span className="service-icon">📈</span>
+                <div className="service-info">
+                  <h4>Outbound Lead Generation</h4>
+                  <p>Targeted prospecting and qualification campaigns</p>
+                </div>
+              </div>
+
+              <div className="service-item">
+                <span className="service-icon">🤝</span>
+                <div className="service-info">
+                  <h4>Customer Retention</h4>
+                  <p>Relationship building and loyalty program management</p>
+                </div>
+              </div>
+
+              <div className="service-item">
+                <span className="service-icon">📊</span>
+                <div className="service-info">
+                  <h4>Market Research</h4>
+                  <p>Data collection and survey management services</p>
+                </div>
+              </div>
+
+              <div className="service-item">
+                <span className="service-icon">⚡</span>
+                <div className="service-info">
+                  <h4>Appointment Setting</h4>
+                  <p>Scheduling and calendar management solutions</p>
+                </div>
+              </div>
+
+              <div className="service-item">
+                <span className="service-icon">🛡️</span>
+                <div className="service-info">
+                  <h4>Technical Support</h4>
+                  <p>Expert troubleshooting and help desk services</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="service-stats">
+          <div className="stat-card">
+            <span className="stat-number">50K+</span>
+            <span className="stat-label">Calls Handled Monthly</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-number">95%</span>
+            <span className="stat-label">Customer Satisfaction</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-number">30+</span>
+            <span className="stat-label">Languages Supported</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-number">24/7</span>
+            <span className="stat-label">Availability</span>
+          </div>
+        </div>
+      </section>
+
       <section className="content-section">
         <h2>Innovation in Motion</h2>
         <p>Our 3D logo ring responds to your scroll, creating an immersive coin-like rotation effect with stunning particle animations.</p>

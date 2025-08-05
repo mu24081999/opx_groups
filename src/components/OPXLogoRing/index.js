@@ -37,11 +37,20 @@ export default function OPXLogoRing() {
   // Handle scroll for coin rotation effect
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY)
+      const currentScrollY = window.pageYOffset || document.documentElement.scrollTop
+      setScrollY(currentScrollY)
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    // Set initial scroll position
+    handleScroll()
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
+    }
   }, [])
 
   // Handle mouse movement for lighting effects
@@ -110,12 +119,13 @@ export default function OPXLogoRing() {
     return () => clearInterval(interval)
   }, [scrollY])
 
-  // Calculate coin-like rotation based on scroll (more responsive)
-  const rotationX = (scrollY * 0.5) % 360 // Horizontal coin flip
-  const rotationY = (scrollY * 1.2) % 360 // Vertical coin flip
-  const rotationZ = Math.sin(scrollY * 0.008) * 20 // Wobble effect
-  const scale = 1 + Math.sin(scrollY * 0.01) * 0.2
-  const tilt = Math.sin(scrollY * 0.005) * 25 // Additional tilt for realism
+  // Calculate coin-like rotation based on scroll (enhanced responsiveness)
+  const scrollProgress = scrollY * 0.1 // Scroll progress multiplier
+  const rotationX = (scrollProgress * 2) % 360 // Horizontal coin flip
+  const rotationY = (scrollProgress * 3) % 360 // Vertical coin flip
+  const rotationZ = Math.sin(scrollProgress * 0.1) * 30 // Wobble effect
+  const scale = 1 + Math.sin(scrollProgress * 0.05) * 0.25
+  const tilt = Math.sin(scrollProgress * 0.08) * 20 // Additional tilt for realism
 
   // Create OPX logos in ring formation
   const logoCount = 8
@@ -217,9 +227,10 @@ export default function OPXLogoRing() {
         <div className="ring-light" />
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator with Debug Info */}
       <div className="scroll-indicator">
         <div className="scroll-text">Scroll to rotate</div>
+        <div className="scroll-debug">Y: {Math.round(scrollY)}</div>
         <div className="scroll-arrow">↓</div>
       </div>
     </div>
