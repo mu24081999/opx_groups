@@ -2,7 +2,7 @@
   position: relative;
   z-index: 20;
   padding: 100vh 0 50vh;
-  
+
   .content-section {
     min-height: 100vh;
     display: flex;
@@ -20,7 +20,7 @@
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
-    
+
     h1 {
       font-size: 4rem;
       font-weight: bold;
@@ -31,7 +31,7 @@
       margin-bottom: 20px;
       text-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
     }
-    
+
     h2 {
       font-size: 2.5rem;
       font-weight: bold;
@@ -41,7 +41,7 @@
       background-clip: text;
       margin-bottom: 20px;
     }
-    
+
     p {
       font-size: 1.2rem;
       line-height: 1.6;
@@ -49,7 +49,93 @@
       max-width: 600px;
       margin: 0 auto;
     }
-    
+
+    &.hero {
+      min-height: 80vh;
+      background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), rgba(14, 165, 233, 0.1));
+      border-color: rgba(0, 255, 65, 0.3);
+    }
+
+    &.company-brief {
+      min-height: 120vh;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(255, 7, 58, 0.1));
+      border-color: rgba(139, 92, 246, 0.3);
+
+      .brief-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: start;
+        text-align: left;
+        margin-top: 20px;
+
+        .brief-text {
+          .company-stats {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+            justify-content: center;
+
+            .stat {
+              text-align: center;
+              padding: 20px;
+              background: rgba(0, 255, 65, 0.1);
+              border-radius: 12px;
+              border: 1px solid rgba(0, 255, 65, 0.3);
+
+              .stat-number {
+                display: block;
+                font-size: 2rem;
+                font-weight: bold;
+                color: #00ff41;
+                text-shadow: 0 0 10px currentColor;
+              }
+
+              .stat-label {
+                display: block;
+                font-size: 0.9rem;
+                opacity: 0.8;
+                margin-top: 5px;
+              }
+            }
+          }
+        }
+
+        .brief-highlights {
+          h3 {
+            color: #ff073a;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+          }
+
+          ul {
+            list-style: none;
+            padding: 0;
+
+            li {
+              display: flex;
+              align-items: center;
+              gap: 15px;
+              padding: 12px 0;
+              border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+              .highlight-icon {
+                font-size: 1.2rem;
+                width: 24px;
+                text-align: center;
+              }
+
+              &:hover {
+                color: #00ff41;
+                transform: translateX(10px);
+                transition: all 0.3s ease;
+              }
+            }
+          }
+        }
+      }
+    }
+
     &.final {
       background: linear-gradient(135deg, rgba(255, 69, 0, 0.2), rgba(255, 165, 0, 0.1));
       border-color: rgba(255, 69, 0, 0.3);
@@ -60,21 +146,39 @@
 @media (max-width: 768px) {
   .scroll-content {
     padding: 80vh 0 30vh;
-    
+
     .content-section {
       margin: 10px;
       padding: 30px 15px;
-      
+
       h1 {
         font-size: 2.5rem;
       }
-      
+
       h2 {
         font-size: 2rem;
       }
-      
+
       p {
         font-size: 1rem;
+      }
+
+      &.company-brief {
+        .brief-content {
+          grid-template-columns: 1fr;
+          gap: 30px;
+
+          .brief-text .company-stats {
+            flex-direction: column;
+            gap: 15px;
+
+            .stat {
+              .stat-number {
+                font-size: 1.5rem;
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -86,11 +190,11 @@
       h1 {
         font-size: 2rem;
       }
-      
+
       h2 {
         font-size: 1.5rem;
       }
-      
+
       p {
         font-size: 0.9rem;
       }

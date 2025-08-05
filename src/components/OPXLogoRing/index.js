@@ -7,29 +7,27 @@ export default function OPXLogoRing() {
   const ringRef = useRef(null)
   const particlesRef = useRef([])
 
-  // Initialize square particles for coding theme
+  // Initialize square particles spread across full screen
   useEffect(() => {
-    const particleCount = 60
+    const particleCount = 100
     const particles = []
-
-    // Coding-style colors: matrix green, terminal amber, error red, info blue
-    const codingColors = ['#00ff41', '#ffb000', '#ff073a', '#0ea5e9', '#8b5cf6', '#f59e0b']
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
+        x: Math.random() * 100, // Full screen width (0-100%)
+        y: Math.random() * 100, // Full screen height (0-100%)
         originalX: Math.random() * 100,
-        size: Math.random() * 8 + 4, // Larger squares
-        speed: 0, // Static particles, only move with ring
-        opacity: Math.random() * 0.7 + 0.3,
-        baseOpacity: Math.random() * 0.7 + 0.3,
-        color: codingColors[Math.floor(Math.random() * codingColors.length)],
-        blinkSpeed: Math.random() * 2 + 1, // Individual blink rates
+        originalY: Math.random() * 100,
+        size: Math.random() * 6 + 3,
+        speed: Math.random() * 0.5 + 0.2,
+        opacity: 0.1, // Start with low opacity (gray effect)
+        baseOpacity: Math.random() * 0.3 + 0.1,
+        color: '#666666', // Start gray
+        targetColor: '#666666',
+        blinkSpeed: Math.random() * 1.5 + 0.5,
         phase: Math.random() * Math.PI * 2,
-        ringRadius: Math.random() * 150 + 100, // Distance from ring center
-        angle: Math.random() * Math.PI * 2 // Position around ring
+        floatDirection: Math.random() * Math.PI * 2
       })
     }
 
@@ -59,41 +57,65 @@ export default function OPXLogoRing() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  // Animate particles with slow blink and ring attachment
+  // Animate particles with color sampling from video
   useEffect(() => {
     const animateParticles = () => {
       const time = Date.now() * 0.001
-      const centerX = 50
-      const centerY = 50
+
+      // Color transitions based on time (simulating video colors)
+      const videoColors = [
+        '#00ff41', // Matrix green
+        '#ff073a', // Error red
+        '#0ea5e9', // Info blue
+        '#8b5cf6', // Purple
+        '#f59e0b', // Amber
+        '#ffb000'  // Gold
+      ]
 
       particlesRef.current = particlesRef.current.map(particle => {
-        // Position particles around the ring
-        const currentAngle = particle.angle + (scrollY * 0.001) // Slight rotation with scroll
-        const x = centerX + Math.cos(currentAngle) * (particle.ringRadius / 10)
-        const y = centerY + Math.sin(currentAngle) * (particle.ringRadius / 15)
+        // Slow floating movement
+        const newX = particle.originalX + Math.sin(time * 0.3 + particle.phase) * 3
+        const newY = particle.originalY + Math.cos(time * 0.2 + particle.phase) * 2 + particle.speed * time * 2
 
-        // Slow blink animation
-        const blinkOpacity = particle.baseOpacity * (0.3 + 0.7 * Math.abs(Math.sin(time * particle.blinkSpeed)))
+        // Color transition from gray to video colors
+        const colorIndex = Math.floor((time + particle.id) * 0.2) % videoColors.length
+        const targetColor = videoColors[colorIndex]
+
+        // Slow blink animation with color fade
+        const blinkFactor = 0.4 + 0.6 * Math.abs(Math.sin(time * particle.blinkSpeed + particle.phase))
+        const opacity = particle.baseOpacity * blinkFactor * (0.3 + 0.7 * Math.sin(time * 0.5))
+
+        // Reset particles that go off screen
+        let finalX = newX
+        let finalY = newY
+
+        if (finalY > 105) {
+          finalY = -5
+          finalX = Math.random() * 100
+          particle.originalX = finalX
+          particle.originalY = finalY
+        }
 
         return {
           ...particle,
-          x: Math.max(5, Math.min(95, x)), // Keep within bounds
-          y: Math.max(5, Math.min(95, y)),
-          opacity: blinkOpacity
+          x: Math.max(0, Math.min(100, finalX)),
+          y: Math.max(-5, Math.min(105, finalY)),
+          opacity: Math.max(0.1, Math.min(0.8, opacity)),
+          color: targetColor
         }
       })
     }
 
-    const interval = setInterval(animateParticles, 32) // 30fps for smoother blink
+    const interval = setInterval(animateParticles, 50) // 20fps
     return () => clearInterval(interval)
   }, [scrollY])
 
-  // Calculate coin-like rotation based on scroll
-  const rotationX = (scrollY * 0.3) % 360 // Horizontal coin flip
-  const rotationY = (scrollY * 0.8) % 360 // Vertical coin flip
-  const rotationZ = Math.sin(scrollY * 0.005) * 10 // Wobble effect
-  const scale = 1 + Math.sin(scrollY * 0.01) * 0.15
-  const tilt = Math.sin(scrollY * 0.003) * 15 // Additional tilt for realism
+  // Calculate coin-like rotation based on scroll (more responsive)
+  const rotationX = (scrollY * 0.5) % 360 // Horizontal coin flip
+  const rotationY = (scrollY * 1.2) % 360 // Vertical coin flip
+  const rotationZ = Math.sin(scrollY * 0.008) * 20 // Wobble effect
+  const scale = 1 + Math.sin(scrollY * 0.01) * 0.2
+  const tilt = Math.sin(scrollY * 0.005) * 25 // Additional tilt for realism
 
   // Create OPX logos in ring formation
   const logoCount = 8
@@ -112,7 +134,7 @@ export default function OPXLogoRing() {
 
   return (
     <div className="opx-logo-ring-container">
-      {/* Background Video */}
+      {/* Background Video with Color Fade */}
       <div className="background-video">
         <video
           autoPlay
@@ -121,9 +143,10 @@ export default function OPXLogoRing() {
           playsInline
           className="bg-video"
         >
-          <source src="https://videos.pexels.com/video-files/2278095/2278095-uhd_2560_1440_30fps.mp4" type="video/mp4" />
+          <source src="https://videos.pexels.com/video-files/8533458/8533458-uhd_2560_1440_24fps.mp4" type="video/mp4" />
         </video>
-        <div className="video-overlay"></div>
+        <div className="video-overlay fade-overlay"></div>
+        <div className="color-overlay"></div>
       </div>
 
       {/* Square Particles with Blink */}
