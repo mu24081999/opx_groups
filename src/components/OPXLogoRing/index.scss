@@ -425,6 +425,137 @@
   }
 }
 
+// Lightning heartbeat effects
+.lightning-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  pointer-events: none;
+
+  .lightning-core {
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, var(--lightning-color, #00f5ff) 0%, transparent 70%);
+    border-radius: 50%;
+    transition: all 0.1s ease;
+    box-shadow:
+      0 0 20px var(--lightning-color, #00f5ff),
+      0 0 40px var(--lightning-color, #00f5ff),
+      0 0 60px var(--lightning-color, #00f5ff);
+  }
+
+  .lightning-rings {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .lightning-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: var(--size, 100px);
+      height: var(--size, 100px);
+      margin: calc(var(--size, 100px) / -2) 0 0 calc(var(--size, 100px) / -2);
+      border: 2px solid transparent;
+      border-radius: 50%;
+      opacity: 0;
+      animation-delay: var(--delay, 0s);
+    }
+  }
+
+  &.active {
+    .lightning-core {
+      transform: scale(calc(var(--lightning-intensity, 1) * 2));
+      box-shadow:
+        0 0 30px var(--lightning-color, #00f5ff),
+        0 0 60px var(--lightning-color, #00f5ff),
+        0 0 90px var(--lightning-color, #00f5ff),
+        0 0 120px var(--lightning-color, #00f5ff);
+    }
+
+    .lightning-ring {
+      animation: lightningRingPulse 0.8s ease-out forwards;
+      border-color: var(--lightning-color, #00f5ff);
+    }
+  }
+}
+
+.lightning-wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--wave-size, 0px);
+  height: var(--wave-size, 0px);
+  margin: calc(var(--wave-size, 0px) / -2) 0 0 calc(var(--wave-size, 0px) / -2);
+  border: 3px solid var(--wave-color, #0066ff);
+  border-radius: 50%;
+  opacity: calc(var(--wave-intensity, 1) * 0.8);
+  box-shadow:
+    0 0 20px var(--wave-color, #0066ff),
+    inset 0 0 20px var(--wave-color, #0066ff);
+  z-index: 2;
+  pointer-events: none;
+  animation: lightningWaveFade 0.8s ease-out forwards;
+}
+
+// Lightning ring pulse animation
+@keyframes lightningRingPulse {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+    border-width: 4px;
+  }
+  50% {
+    opacity: 0.8;
+    border-width: 2px;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+// Lightning wave fade animation
+@keyframes lightningWaveFade {
+  0% {
+    opacity: calc(var(--wave-intensity, 1) * 0.8);
+    border-width: 3px;
+  }
+  50% {
+    opacity: calc(var(--wave-intensity, 1) * 0.6);
+    border-width: 2px;
+  }
+  100% {
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+// Enhanced particle lightning effects
+.particles-container .particle.square-particle {
+  transition: all 0.1s ease;
+
+  &::before {
+    transition: all 0.1s ease;
+  }
+
+  // Enhanced glow when hit by lightning
+  &[style*="rgba(0, 245, 255"],
+  &[style*="rgba(255, 0, 255"],
+  &[style*="rgba(0, 255, 65"],
+  &[style*="rgba(255, 69, 0"],
+  &[style*="rgba(157, 78, 221"] {
+    &::before {
+      filter: blur(8px);
+      opacity: 0.8;
+    }
+  }
+}
+
 // Enhanced lighting effects
 .logo-item:nth-child(odd) .logo-face {
   animation-delay: -0.5s;
