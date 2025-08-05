@@ -184,7 +184,7 @@ export default function OPXLogoRing() {
       const time = Date.now() * 0.001
 
       const colors = [
-        '#00ff41', '#ff073a', '#0ea5e9', '#8b5cf6', '#f59e0b', '#ffb000'
+        '#40e0ff', '#8a2be2', '#4a90e2', '#64b5f6', '#9c27b0', '#00bcd4'
       ]
 
       particlesRef.current = particlesRef.current.map(particle => {
