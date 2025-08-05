@@ -2,6 +2,7 @@
   position: relative;
   z-index: 20;
   padding: 100vh 0 50vh;
+  pointer-events: auto;
 
   .content-section {
     min-height: 100vh;
