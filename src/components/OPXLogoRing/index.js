@@ -252,18 +252,9 @@ export default function OPXLogoRing() {
         const baseOpacity = particle.baseOpacity * blinkFactor * (0.3 + 0.7 * Math.sin(time * 0.5))
         const finalOpacity = Math.max(baseOpacity, baseOpacity + smoothBoost * 0.8)
 
-        // Reset particles that go off screen
-        let finalX = newX
-        let finalY = newY
-
-        if (finalY > 105) {
-          finalY = -5
-          finalX = Math.random() * 100
-          particle.originalX = finalX
-          particle.originalY = finalY
-          particle.distanceFromCenter = Math.sqrt(Math.pow(finalX - 50, 2) + Math.pow(finalY - 50, 2))
-          particle.heartbeatHistory = [] // Reset history for new particle position
-        }
+        // Keep particles within their cosmic bounds
+        const finalX = Math.max(2, Math.min(98, newX))
+        const finalY = Math.max(2, Math.min(98, newY))
 
         return {
           ...particle,
