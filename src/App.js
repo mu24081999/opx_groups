@@ -1,26 +1,41 @@
-import { Route, Routes } from 'react-router-dom'
-
-import About from './components/About'
-import Contact from './components/Contact'
-import Home from './components/Home'
-import Layout from './components/Layout'
-import Skills from './components/Skills'
-import Soundbar from './components/Soundbar'
+import { useState, useEffect } from 'react'
+import OPXLogoRing from './components/OPXLogoRing'
+import ScrollContent from './components/ScrollContent'
 import './App.scss'
 
 function App() {
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoaded(true)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
-    <>
-      <Soundbar />
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/skills" element={<Skills />} />
-        </Route>
-      </Routes>
-    </>
+    <div className="App">
+      {!isLoaded && (
+        <div className="initial-loader">
+          <div className="loader-content">
+            <h1>OPX Groups</h1>
+            <div className="loading-bar">
+              <div className="loading-progress"></div>
+            </div>
+            <p>Loading Experience...</p>
+          </div>
+        </div>
+      )}
+
+      {isLoaded && (
+        <>
+          <OPXLogoRing />
+          <ScrollContent />
+        </>
+      )}
+    </div>
   )
 }
 

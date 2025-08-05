@@ -1,52 +1,112 @@
-$primary-color: #ff4500;
-
-@import 'animate.css';
-@import '~loaders.css/src/animations/pacman.scss';
-
-@font-face {
-  font-family: 'Helvetica Neue';
-  src: url('./assets/fonts/helvetica-neu.ttf') format('ttf');
-  font-weight: normal;
-  font-style: normal;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@font-face {
-  font-family: 'La Belle Aurore';
-  src:
-    url('./assets/fonts/LaBelleAurore.woff2') format('woff2'),
-    url('./assets/fonts/LaBelleAurore.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
+html, body {
+  height: 100%;
+  background: #000;
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+  overflow-x: hidden;
 }
 
-@font-face {
-  font-family: 'Coolvetica';
-  src:
-    url('./assets/fonts/CoolveticaRg-Regular.woff2') format('woff2'),
-    url('./assets/fonts/CoolveticaRg-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
+body {
+  background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
 }
 
-input,
-textarea {
-  font-family: 'Helvetica Neue', sans-serif;
+.App {
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
 }
 
-.loader-hidden {
-  display: none;
-}
-
-.loader-active {
-  display: block;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: auto;
+.initial-loader {
+  position: fixed;
   top: 0;
-  bottom: 0;
-  width: 50px;
-  height: 50px;
-  animation: fadeOut 1s 1s;
-  animation-fill-mode: forwards;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  .loader-content {
+    text-align: center;
+
+    h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #ff4500, #ffa500, #ffcc00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
+    }
+
+    .loading-bar {
+      width: 300px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 0 auto 1rem;
+
+      .loading-progress {
+        height: 100%;
+        background: linear-gradient(90deg, #ff4500, #ff6b35);
+        width: 0;
+        animation: loadingProgress 2s ease-in-out forwards;
+      }
+    }
+
+    p {
+      font-size: 0.9rem;
+      opacity: 0.7;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+@keyframes loadingProgress {
+  0% { width: 0; }
+  50% { width: 60%; }
+  100% { width: 100%; }
+}
+
+// Remove all previous styles that are no longer needed
+canvas {
+  outline: none;
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .initial-loader .loader-content {
+    h1 {
+      font-size: 2rem;
+    }
+
+    .loading-bar {
+      width: 250px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .initial-loader .loader-content {
+    padding: 0 20px;
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    .loading-bar {
+      width: 200px;
+    }
+  }
 }

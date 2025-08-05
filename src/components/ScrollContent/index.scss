@@ -1,0 +1,376 @@
+.scroll-content {
+  position: relative;
+  z-index: 20;
+  padding: 100vh 0 50vh;
+
+  .content-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    color: white;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    margin: 20px 0;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+
+    h1 {
+      font-size: 4rem;
+      font-weight: bold;
+      background: linear-gradient(135deg, #ff4500, #ffa500, #ffcc00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+      text-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: linear-gradient(135deg, #ff6b35, #ffa500);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    &.hero {
+      min-height: 80vh;
+      background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), rgba(14, 165, 233, 0.1));
+      border-color: rgba(0, 255, 65, 0.3);
+    }
+
+    &.calling-services {
+      min-height: 140vh;
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(0, 255, 65, 0.1));
+      border-color: rgba(14, 165, 233, 0.3);
+
+      .services-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin: 30px 0;
+        text-align: left;
+
+        .service-intro {
+          .service-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 30px;
+
+            .highlight-card {
+              background: rgba(14, 165, 233, 0.1);
+              border: 1px solid rgba(14, 165, 233, 0.3);
+              border-radius: 12px;
+              padding: 20px;
+              transition: all 0.3s ease;
+
+              &:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 30px rgba(14, 165, 233, 0.2);
+              }
+
+              .card-icon {
+                font-size: 2rem;
+                margin-bottom: 10px;
+              }
+
+              h3 {
+                color: #0ea5e9;
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+              }
+
+              p {
+                font-size: 0.9rem;
+                opacity: 0.8;
+              }
+            }
+          }
+        }
+
+        .service-details {
+          h3 {
+            color: #00ff41;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+          }
+
+          .service-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+
+            .service-item {
+              display: flex;
+              align-items: center;
+              gap: 15px;
+              padding: 15px;
+              background: rgba(0, 255, 65, 0.05);
+              border: 1px solid rgba(0, 255, 65, 0.2);
+              border-radius: 8px;
+              transition: all 0.3s ease;
+
+              &:hover {
+                background: rgba(0, 255, 65, 0.1);
+                transform: translateX(10px);
+              }
+
+              .service-icon {
+                font-size: 1.5rem;
+                width: 40px;
+                text-align: center;
+              }
+
+              .service-info {
+                h4 {
+                  color: #00ff41;
+                  font-size: 1rem;
+                  margin-bottom: 5px;
+                }
+
+                p {
+                  font-size: 0.85rem;
+                  opacity: 0.8;
+                  margin: 0;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .service-stats {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 40px;
+        flex-wrap: wrap;
+
+        .stat-card {
+          text-align: center;
+          padding: 25px 20px;
+          background: rgba(0, 255, 65, 0.1);
+          border: 1px solid rgba(0, 255, 65, 0.3);
+          border-radius: 16px;
+          min-width: 150px;
+          transition: all 0.3s ease;
+
+          &:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 255, 65, 0.2);
+          }
+
+          .stat-number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00ff41;
+            text-shadow: 0 0 15px currentColor;
+            margin-bottom: 8px;
+          }
+
+          .stat-label {
+            display: block;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            letter-spacing: 0.5px;
+          }
+        }
+      }
+    }
+
+    &.company-brief {
+      min-height: 120vh;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(255, 7, 58, 0.1));
+      border-color: rgba(139, 92, 246, 0.3);
+
+      .brief-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: start;
+        text-align: left;
+        margin-top: 20px;
+
+        .brief-text {
+          .company-stats {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+            justify-content: center;
+
+            .stat {
+              text-align: center;
+              padding: 20px;
+              background: rgba(0, 255, 65, 0.1);
+              border-radius: 12px;
+              border: 1px solid rgba(0, 255, 65, 0.3);
+
+              .stat-number {
+                display: block;
+                font-size: 2rem;
+                font-weight: bold;
+                color: #00ff41;
+                text-shadow: 0 0 10px currentColor;
+              }
+
+              .stat-label {
+                display: block;
+                font-size: 0.9rem;
+                opacity: 0.8;
+                margin-top: 5px;
+              }
+            }
+          }
+        }
+
+        .brief-highlights {
+          h3 {
+            color: #ff073a;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+          }
+
+          ul {
+            list-style: none;
+            padding: 0;
+
+            li {
+              display: flex;
+              align-items: center;
+              gap: 15px;
+              padding: 12px 0;
+              border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+              .highlight-icon {
+                font-size: 1.2rem;
+                width: 24px;
+                text-align: center;
+              }
+
+              &:hover {
+                color: #00ff41;
+                transform: translateX(10px);
+                transition: all 0.3s ease;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &.final {
+      background: linear-gradient(135deg, rgba(255, 69, 0, 0.2), rgba(255, 165, 0, 0.1));
+      border-color: rgba(255, 69, 0, 0.3);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .scroll-content {
+    padding: 80vh 0 30vh;
+
+    .content-section {
+      margin: 10px;
+      padding: 30px 15px;
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      &.calling-services {
+        .services-content {
+          grid-template-columns: 1fr;
+          gap: 30px;
+
+          .service-intro .service-highlights {
+            .highlight-card {
+              .card-icon {
+                font-size: 1.5rem;
+              }
+
+              h3 {
+                font-size: 1.1rem;
+              }
+            }
+          }
+        }
+
+        .service-stats {
+          gap: 15px;
+
+          .stat-card {
+            min-width: 120px;
+            padding: 20px 15px;
+
+            .stat-number {
+              font-size: 2rem;
+            }
+          }
+        }
+      }
+
+      &.company-brief {
+        .brief-content {
+          grid-template-columns: 1fr;
+          gap: 30px;
+
+          .brief-text .company-stats {
+            flex-direction: column;
+            gap: 15px;
+
+            .stat {
+              .stat-number {
+                font-size: 1.5rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .scroll-content {
+    .content-section {
+      h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
