@@ -10,6 +10,7 @@ html, body {
   color: #fff;
   font-family: 'Arial', sans-serif;
   overflow-x: hidden;
+  overflow-y: auto; /* Ensure vertical scrolling is enabled */
 }
 
 body {
@@ -20,6 +21,7 @@ body {
   width: 100vw;
   min-height: 100vh;
   position: relative;
+  overflow-y: auto;
 }
 
 .initial-loader {
