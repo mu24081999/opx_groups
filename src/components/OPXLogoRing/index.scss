@@ -65,36 +65,39 @@
 
   .particle {
     position: absolute;
-    transition: opacity 0.1s ease;
+    transition: opacity 0.15s ease, transform 0.15s ease;
 
     &.square-particle {
-      border-radius: 2px; // Slightly rounded squares for coding feel
+      border-radius: 50%; // Circular particles for cosmic feel
       position: relative;
 
       &::before {
         content: '';
         position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
         background: inherit;
-        border-radius: 3px;
-        filter: blur(3px);
-        opacity: 0.4;
+        border-radius: 50%;
+        filter: blur(4px);
+        opacity: 0.6;
         z-index: -1;
       }
 
-      // Add subtle grid pattern for coding effect
+      // Add cosmic glow effect
       &::after {
         content: '';
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 1px;
-        height: 1px;
-        background: rgba(255, 255, 255, 0.3);
+        width: 150%;
+        height: 150%;
+        background: radial-gradient(circle, currentColor 0%, transparent 70%);
+        border-radius: 50%;
+        opacity: 0.3;
         transform: translate(-50%, -50%);
+        z-index: -2;
       }
     }
   }
