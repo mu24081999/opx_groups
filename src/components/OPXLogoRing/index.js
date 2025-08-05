@@ -335,6 +335,38 @@ export default function OPXLogoRing() {
         }}
       />
 
+      {/* Lightning Center Source */}
+      <div className={`lightning-center ${lightningState.isActive ? 'active' : ''}`}>
+        <div className="lightning-core" style={{
+          '--lightning-color': lightningState.colors?.[0] || '#00f5ff',
+          '--lightning-intensity': lightningState.intensity || 1
+        }} />
+        <div className="lightning-rings">
+          {[...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className="lightning-ring"
+              style={{
+                '--delay': `${i * 0.1}s`,
+                '--size': `${100 + i * 50}px`
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Lightning Wave */}
+      {lightningState.isActive && (
+        <div
+          className="lightning-wave"
+          style={{
+            '--wave-size': `${lightningState.wave * 20}px`,
+            '--wave-color': lightningState.colors?.[1] || '#0066ff',
+            '--wave-intensity': lightningState.intensity || 1
+          }}
+        />
+      )}
+
       {/* Main Ring Container */}
       <div
         className="ring-wrapper"
