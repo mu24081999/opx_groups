@@ -153,6 +153,63 @@ export default function OPXLogoRing() {
     }
   }, [])
 
+  // Lightning wave propagation and particle effects
+  useEffect(() => {
+    if (!lightningState.isActive) return
+
+    const startTime = Date.now()
+    const animateLightning = () => {
+      const elapsed = Date.now() - startTime
+      const progress = elapsed / lightningState.duration
+
+      if (progress >= 1) {
+        setLightningState(prev => ({ ...prev, isActive: false, wave: 0 }))
+        return
+      }
+
+      // Calculate wave radius (spreads from center to edges of screen)
+      const maxRadius = Math.sqrt(Math.pow(50, 2) + Math.pow(50, 2)) // Distance to corner
+      const waveRadius = progress * maxRadius * 2 // Wave spreads beyond screen
+
+      setLightningState(prev => ({ ...prev, wave: waveRadius }))
+
+      // Update particles based on wave position
+      particlesRef.current = particlesRef.current.map(particle => {
+        const distanceFromWave = Math.abs(particle.distanceFromCenter - waveRadius)
+        const waveThickness = 8 // How thick the lightning wave is
+
+        if (distanceFromWave <= waveThickness) {
+          // Particle is hit by lightning wave
+          const hitIntensity = 1 - (distanceFromWave / waveThickness)
+          const colorIndex = Math.floor(Date.now() * 0.01 + particle.id * 0.1) % lightningState.colors.length
+
+          return {
+            ...particle,
+            lightningOpacity: hitIntensity * lightningState.intensity,
+            lightningSize: 1 + hitIntensity * 0.8,
+            lightningColor: lightningState.colors[colorIndex],
+            lastHitTime: Date.now()
+          }
+        } else {
+          // Particle fading after being hit
+          const timeSinceHit = Date.now() - particle.lastHitTime
+          const fadeTime = 500 // 500ms fade
+          const fadeFactor = Math.max(0, 1 - (timeSinceHit / fadeTime))
+
+          return {
+            ...particle,
+            lightningOpacity: particle.lightningOpacity * fadeFactor,
+            lightningSize: Math.max(1, particle.lightningSize * (0.9 + fadeFactor * 0.1))
+          }
+        }
+      })
+
+      requestAnimationFrame(animateLightning)
+    }
+
+    requestAnimationFrame(animateLightning)
+  }, [lightningState.isActive, lightningState.duration, lightningState.intensity, lightningState.colors])
+
   // Animate particles with color sampling from video
   useEffect(() => {
     const animateParticles = () => {
@@ -173,13 +230,14 @@ export default function OPXLogoRing() {
         const newX = particle.originalX + Math.sin(time * 0.3 + particle.phase) * 3
         const newY = particle.originalY + Math.cos(time * 0.2 + particle.phase) * 2 + particle.speed * time * 2
 
-        // Color transition from gray to video colors
+        // Color transition from gray to video colors (when not hit by lightning)
         const colorIndex = Math.floor((time + particle.id) * 0.2) % videoColors.length
-        const targetColor = videoColors[colorIndex]
+        const targetColor = particle.lightningOpacity > 0.1 ? particle.lightningColor : videoColors[colorIndex]
 
-        // Slow blink animation with color fade
+        // Slow blink animation with color fade, enhanced by lightning
         const blinkFactor = 0.4 + 0.6 * Math.abs(Math.sin(time * particle.blinkSpeed + particle.phase))
-        const opacity = particle.baseOpacity * blinkFactor * (0.3 + 0.7 * Math.sin(time * 0.5))
+        const baseOpacity = particle.baseOpacity * blinkFactor * (0.3 + 0.7 * Math.sin(time * 0.5))
+        const finalOpacity = Math.max(baseOpacity, particle.lightningOpacity)
 
         // Reset particles that go off screen
         let finalX = newX
@@ -190,14 +248,17 @@ export default function OPXLogoRing() {
           finalX = Math.random() * 100
           particle.originalX = finalX
           particle.originalY = finalY
+          // Recalculate distance from center
+          particle.distanceFromCenter = Math.sqrt(Math.pow(finalX - 50, 2) + Math.pow(finalY - 50, 2))
         }
 
         return {
           ...particle,
           x: Math.max(0, Math.min(100, finalX)),
           y: Math.max(-5, Math.min(105, finalY)),
-          opacity: Math.max(0.1, Math.min(0.8, opacity)),
-          color: targetColor
+          opacity: Math.max(0.1, Math.min(1, finalOpacity)),
+          color: targetColor,
+          size: particle.size * particle.lightningSize
         }
       })
     }
