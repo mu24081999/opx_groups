@@ -105,62 +105,33 @@ export default function OPXLogoRing() {
     }
   }, [])
 
-  // Lightning wave propagation and particle effects
+  // Heartbeat wave animation
   useEffect(() => {
-    if (!lightningState.isActive) return
+    if (!heartbeat.isActive) return
 
     const startTime = Date.now()
-    const animateLightning = () => {
+    const duration = 1500 // 1.5 seconds for wave to complete
+
+    const animateWave = () => {
       const elapsed = Date.now() - startTime
-      const progress = elapsed / lightningState.duration
+      const progress = elapsed / duration
 
       if (progress >= 1) {
-        setLightningState(prev => ({ ...prev, isActive: false, wave: 0 }))
+        setHeartbeat(prev => ({ ...prev, isActive: false }))
         return
       }
 
-      // Calculate wave radius (spreads from center to edges of screen)
-      const maxRadius = Math.sqrt(Math.pow(50, 2) + Math.pow(50, 2)) // Distance to corner
-      const waveRadius = progress * maxRadius * 2 // Wave spreads beyond screen
+      // Wave spreads from center outward
+      const maxRadius = 80 // Max distance to cover screen
+      const currentWave = progress * maxRadius
 
-      setLightningState(prev => ({ ...prev, wave: waveRadius }))
+      setHeartbeat(prev => ({ ...prev, wave: currentWave }))
 
-      // Update particles based on wave position
-      particlesRef.current = particlesRef.current.map(particle => {
-        const distanceFromWave = Math.abs(particle.distanceFromCenter - waveRadius)
-        const waveThickness = 8 // How thick the lightning wave is
-
-        if (distanceFromWave <= waveThickness) {
-          // Particle is hit by lightning wave
-          const hitIntensity = 1 - (distanceFromWave / waveThickness)
-          const colorIndex = Math.floor(Date.now() * 0.01 + particle.id * 0.1) % lightningState.colors.length
-
-          return {
-            ...particle,
-            lightningOpacity: hitIntensity * lightningState.intensity,
-            lightningSize: 1 + hitIntensity * 0.8,
-            lightningColor: lightningState.colors[colorIndex],
-            lastHitTime: Date.now()
-          }
-        } else {
-          // Particle fading after being hit
-          const timeSinceHit = Date.now() - particle.lastHitTime
-          const fadeTime = 500 // 500ms fade
-          const fadeFactor = Math.max(0, 1 - (timeSinceHit / fadeTime))
-
-          return {
-            ...particle,
-            lightningOpacity: particle.lightningOpacity * fadeFactor,
-            lightningSize: Math.max(1, particle.lightningSize * (0.9 + fadeFactor * 0.1))
-          }
-        }
-      })
-
-      requestAnimationFrame(animateLightning)
+      requestAnimationFrame(animateWave)
     }
 
-    requestAnimationFrame(animateLightning)
-  }, [lightningState.isActive, lightningState.duration, lightningState.intensity, lightningState.colors])
+    requestAnimationFrame(animateWave)
+  }, [heartbeat.isActive])
 
   // Animate particles with color sampling from video
   useEffect(() => {
