@@ -188,9 +188,10 @@ export default function OPXLogoRing() {
       ]
 
       particlesRef.current = particlesRef.current.map(particle => {
-        // Floating movement
-        const newX = particle.originalX + Math.sin(time * 0.3 + particle.phase) * 3
-        const newY = particle.originalY + Math.cos(time * 0.2 + particle.phase) * 2 + particle.speed * time * 2
+        // Subtle floating movement that keeps particles in their cosmic clusters
+        const floatRange = particle.clusterType === 'main' ? 2 : 1
+        const newX = particle.originalX + Math.sin(time * 0.2 + particle.phase) * floatRange
+        const newY = particle.originalY + Math.cos(time * 0.15 + particle.phase) * floatRange
 
         // Smooth flowing heartbeat effect like blood in veins
         let heartbeatBoost = 0
