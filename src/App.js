@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Scene3D from './components/Scene3D'
 import Navigation from './components/Navigation'
 import Controls from './components/Controls'
+import WorkShowcase from './components/WorkShowcase'
 import './App.scss'
 
 function App() {
@@ -34,15 +35,16 @@ function App() {
           </div>
         </div>
       )}
-      
+
       {isLoaded && (
         <>
           <Navigation />
           <Scene3D currentEnvironment={currentEnvironment} />
-          <Controls 
+          <Controls
             currentEnvironment={currentEnvironment}
             onEnvironmentChange={handleEnvironmentChange}
           />
+          <WorkShowcase isVisible={isLoaded} />
         </>
       )}
     </div>

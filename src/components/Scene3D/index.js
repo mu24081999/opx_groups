@@ -18,7 +18,7 @@ function EnvironmentDisplay({ environment, isActive }) {
       color: '#0066cc',
       gradient: 'linear-gradient(135deg, #0066cc 0%, #4488ff 100%)',
       description: 'European headquarters along the canals',
-      video: 'https://videos.pexels.com/video-files/6394060/6394060-hd_1920_1080_25fps.mp4'
+      video: 'https://videos.pexels.com/video-files/31532147/13439831_640_360_60fps.mp4'
     }
   }
 
