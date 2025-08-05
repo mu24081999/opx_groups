@@ -23,25 +23,19 @@ export default function OPXLogoRing() {
       const y = Math.random() * 100
       particles.push({
         id: i,
-        x: x, // Full screen width (0-100%)
-        y: y, // Full screen height (0-100%)
+        x: x,
+        y: y,
         originalX: x,
         originalY: y,
         size: Math.random() * 6 + 3,
         speed: Math.random() * 0.5 + 0.2,
-        opacity: 0.1, // Start with low opacity (gray effect)
+        opacity: 0.1,
         baseOpacity: Math.random() * 0.3 + 0.1,
-        color: '#666666', // Start gray
-        targetColor: '#666666',
+        color: '#666666',
         blinkSpeed: Math.random() * 1.5 + 0.5,
         phase: Math.random() * Math.PI * 2,
         floatDirection: Math.random() * Math.PI * 2,
-        // Lightning effect properties
-        distanceFromCenter: Math.sqrt(Math.pow(x - 50, 2) + Math.pow(y - 50, 2)),
-        lightningOpacity: 0,
-        lightningSize: 1,
-        lightningColor: '#666666',
-        lastHitTime: 0
+        distanceFromCenter: Math.sqrt(Math.pow(x - 50, 2) + Math.pow(y - 50, 2))
       })
     }
 
