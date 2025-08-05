@@ -133,34 +133,43 @@ export default function OPXLogoRing() {
     requestAnimationFrame(animateWave)
   }, [heartbeat.isActive])
 
-  // Animate particles with color sampling from video
+  // Animate particles with heartbeat effects
   useEffect(() => {
     const animateParticles = () => {
       const time = Date.now() * 0.001
 
-      // Color transitions based on time (simulating video colors)
-      const videoColors = [
-        '#00ff41', // Matrix green
-        '#ff073a', // Error red
-        '#0ea5e9', // Info blue
-        '#8b5cf6', // Purple
-        '#f59e0b', // Amber
-        '#ffb000'  // Gold
+      const colors = [
+        '#00ff41', '#ff073a', '#0ea5e9', '#8b5cf6', '#f59e0b', '#ffb000'
       ]
 
       particlesRef.current = particlesRef.current.map(particle => {
-        // Slow floating movement
+        // Floating movement
         const newX = particle.originalX + Math.sin(time * 0.3 + particle.phase) * 3
         const newY = particle.originalY + Math.cos(time * 0.2 + particle.phase) * 2 + particle.speed * time * 2
 
-        // Color transition from gray to video colors (when not hit by lightning)
-        const colorIndex = Math.floor((time + particle.id) * 0.2) % videoColors.length
-        const targetColor = particle.lightningOpacity > 0.1 ? particle.lightningColor : videoColors[colorIndex]
+        // Heartbeat effect - particles pulse when wave passes through
+        let heartbeatBoost = 0
+        if (heartbeat.isActive) {
+          const distanceFromWave = Math.abs(particle.distanceFromCenter - heartbeat.wave)
+          if (distanceFromWave < 10) { // Wave thickness
+            const waveIntensity = 1 - (distanceFromWave / 10)
+            heartbeatBoost = waveIntensity * heartbeat.intensity
+          }
+        }
 
-        // Slow blink animation with color fade, enhanced by lightning
+        // Base color animation
+        const colorIndex = Math.floor((time + particle.id) * 0.2) % colors.length
+        let targetColor = colors[colorIndex]
+
+        // Enhanced color during heartbeat
+        if (heartbeatBoost > 0.1) {
+          targetColor = colors[heartbeat.colorIndex]
+        }
+
+        // Opacity with heartbeat boost
         const blinkFactor = 0.4 + 0.6 * Math.abs(Math.sin(time * particle.blinkSpeed + particle.phase))
         const baseOpacity = particle.baseOpacity * blinkFactor * (0.3 + 0.7 * Math.sin(time * 0.5))
-        const finalOpacity = Math.max(baseOpacity, particle.lightningOpacity)
+        const finalOpacity = Math.max(baseOpacity, baseOpacity + heartbeatBoost)
 
         // Reset particles that go off screen
         let finalX = newX
@@ -171,7 +180,6 @@ export default function OPXLogoRing() {
           finalX = Math.random() * 100
           particle.originalX = finalX
           particle.originalY = finalY
-          // Recalculate distance from center
           particle.distanceFromCenter = Math.sqrt(Math.pow(finalX - 50, 2) + Math.pow(finalY - 50, 2))
         }
 
@@ -180,15 +188,14 @@ export default function OPXLogoRing() {
           x: Math.max(0, Math.min(100, finalX)),
           y: Math.max(-5, Math.min(105, finalY)),
           opacity: Math.max(0.1, Math.min(1, finalOpacity)),
-          color: targetColor,
-          size: particle.size * particle.lightningSize
+          color: targetColor
         }
       })
     }
 
-    const interval = setInterval(animateParticles, 50) // 20fps
+    const interval = setInterval(animateParticles, 50)
     return () => clearInterval(interval)
-  }, [scrollY])
+  }, [scrollY, heartbeat])
 
   // Calculate coin-like rotation based on scroll (enhanced responsiveness)
   const scrollProgress = scrollY * 0.1 // Scroll progress multiplier
