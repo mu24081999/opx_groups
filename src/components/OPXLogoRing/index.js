@@ -133,7 +133,7 @@ export default function OPXLogoRing() {
     requestAnimationFrame(animateFlow)
   }, [heartbeat.isActive])
 
-  // Animate particles with heartbeat effects
+  // Animate particles with smooth flowing heartbeat like blood in veins
   useEffect(() => {
     const animateParticles = () => {
       const time = Date.now() * 0.001
@@ -147,29 +147,64 @@ export default function OPXLogoRing() {
         const newX = particle.originalX + Math.sin(time * 0.3 + particle.phase) * 3
         const newY = particle.originalY + Math.cos(time * 0.2 + particle.phase) * 2 + particle.speed * time * 2
 
-        // Heartbeat effect - particles pulse when wave passes through
+        // Smooth flowing heartbeat effect like blood in veins
         let heartbeatBoost = 0
+        let flowColor = colors[Math.floor((time + particle.id) * 0.2) % colors.length]
+
         if (heartbeat.isActive) {
-          const distanceFromWave = Math.abs(particle.distanceFromCenter - heartbeat.wave)
-          if (distanceFromWave < 10) { // Wave thickness
-            const waveIntensity = 1 - (distanceFromWave / 10)
-            heartbeatBoost = waveIntensity * heartbeat.intensity
+          const distanceFromCenter = particle.distanceFromCenter
+          const currentWave = heartbeat.wave
+
+          // Sequential activation: particles light up as wave reaches their distance
+          if (distanceFromCenter <= currentWave) {
+            // How long ago did the wave reach this particle?
+            const waveReachedAt = distanceFromCenter / 85 // normalized distance (0-1)
+            const currentProgress = heartbeat.progress || 0
+            const timeSinceReached = currentProgress - waveReachedAt
+
+            if (timeSinceReached >= 0) {
+              // Smooth fade-in when wave reaches particle
+              const fadeInDuration = 0.15 // 15% of total animation for fade-in
+              const fadeOutStart = 0.4 // Start fading out after 40% of animation
+              const fadeOutDuration = 0.6 // 60% for fade-out
+
+              if (timeSinceReached <= fadeInDuration) {
+                // Fade in smoothly
+                const fadeInProgress = timeSinceReached / fadeInDuration
+                heartbeatBoost = Math.sin(fadeInProgress * Math.PI * 0.5) * heartbeat.intensity
+              } else if (timeSinceReached <= fadeOutStart) {
+                // Full intensity
+                heartbeatBoost = heartbeat.intensity
+              } else {
+                // Fade out smoothly
+                const fadeOutProgress = (timeSinceReached - fadeOutStart) / fadeOutDuration
+                const fadeOutFactor = Math.cos(fadeOutProgress * Math.PI * 0.5)
+                heartbeatBoost = Math.max(0, fadeOutFactor * heartbeat.intensity)
+              }
+
+              // Use heartbeat color when active
+              flowColor = colors[heartbeat.colorIndex]
+
+              // Add some organic variation to the flow
+              const organicVariation = 0.1 + 0.1 * Math.sin(time * 2 + particle.id * 0.1)
+              heartbeatBoost *= (1 + organicVariation)
+            }
           }
         }
 
-        // Base color animation
-        const colorIndex = Math.floor((time + particle.id) * 0.2) % colors.length
-        let targetColor = colors[colorIndex]
+        // Store the heartbeat boost for trailing effect
+        if (!particle.heartbeatHistory) particle.heartbeatHistory = []
+        particle.heartbeatHistory.push(heartbeatBoost)
+        if (particle.heartbeatHistory.length > 10) particle.heartbeatHistory.shift()
 
-        // Enhanced color during heartbeat
-        if (heartbeatBoost > 0.1) {
-          targetColor = colors[heartbeat.colorIndex]
-        }
+        // Calculate trailing effect
+        const averageBoost = particle.heartbeatHistory.reduce((a, b) => a + b, 0) / particle.heartbeatHistory.length
+        const smoothBoost = heartbeatBoost * 0.7 + averageBoost * 0.3
 
-        // Opacity with heartbeat boost
+        // Base opacity with smooth heartbeat boost
         const blinkFactor = 0.4 + 0.6 * Math.abs(Math.sin(time * particle.blinkSpeed + particle.phase))
         const baseOpacity = particle.baseOpacity * blinkFactor * (0.3 + 0.7 * Math.sin(time * 0.5))
-        const finalOpacity = Math.max(baseOpacity, baseOpacity + heartbeatBoost)
+        const finalOpacity = Math.max(baseOpacity, baseOpacity + smoothBoost * 0.8)
 
         // Reset particles that go off screen
         let finalX = newX
@@ -181,6 +216,7 @@ export default function OPXLogoRing() {
           particle.originalX = finalX
           particle.originalY = finalY
           particle.distanceFromCenter = Math.sqrt(Math.pow(finalX - 50, 2) + Math.pow(finalY - 50, 2))
+          particle.heartbeatHistory = [] // Reset history for new particle position
         }
 
         return {
@@ -188,12 +224,12 @@ export default function OPXLogoRing() {
           x: Math.max(0, Math.min(100, finalX)),
           y: Math.max(-5, Math.min(105, finalY)),
           opacity: Math.max(0.1, Math.min(1, finalOpacity)),
-          color: targetColor
+          color: flowColor
         }
       })
     }
 
-    const interval = setInterval(animateParticles, 50)
+    const interval = setInterval(animateParticles, 33) // ~30fps for smoother animation
     return () => clearInterval(interval)
   }, [scrollY, heartbeat])
 
