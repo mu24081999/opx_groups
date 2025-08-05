@@ -1,16 +1,12 @@
-import { Outlet } from 'react-router-dom'
-
-import Sidebar from '../Sidebar/'
 import './index.scss'
 
-const Layout = () => {
+const Layout = ({ children }) => {
   return (
     <div className="App">
-      <Sidebar />
       <div className="page">
         <span className="tags top-tags">&lt;body&gt;</span>
 
-        <Outlet />
+        {children}
         <span className="tags bottom-tags">
           <div id="stars"></div>
           <div id="stars2"></div>
