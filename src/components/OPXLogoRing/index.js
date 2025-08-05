@@ -195,7 +195,9 @@ export default function OPXLogoRing() {
 
         // Smooth flowing heartbeat effect like blood in veins
         let heartbeatBoost = 0
-        let flowColor = colors[Math.floor((time + particle.id) * 0.2) % colors.length]
+        // Cosmic particle colors - main clusters get varied colors, background stays blue
+        const colorIndex = Math.floor((time + particle.id) * 0.1) % colors.length
+        let flowColor = particle.clusterType === 'main' ? colors[colorIndex] : '#64b5f6'
 
         if (heartbeat.isActive) {
           const distanceFromCenter = particle.distanceFromCenter
