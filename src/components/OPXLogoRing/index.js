@@ -7,10 +7,13 @@ export default function OPXLogoRing() {
   const ringRef = useRef(null)
   const particlesRef = useRef([])
 
-  // Initialize particles with enhanced properties
+  // Initialize square particles for coding theme
   useEffect(() => {
-    const particleCount = 80
+    const particleCount = 60
     const particles = []
+
+    // Coding-style colors: matrix green, terminal amber, error red, info blue
+    const codingColors = ['#00ff41', '#ffb000', '#ff073a', '#0ea5e9', '#8b5cf6', '#f59e0b']
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
@@ -18,12 +21,15 @@ export default function OPXLogoRing() {
         x: Math.random() * 100,
         y: Math.random() * 100,
         originalX: Math.random() * 100,
-        size: Math.random() * 6 + 2,
-        speed: Math.random() * 3 + 0.8,
-        opacity: Math.random() * 0.9 + 0.3,
-        color: ['#ff4500', '#ff6b35', '#ffa500', '#ffcc00', '#ff1744', '#9c27b0', '#3f51b5'][Math.floor(Math.random() * 7)],
-        magneticForce: Math.random() * 0.02 + 0.01,
-        phase: Math.random() * Math.PI * 2
+        size: Math.random() * 8 + 4, // Larger squares
+        speed: 0, // Static particles, only move with ring
+        opacity: Math.random() * 0.7 + 0.3,
+        baseOpacity: Math.random() * 0.7 + 0.3,
+        color: codingColors[Math.floor(Math.random() * codingColors.length)],
+        blinkSpeed: Math.random() * 2 + 1, // Individual blink rates
+        phase: Math.random() * Math.PI * 2,
+        ringRadius: Math.random() * 150 + 100, // Distance from ring center
+        angle: Math.random() * Math.PI * 2 // Position around ring
       })
     }
 
@@ -53,7 +59,7 @@ export default function OPXLogoRing() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  // Animate particles with magnetic attraction to ring
+  // Animate particles with slow blink and ring attachment
   useEffect(() => {
     const animateParticles = () => {
       const time = Date.now() * 0.001
@@ -61,44 +67,26 @@ export default function OPXLogoRing() {
       const centerY = 50
 
       particlesRef.current = particlesRef.current.map(particle => {
-        // Calculate distance to center for magnetic effect
-        const distanceToCenter = Math.sqrt(
-          Math.pow(particle.x - centerX, 2) + Math.pow(particle.y - centerY, 2)
-        )
+        // Position particles around the ring
+        const currentAngle = particle.angle + (scrollY * 0.001) // Slight rotation with scroll
+        const x = centerX + Math.cos(currentAngle) * (particle.ringRadius / 10)
+        const y = centerY + Math.sin(currentAngle) * (particle.ringRadius / 15)
 
-        // Magnetic attraction to ring
-        const magneticX = (centerX - particle.x) * particle.magneticForce
-        const magneticY = (centerY - particle.y) * particle.magneticForce * 0.3
-
-        // Orbital motion around ring
-        const orbitalX = Math.sin(time + particle.phase) * 0.2
-        const orbitalY = Math.cos(time + particle.phase) * 0.1
-
-        // Normal upward movement
-        const newY = particle.y - particle.speed * 0.08
-        const newX = particle.x + magneticX + orbitalX + Math.sin(time + particle.id) * 0.15
+        // Slow blink animation
+        const blinkOpacity = particle.baseOpacity * (0.3 + 0.7 * Math.abs(Math.sin(time * particle.blinkSpeed)))
 
         return {
           ...particle,
-          x: newX,
-          y: newY,
-          opacity: Math.max(0.2, Math.min(0.9, particle.opacity + Math.sin(time + particle.id) * 0.02))
-        }
-      })
-
-      // Reset particles that go off screen
-      particlesRef.current.forEach(particle => {
-        if (particle.y < -10) {
-          particle.y = 110
-          particle.x = particle.originalX + (Math.random() - 0.5) * 20
-          particle.phase = Math.random() * Math.PI * 2
+          x: Math.max(5, Math.min(95, x)), // Keep within bounds
+          y: Math.max(5, Math.min(95, y)),
+          opacity: blinkOpacity
         }
       })
     }
 
-    const interval = setInterval(animateParticles, 16) // 60fps
+    const interval = setInterval(animateParticles, 32) // 30fps for smoother blink
     return () => clearInterval(interval)
-  }, [])
+  }, [scrollY])
 
   // Calculate coin-like rotation based on scroll
   const rotationX = (scrollY * 0.3) % 360 // Horizontal coin flip
@@ -124,12 +112,26 @@ export default function OPXLogoRing() {
 
   return (
     <div className="opx-logo-ring-container">
-      {/* Particles Background */}
+      {/* Background Video */}
+      <div className="background-video">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="bg-video"
+        >
+          <source src="https://videos.pexels.com/video-files/2278095/2278095-uhd_2560_1440_30fps.mp4" type="video/mp4" />
+        </video>
+        <div className="video-overlay"></div>
+      </div>
+
+      {/* Square Particles with Blink */}
       <div className="particles-container">
         {particlesRef.current.map(particle => (
           <div
             key={particle.id}
-            className="particle"
+            className="particle square-particle"
             style={{
               left: `${particle.x}%`,
               top: `${particle.y}%`,
@@ -137,7 +139,8 @@ export default function OPXLogoRing() {
               height: `${particle.size}px`,
               backgroundColor: particle.color,
               opacity: particle.opacity,
-              boxShadow: `0 0 ${particle.size * 3}px ${particle.color}`
+              boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
+              border: `1px solid ${particle.color}`
             }}
           />
         ))}
@@ -169,10 +172,9 @@ export default function OPXLogoRing() {
           {logos.map(logo => (
             <div
               key={logo.id}
-              className="logo-item"
+              className="logo-item scroll-only"
               style={{
-                transform: logo.transform,
-                animationDelay: `${logo.delay}s`
+                transform: logo.transform
               }}
             >
               <div className="logo-face front">
