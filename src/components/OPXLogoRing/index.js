@@ -4,8 +4,15 @@ import './index.scss'
 export default function OPXLogoRing() {
   const [scrollY, setScrollY] = useState(0)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [lightningState, setLightningState] = useState({
+    isActive: false,
+    wave: 0,
+    type: 'electric',
+    intensity: 1
+  })
   const ringRef = useRef(null)
   const particlesRef = useRef([])
+  const lightningRef = useRef(null)
 
   // Initialize square particles spread across full screen
   useEffect(() => {
