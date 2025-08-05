@@ -81,6 +81,78 @@ export default function OPXLogoRing() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
+  // Lightning heartbeat system
+  useEffect(() => {
+    const lightningTypes = [
+      {
+        type: 'electric',
+        colors: ['#00f5ff', '#0066ff', '#ffffff'],
+        speed: 60,
+        intensity: 1.5,
+        duration: 800
+      },
+      {
+        type: 'plasma',
+        colors: ['#ff00ff', '#8b00ff', '#ffffff'],
+        speed: 45,
+        intensity: 1.8,
+        duration: 1000
+      },
+      {
+        type: 'energy',
+        colors: ['#00ff41', '#00ffaa', '#ffffff'],
+        speed: 70,
+        intensity: 1.2,
+        duration: 600
+      },
+      {
+        type: 'fire',
+        colors: ['#ff4500', '#ff6b00', '#ffff00'],
+        speed: 55,
+        intensity: 1.6,
+        duration: 900
+      },
+      {
+        type: 'cosmic',
+        colors: ['#9d4edd', '#c77dff', '#ffffff'],
+        speed: 40,
+        intensity: 2.0,
+        duration: 1200
+      }
+    ]
+
+    let currentTypeIndex = 0
+    let lightningTimer
+
+    const triggerLightning = () => {
+      const currentType = lightningTypes[currentTypeIndex]
+
+      setLightningState({
+        isActive: true,
+        wave: 0,
+        type: currentType.type,
+        intensity: currentType.intensity,
+        colors: currentType.colors,
+        speed: currentType.speed,
+        duration: currentType.duration
+      })
+
+      // Move to next lightning type
+      currentTypeIndex = (currentTypeIndex + 1) % lightningTypes.length
+
+      // Schedule next lightning (heartbeat interval with some variation)
+      const nextInterval = 2000 + Math.random() * 1500 // 2-3.5 seconds
+      lightningTimer = setTimeout(triggerLightning, nextInterval)
+    }
+
+    // Start first lightning after a short delay
+    lightningTimer = setTimeout(triggerLightning, 1000)
+
+    return () => {
+      if (lightningTimer) clearTimeout(lightningTimer)
+    }
+  }, [])
+
   // Animate particles with color sampling from video
   useEffect(() => {
     const animateParticles = () => {
