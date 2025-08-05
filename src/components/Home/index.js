@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import Loader from "react-loaders";
-import { Link } from "react-router-dom";
 
 import Logo from "./Logo";
 import LogoTitle from "../../assets/images/logo-s.png";
@@ -55,9 +54,6 @@ const Home = () => {
             Streamlining Workflows | Deploying Intelligent Systems | Building
             Scalable Applications
           </h2>
-          <Link to="/contact" className="flat-button">
-            CONTACT ME
-          </Link>
         </div>
         <Logo />
       </div>
