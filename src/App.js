@@ -33,6 +33,23 @@ function App() {
         <>
           <OPXLogoRing />
           <ScrollContent />
+          {/* Test content to ensure scrolling works */}
+          <div style={{
+            position: 'relative',
+            zIndex: 100,
+            background: 'red',
+            height: '200vh',
+            padding: '50px',
+            color: 'white',
+            fontSize: '24px'
+          }}>
+            <h1>TEST SCROLL CONTENT</h1>
+            <p>If you can see this, scrolling is working!</p>
+            <div style={{ marginTop: '100vh' }}>
+              <h2>Middle Section</h2>
+              <p>Keep scrolling to test the logo rotation...</p>
+            </div>
+          </div>
         </>
       )}
     </div>
