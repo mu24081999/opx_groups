@@ -11,14 +11,14 @@ function EnvironmentDisplay({ environment, isActive }) {
       color: '#ff4500',
       gradient: 'linear-gradient(135deg, #ff4500 0%, #ff6b35 100%)',
       description: 'Creative studio in the heart of Los Angeles',
-      video: 'https://player.vimeo.com/external/342391822.sd.mp4?s=686bb85c4d5c4b99ab6a7c2dd0ac0b57&profile_id=165'
+      video: 'https://videos.pexels.com/video-files/33237483/14161808_640_360_25fps.mp4'
     },
     amsterdam: {
       title: 'Amsterdam Office',
       color: '#0066cc',
       gradient: 'linear-gradient(135deg, #0066cc 0%, #4488ff 100%)',
       description: 'European headquarters along the canals',
-      video: 'https://player.vimeo.com/external/342391828.sd.mp4?s=8f3f7c3a5f0e2a7d4e1c8b9f7a6c5d4e&profile_id=165'
+      video: 'https://videos.pexels.com/video-files/6394060/6394060-hd_1920_1080_25fps.mp4'
     }
   }
 
