@@ -105,14 +105,14 @@ export default function OPXLogoRing() {
     }
   }, [])
 
-  // Heartbeat wave animation
+  // Smooth flowing heartbeat animation
   useEffect(() => {
     if (!heartbeat.isActive) return
 
     const startTime = Date.now()
-    const duration = 1500 // 1.5 seconds for wave to complete
+    const duration = 2500 // 2.5 seconds for smooth flow
 
-    const animateWave = () => {
+    const animateFlow = () => {
       const elapsed = Date.now() - startTime
       const progress = elapsed / duration
 
@@ -121,16 +121,16 @@ export default function OPXLogoRing() {
         return
       }
 
-      // Wave spreads from center outward
-      const maxRadius = 80 // Max distance to cover screen
+      // Smooth wave that spreads from center to edges
+      const maxRadius = 85 // Max distance to cover screen corners
       const currentWave = progress * maxRadius
 
-      setHeartbeat(prev => ({ ...prev, wave: currentWave }))
+      setHeartbeat(prev => ({ ...prev, wave: currentWave, progress }))
 
-      requestAnimationFrame(animateWave)
+      requestAnimationFrame(animateFlow)
     }
 
-    requestAnimationFrame(animateWave)
+    requestAnimationFrame(animateFlow)
   }, [heartbeat.isActive])
 
   // Animate particles with heartbeat effects
