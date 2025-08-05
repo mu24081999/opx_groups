@@ -1,33 +1,26 @@
 import { useState, useEffect } from 'react'
-import Scene3D from './components/Scene3D'
-import Navigation from './components/Navigation'
-import Controls from './components/Controls'
-import WorkShowcase from './components/WorkShowcase'
+import OPXLogoRing from './components/OPXLogoRing'
+import ScrollContent from './components/ScrollContent'
 import './App.scss'
 
 function App() {
-  const [currentEnvironment, setCurrentEnvironment] = useState('la')
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     // Simulate loading time
     const timer = setTimeout(() => {
       setIsLoaded(true)
-    }, 2000)
+    }, 1500)
 
     return () => clearTimeout(timer)
   }, [])
-
-  const handleEnvironmentChange = (newEnvironment) => {
-    setCurrentEnvironment(newEnvironment)
-  }
 
   return (
     <div className="App">
       {!isLoaded && (
         <div className="initial-loader">
           <div className="loader-content">
-            <h1>Active Theory</h1>
+            <h1>OPX Groups</h1>
             <div className="loading-bar">
               <div className="loading-progress"></div>
             </div>
@@ -38,13 +31,8 @@ function App() {
 
       {isLoaded && (
         <>
-          <Navigation />
-          <Scene3D currentEnvironment={currentEnvironment} />
-          <Controls
-            currentEnvironment={currentEnvironment}
-            onEnvironmentChange={handleEnvironmentChange}
-          />
-          <WorkShowcase isVisible={isLoaded} />
+          <OPXLogoRing />
+          <ScrollContent />
         </>
       )}
     </div>

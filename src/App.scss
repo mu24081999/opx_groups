@@ -6,17 +6,20 @@
 
 html, body {
   height: 100%;
-  overflow: hidden;
   background: #000;
   color: #fff;
   font-family: 'Arial', sans-serif;
+  overflow-x: hidden;
+}
+
+body {
+  background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
 }
 
 .App {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
-  overflow: hidden;
 }
 
 .initial-loader {
@@ -25,23 +28,27 @@ html, body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #000;
+  background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  
+
   .loader-content {
     text-align: center;
-    
+
     h1 {
       font-size: 3rem;
       font-weight: bold;
       margin-bottom: 2rem;
       letter-spacing: 2px;
-      color: #fff;
+      background: linear-gradient(135deg, #ff4500, #ffa500, #ffcc00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
     }
-    
+
     .loading-bar {
       width: 300px;
       height: 4px;
@@ -49,7 +56,7 @@ html, body {
       border-radius: 2px;
       overflow: hidden;
       margin: 0 auto 1rem;
-      
+
       .loading-progress {
         height: 100%;
         background: linear-gradient(90deg, #ff4500, #ff6b35);
@@ -57,7 +64,7 @@ html, body {
         animation: loadingProgress 2s ease-in-out forwards;
       }
     }
-    
+
     p {
       font-size: 0.9rem;
       opacity: 0.7;
@@ -83,7 +90,7 @@ canvas {
     h1 {
       font-size: 2rem;
     }
-    
+
     .loading-bar {
       width: 250px;
     }
@@ -93,11 +100,11 @@ canvas {
 @media (max-width: 480px) {
   .initial-loader .loader-content {
     padding: 0 20px;
-    
+
     h1 {
       font-size: 1.5rem;
     }
-    
+
     .loading-bar {
       width: 200px;
     }
