@@ -1,1 +1,9 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap");
+
+.font-mono {
+  font-family: "Roboto Mono", monospace;
+}
+.body {
+  font-family: "Roboto Mono", monospace;
+}

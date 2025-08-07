@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef,useState,useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Sphere } from "@react-three/drei";
 import { pointsInner, pointsOuter } from "../utils/particleRing";
@@ -6,16 +6,16 @@ import { pointsInner, pointsOuter } from "../utils/particleRing";
 const ParticleRing = () => {
   return (
     <div className="relative">
-      <video
+      {/* <video
         className="absolute top-0 left-0 z-50 w-full h-full object-cover opacity-20 "
         autoPlay
         muted
         loop
         playsInline
         src="https://activetheory.net/assets/video/reel.mp4"
-      />
+      /> */}
       <Canvas
-        camera={{ position: [10, -7.5, -5] }}
+        camera={{ position: [10, -7.5, 7] }}
         style={{ height: "100vh" }}
         className="bg-slate-900"
       >
