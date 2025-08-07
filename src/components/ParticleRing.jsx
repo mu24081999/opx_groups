@@ -35,17 +35,17 @@ const ParticleRing = () => {
 const PointCircle = () => {
   const ref = useRef();
 
-  //   useFrame(({ clock }) => {
-  //     if (ref.current) {
-  //       ref.current.rotation.z = clock.getElapsedTime() * 0.05;
-  //     }
-  //   });
-  const [tintStrength, setTintStrength] = useState(0);
-
   useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
-    setTintStrength(Math.min(t / 10, 1)); // Increase over 10s
+    if (ref.current) {
+      ref.current.rotation.z = clock.getElapsedTime() * 0.05;
+    }
   });
+  //   const [tintStrength, setTintStrength] = useState(0);
+
+  //   useFrame(({ clock }) => {
+  //     const t = clock.getElapsedTime();
+  //     setTintStrength(Math.min(t / 10, 1)); // Increase over 10s
+  //   });
 
   return (
     <group ref={ref}>
@@ -53,14 +53,14 @@ const PointCircle = () => {
         <Point
           key={`inner-${point.idx}`}
           {...point}
-          tintStrength={tintStrength}
+          //   tintStrength={tintStrength}
         />
       ))}
       {pointsOuter.map((point) => (
         <Point
           key={`outer-${point.idx}`}
           {...point}
-          tintStrength={tintStrength}
+          //   tintStrength={tintStrength}
         />
       ))}
     </group>
