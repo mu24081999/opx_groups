@@ -28,9 +28,9 @@ const ParallaxLayout = () => {
           Debug
         </label>
       </div>
-      <div className="fixed top-0 left-0 w-full h-full z-50 pointer-events-none">
-        <div className="w-full h-full flex flex-col items-center justify-center pointer-events-none">
-          <SoundBar />
+      <SoundBar />
+      <div className="fixed top-0 left-0 w-full h-full z-40 pointer-events-none">
+        <div className="w-full h-full flex flex-col items-center justify-center">
           <MainLayer />
         </div>
       </div>
