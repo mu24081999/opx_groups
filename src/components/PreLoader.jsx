@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import "./Preloader.css"; // We'll move your CSS here
+import "./PreLoader.css"; // We'll move your CSS here
 
 const Preloader = ({ text = "OPX Groups", onFinish }) => {
   const canvasRef = useRef(null);
