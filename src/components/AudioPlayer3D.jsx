@@ -113,10 +113,15 @@ const FloatingNavBar = () => {
       </>
 
       <Modal isOpen={modalContent} onClose={closeModal}>
-        <div className="p-6">
-          <h1 className="text-2xl font-bold">About Us</h1>
-          <p>Some content here...</p>
-        </div>
+        {modalContent === "about" && (
+          <div className="p-6">
+            <h1 className="text-2xl font-bold">About Us</h1>
+            <p>Some content here...</p>
+          </div>
+        )}
+        {modalContent === "contact" && (
+          <ContactModal onClose={closeModal} />
+        )}
       </Modal>
     </>
   );
