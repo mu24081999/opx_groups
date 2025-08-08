@@ -79,7 +79,7 @@ const FloatingNavBar = () => {
       <>
         <Container className="shadow-lg border border-gray-50">
           <a
-            className="rounded-full px-3 py-2 text-sm text-white bg-gray-500"
+            className="rounded-full text-bold hover:bg-gry-300 cursor-pointer px-3 py-2 text-sm text-white bg-gray-500"
             href="#layer2"
           >
             Overview
@@ -93,7 +93,12 @@ const FloatingNavBar = () => {
             <path d="M0 10 Q 10 0 20 10 T 40 10 T 60 10 T 80 10" />
           </WaveContainer>
 
-          <Button onClick={() => openModal("contact")}>Contact</Button>
+          <button
+            className="rounded-full text-bold hover:bg-gry-300 cursor-pointer px-3 py-2 text-sm text-white bg-gray-500"
+            onClick={() => openModal("contact")}
+          >
+            Contact
+          </button>
 
           {/* ⬇️ Correct placement of audio element ⬇️ */}
           <audio ref={audioRef} src={music} loop />
