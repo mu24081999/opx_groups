@@ -27,7 +27,7 @@ const modalVariants = {
   },
 };
 
-const Model = ({ isOpen, onClose, children }) => {
+const Modal = ({ isOpen, onClose, children }) => {
   return (
     <AnimatePresence mode="wait">
       {isOpen && (
