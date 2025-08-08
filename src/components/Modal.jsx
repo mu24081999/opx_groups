@@ -56,4 +56,4 @@ const Modal = ({ isOpen, onClose, children }) => {
   );
 };
 
-export default Model;
+export default Modal;
