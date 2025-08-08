@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import O from "../assets/O.png";
 import P from "../assets/P.png";
 import X from "../assets/X.png";
+import ParticleRing from "./ParticleRing";
 
 const LogoScroll = () => {
   const [scrollRatio, setScrollRatio] = useState(0);
@@ -29,20 +30,20 @@ const LogoScroll = () => {
   }, []);
 
   // Steps
-  const step1 = scrollRatio >= 0.03;
-  const step2 = scrollRatio >= 0.08;
-  const step3 = scrollRatio >= 0.12;
-  const step4 = scrollRatio >= 0.2;
+  const step1 = scrollRatio >= 0.03; // move O left
+  const step2 = scrollRatio >= 0.08; // show P
+  const step3 = scrollRatio >= 0.12; // show X
+  const step4 = scrollRatio >= 0.2; // coin spin
 
-  // Smooth but instant rotation in sync with scroll
-  const coinRotation = scrollRatio * 720; // two full spins for entire scroll
+  // Coin rotation for "O" (still matches scroll)
+  const coinRotation = step4 ? scrollRatio * 720 : 0;
 
   return (
     <div className="h-[150vh] bg-black text-white relative scroll-smooth">
       <div
         className="
           fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-          z-20 transition-all duration-700
+          z-20
         "
       >
         {/* 3D container */}
@@ -55,16 +56,19 @@ const LogoScroll = () => {
             src={O}
             alt="O"
             className={`w-32 ${
-              step4 && "w-64 m-auto"
-            } transition-transform duration-0 ease-linear`}
+              step4 && " w-80"
+            } transition-all duration-700 ease-in-out`}
             style={{
-              transform: `translateX(-80px) rotateY(${coinRotation}deg)`,
+              transform: `
+                translateX(${step1 ? "-80px" : "0px"}) 
+                rotateY(${coinRotation}deg)
+              `,
               transformStyle: "preserve-3d",
             }}
           />
 
           {/* Letter P */}
-          {!step4 && (
+          {step1 && !step4 && (
             <img
               src={P}
               alt="P"
@@ -80,7 +84,7 @@ const LogoScroll = () => {
           )}
 
           {/* Letter X */}
-          {!step4 && (
+          {step2 && !step4 && (
             <img
               src={X}
               alt="X"

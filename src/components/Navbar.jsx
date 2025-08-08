@@ -79,10 +79,10 @@ const FloatingNavBar = () => {
       <>
         <Container className="shadow-lg border border-gray-50">
           <a
-            className="rounded-full text-bold hover:bg-gry-300 cursor-pointer px-3 py-2 text-sm text-white bg-gray-500"
+            className="rounded-full text-bold hover:bg-gry-300 cursor-pointer px-3 py-1 text-sm text-[#888]"
             href="#layer2"
           >
-            Overview
+            Work
           </a>
 
           <WaveContainer
@@ -94,7 +94,7 @@ const FloatingNavBar = () => {
           </WaveContainer>
 
           <button
-            className="rounded-full text-bold hover:bg-gry-300 cursor-pointer px-3 py-2 text-sm text-white bg-gray-500"
+            className="rounded-full text-bold hover:bg-gry-300 cursor-pointer px-3 py-1 text-sm text-white bg-gray-500"
             onClick={() => openModal("contact")}
           >
             Contact

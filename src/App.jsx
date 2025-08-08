@@ -3,6 +3,7 @@ import LogoScroll from "./components/LogoScroll";
 import RippleSection from "./components/RippleSection";
 import { motion } from "framer-motion";
 import FloatingNavBar from "./components/Navbar";
+import ParticleRing from "./components/ParticleRing";
 
 const App = () => {
   const orbRef = useRef(null);
@@ -79,8 +80,9 @@ const App = () => {
       <FloatingNavBar />
 
       {/* Hero OPX */}
-      <LogoScroll />
-
+      <ParticleRing>
+        <LogoScroll />
+      </ParticleRing>
       {/* Ripple Heading Section with scroll ref */}
       <div ref={workRef}>
         <RippleSection />

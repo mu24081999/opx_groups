@@ -311,10 +311,10 @@ const MouseTracker = ({ onMouseMove }) => {
   );
 };
 
-const ParticleRing = () => {
+const ParticleRing = ({ children }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [ripples, setRipples] = useState([]);
-  const [currentShape, setCurrentShape] = useState(SHAPES.CIRCLE);
+  const [currentShape, setCurrentShape] = useState(SHAPES.DRUM);
   const [points, setPoints] = useState(() => ({
     inner: generatePoints(SHAPES.CIRCLE, NUM_POINTS),
     outer: Array.from({ length: NUM_POINTS / 4 }, (_, k) => {
@@ -402,9 +402,9 @@ const ParticleRing = () => {
           currentShape={currentShape}
         />
       </Canvas>
+      <div className="relative z-10">{children}</div>
 
-      {/* Shape Selection UI */}
-      <div className="absolute top-4 left-4 text-white/60 font-mono text-sm space-y-2">
+      {/* <div className="absolute top-4 left-4 text-white/60 font-mono text-sm space-y-2">
         <p>
           Current Shape:{" "}
           <span className="text-purple-400">
@@ -431,12 +431,11 @@ const ParticleRing = () => {
         </div>
       </div>
 
-      {/* Instructions */}
       <div className="absolute bottom-4 left-4 text-white/40 font-mono text-xs">
         <p>• Move mouse for water ripples</p>
         <p>• Drag to rotate • Scroll to zoom</p>
         <p>• Click shape names to transform</p>
-      </div>
+      </div> */}
     </div>
   );
 };

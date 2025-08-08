@@ -79,7 +79,6 @@ const RippleSection = () => {
 
       {/* Cards */}
       <div className="relative z-10 w-full flex flex-col items-center gap-12">
-        <ParticleRing />
         <Layer2 />
         {/* {cardData.map((card, index) => (
           <div
