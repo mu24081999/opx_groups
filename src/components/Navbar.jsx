@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import music from "../assets/fake_verthandi.mp3";
 import Modal from "./Modal";
 import ContactModal from "./ContactModal";
+import AboutUsModal from "./AboutModal";
 // Wavy animation for smooth flowing line
 const wave = keyframes`
   0% { d: path("M0 10 Q 10 0 20 10 T 40 10 T 60 10 T 80 10"); }
@@ -26,7 +27,7 @@ const Container = styled.div`
 `;
 
 const Button = styled.button`
-  background: slategray;
+  background: #888;
   color: white;
   font-weight: 500;
   border: none;
@@ -37,7 +38,7 @@ const Button = styled.button`
   font-size: 0.85rem;
 
   &:hover {
-    background: #0a84d0;
+    background: #8889;
   }
 `;
 
@@ -47,30 +48,12 @@ const WaveContainer = styled.svg`
   cursor: pointer;
   path {
     fill: none;
-    stroke: #00ff7f;
+    stroke: #888;
     stroke-width: 2;
     animation: ${wave} 2s ease-in-out infinite;
     animation-play-state: ${(props) => (props.playing ? "running" : "paused")};
   }
 `;
-
-// const ModalBackdrop = styled.div`
-//   position: fixed;
-//   inset: 0;
-//   background: rgba(0, 0, 0, 0.5);
-//   z-index: 99;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// `;
-
-// const Modal = styled.div`
-//   background: white;
-//   padding: 2rem;
-//   border-radius: 12px;
-//   min-width: 300px;
-//   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-// `;
 
 const FloatingNavBar = () => {
   const audioRef = useRef(null);
@@ -95,7 +78,12 @@ const FloatingNavBar = () => {
     <>
       <>
         <Container className="shadow-lg border border-gray-50">
-          <Button onClick={() => openModal("about")}>About</Button>
+          <a
+            className="rounded-full px-3 py-2 text-sm text-white bg-gray-500"
+            href="#layer2"
+          >
+            Overview
+          </a>
 
           <WaveContainer
             viewBox="0 0 80 20"
@@ -113,15 +101,7 @@ const FloatingNavBar = () => {
       </>
 
       <Modal isOpen={modalContent} onClose={closeModal}>
-        {modalContent === "about" && (
-          <div className="p-6">
-            <h1 className="text-2xl font-bold">About Us</h1>
-            <p>Some content here...</p>
-          </div>
-        )}
-        {modalContent === "contact" && (
-          <ContactModal onClose={closeModal} />
-        )}
+        {modalContent === "contact" && <ContactModal onClose={closeModal} />}
       </Modal>
     </>
   );
