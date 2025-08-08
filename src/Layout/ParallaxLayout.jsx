@@ -5,7 +5,7 @@ import "./ParallaxLayout.css";
 import MainLayer from "../components/main";
 // import Nav from "../components/Nav";
 import ParticleRing from "../components/ParticleRing";
-import SoundBar from "../components/AudioPlayer3d";
+import SoundBar from "../components/AudioPlayer3D";
 const ParallaxLayout = () => {
   const [debug, setDebug] = useState(false);
 
