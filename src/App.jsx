@@ -1,15 +1,24 @@
 import React, { useState, useRef } from "react";
 import LogoScroll from "./components/LogoScroll";
 import RippleSection from "./components/RippleSection";
-import { motion } from "framer-motion";
 import FloatingNavBar from "./components/Navbar";
 import ParticleRing from "./components/ParticleRing";
+import Preloader from "./components/Preloader";
 
 const App = () => {
   const orbRef = useRef(null);
   const buttonRefs = {
     en: useRef(null),
     ar: useRef(null),
+  };
+
+  const [language, setLanguage] = useState(null);
+  const [showContact, setShowContact] = useState(false);
+  const [loadingFinished, setLoadingFinished] = useState(false);
+  const workRef = useRef(null);
+
+  const handleScrollToWork = () => {
+    workRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleLanguageSelect = (lang) => {
@@ -19,7 +28,6 @@ const App = () => {
     if (orb && targetBtn) {
       const orbRect = orb.getBoundingClientRect();
       const targetRect = targetBtn.getBoundingClientRect();
-
       const x = targetRect.left + targetRect.width / 2 - orbRect.left;
       const y = targetRect.top + targetRect.height / 2 - orbRect.top;
 
@@ -33,14 +41,13 @@ const App = () => {
       setLanguage(lang);
     }
   };
-  const [language, setLanguage] = useState(null);
-  const [showContact, setShowContact] = useState(false);
-  const workRef = useRef(null);
 
-  const handleScrollToWork = () => {
-    workRef.current.scrollIntoView({ behavior: "smooth" });
-  };
+  // Show preloader until loading is finished
+  if (!loadingFinished) {
+    return <Preloader onFinish={() => setLoadingFinished(true)} />;
+  }
 
+  // Language selection screen
   if (!language) {
     return (
       <div className="flex items-center justify-center h-screen bg-black text-[#888888] relative overflow-hidden">
@@ -60,8 +67,6 @@ const App = () => {
             العربية
           </button>
         </div>
-
-        {/* Light Orb */}
         <div
           ref={orbRef}
           className="absolute w-6 h-6 rounded-full animate-orb-bounce z-0"
@@ -70,25 +75,22 @@ const App = () => {
     );
   }
 
+  // Main site
   return (
     <div
       className={`relative bg-black text-[#888888] ${
         showContact ? "overflow-hidden" : ""
       }`}
     >
-      {/* Nav */}
       <FloatingNavBar />
-
-      {/* Hero OPX */}
       <ParticleRing>
         <LogoScroll />
       </ParticleRing>
-      {/* Ripple Heading Section with scroll ref */}
+
       <div ref={workRef}>
         <RippleSection />
       </div>
 
-      {/* Footer */}
       <footer className="h-[60vh] flex flex-col items-center justify-center space-y-4">
         <p className="text-lg">Made with ❤️ Inspired by Hamad</p>
         <p className="text-sm">© 2025 OPX</p>

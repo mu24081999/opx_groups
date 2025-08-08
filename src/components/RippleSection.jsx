@@ -1,11 +1,23 @@
 import React, { useEffect, useRef } from "react";
 import ParticleRing from "./ParticleRing";
-import Layer2 from "./Layer2";
+import DynamicContentSection from "./DynamicContentSection";
 
 const cardData = [
   {
-    title: "OPX AI CALLS",
-    desc: "Automated calling powered by AI.",
+    title: "Creative Digital Experiences",
+    desc: (
+      <div>
+        <p>Founded in 2012</p>
+        <p>
+          We blend story, art & technology as an in‑house team of passionate
+          makers
+        </p>
+        <p>
+          Our industry‑leading web toolset consistently delivers award‑winning
+          work through quality & performance"
+        </p>
+      </div>
+    ),
     align: "left",
   },
   { title: "OPX AI CHAT", desc: "Natural AI chat interfaces.", align: "right" },
@@ -79,24 +91,14 @@ const RippleSection = () => {
 
       {/* Cards */}
       <div className="relative z-10 w-full flex flex-col items-center gap-12">
-        <Layer2 />
-        {/* {cardData.map((card, index) => (
-          <div
-            key={index}
-            className={`w-full max-w-6xl flex ${
-              card.align === "left" ? "justify-start" : "justify-end"
-            }`}
-          >
-            <div className="backdrop-blur-md bg-white/5 border border-[#88888866] rounded-xl p-10 w-[50%]">
-              <h2 className="text-[56px] font-bold font-[Montserrat] leading-tight text-[#888888]">
-                {card.title}
-              </h2>
-              <p className="text-[24px] mt-2 font-[Montserrat] text-[#888888]">
-                {card.desc}
-              </p>
-            </div>
-          </div>
-        ))} */}
+        {cardData.map((card, i) => (
+          <DynamicContentSection
+            key={i}
+            title={card.title}
+            desc={card.desc}
+            align={card.align}
+          />
+        ))}
       </div>
     </div>
   );
