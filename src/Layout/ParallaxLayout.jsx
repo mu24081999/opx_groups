@@ -1,9 +1,7 @@
 // src/components/ParallaxLayout.jsx
 import { useState, useEffect } from "react";
-import backgroundImg from "../assets/background.jpg";
 import "./ParallaxLayout.css";
 import MainLayer from "../components/main";
-// import Nav from "../components/Nav";
 import ParticleRing from "../components/ParticleRing";
 import SoundBar from "../components/Navbar";
 import BackgroundLayout from "../components/BackgroundLayout";
