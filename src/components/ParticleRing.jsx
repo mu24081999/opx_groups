@@ -1,4 +1,4 @@
-import React, { useRef,useState,useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Sphere } from "@react-three/drei";
 import { pointsInner, pointsOuter } from "../utils/particleRing";
@@ -14,20 +14,16 @@ const ParticleRing = () => {
         playsInline
         src="https://activetheory.net/assets/video/reel.mp4"
       /> */}
-      <Canvas
-        camera={{ position: [10, -7.5, 7] }}
-        style={{ height: "100vh" }}
-        className="bg-slate-900"
-      >
+      <Canvas camera={{ position: [5, -2, -35] }} style={{ height: "100vh" }}>
         {/* <OrbitControls maxDistance={20} minDistance={10} /> */}
         <directionalLight />
         <pointLight position={[-30, 0, -30]} intensity={1.5} />
         <PointCircle />
       </Canvas>
       {/* TEXT OVERLAY */}
-      <h1 className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] text-white font-bold text-5xl z-20 pointer-events-none">
+      {/* <h1 className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] text-white font-bold text-5xl z-20 pointer-events-none">
         Blood Flow Simulation
-      </h1>
+      </h1> */}
     </div>
   );
 };
@@ -37,7 +33,7 @@ const PointCircle = () => {
 
   useFrame(({ clock }) => {
     if (ref.current) {
-      ref.current.rotation.z = clock.getElapsedTime() * 0.05;
+      ref.current.rotation.z = clock.getElapsedTime() * 0.09;
     }
   });
   //   const [tintStrength, setTintStrength] = useState(0);

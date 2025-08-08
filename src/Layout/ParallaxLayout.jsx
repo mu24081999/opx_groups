@@ -28,31 +28,31 @@ const ParallaxLayout = () => {
           Debug
         </label>
       </div>
-
+      <div className="fixed top-0 left-0 w-full h-full z-50 pointer-events-none">
+        <div className="w-full h-full flex flex-col items-center justify-center">
+          <SoundBar />
+          <MainLayer />
+        </div>
+      </div>
       {/* Parallax container */}
       <div
         className={`parallax h-screen `}
         style={{ backgroundImage: `url(${backgroundImg})` }}
       >
-        <div id="group1" className="parallax__group">
+        {/* <div id="group1" className="parallax__group">
           <div className="parallax__layer parallax__layer--base">
-            {/* <div className="title">Base Layer</div> */}
-            <div>
-              <SoundBar />
-              <MainLayer />
-            </div>
           </div>
         </div>
         <div id="group2" className="parallax__group">
           <div className="parallax__layer parallax__layer--base">
-            {/* <div className="title">Base Layer</div> */}
+            <div className="title">Base Layer</div>
             <ParticleRing />
           </div>
-          {/* <div className="parallax__layer parallax__layer--back">
+          <div className="parallax__layer parallax__layer--back">
             <div className="title">Background Layer</div>
-          </div> */}
-        </div>
-
+          </div>
+        </div> */}
+        {/* 
         <div id="group3" className="parallax__group">
           <div className="parallax__layer parallax__layer--fore">
             <div className="title">Foreground Layer</div>
@@ -60,27 +60,19 @@ const ParallaxLayout = () => {
           <div className="parallax__layer parallax__layer--base">
             <div className="title">Base Layer</div>
           </div>
-        </div>
+        </div> */}
 
         <div id="group4" className="parallax__group">
           <div className="parallax__layer parallax__layer--base">
-            <div className="title">Base Layer</div>
+            <ParticleRing />{" "}
           </div>
-          <div className="parallax__layer parallax__layer--back">
-            <div className="title">Background Layer</div>
-          </div>
-          <div className="parallax__layer parallax__layer--deep">
-            <div className="title">Deep Background Layer</div>
-          </div>
+          <div className="parallax__layer parallax__layer--back h-screen"></div>
+          <div className="parallax__layer parallax__layer--deep"></div>
         </div>
 
         <div id="group5" className="parallax__group">
-          <div className="parallax__layer parallax__layer--fore">
-            <div className="title">Foreground Layer</div>
-          </div>
-          <div className="parallax__layer parallax__layer--base">
-            <div className="title">Base Layer</div>
-          </div>
+          <div className="parallax__layer parallax__layer--fore"></div>
+          <div className="parallax__layer parallax__layer--base"></div>
         </div>
 
         <div id="group6" className="parallax__group">
