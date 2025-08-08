@@ -45,16 +45,29 @@ const randomFromInterval = (min, max) => {
 //   return { idx: k + 1, position: [x, y, z], color };
 // });
 export const pointsInner = Array.from({ length: NUM_POINTS }, (_, k) => {
-  const radius = randomFromInterval(MIN_RADIUS, MAX_RADIUS);
-  const angle = Math.random() * Math.PI * 2;
-  const x = Math.cos(angle) * radius;
-  const y = Math.sin(angle) * radius;
+  // Create more organized pattern for better sequential flow
+  const rings = 8; // Number of concentric rings
+  const pointsPerRing = NUM_POINTS / rings;
+  const ringIndex = Math.floor(k / pointsPerRing);
+  const pointInRing = k % pointsPerRing;
+
+  const radius = MIN_RADIUS + (ringIndex / rings) * (MAX_RADIUS - MIN_RADIUS);
+  const angle = (pointInRing / pointsPerRing) * Math.PI * 2;
+
+  // Add some randomness to avoid too rigid pattern
+  const radiusVariation = randomFromInterval(-0.5, 0.5);
+  const angleVariation = randomFromInterval(-0.1, 0.1);
+
+  const finalRadius = radius + radiusVariation;
+  const finalAngle = angle + angleVariation;
+
+  const x = Math.cos(finalAngle) * finalRadius;
+  const y = Math.sin(finalAngle) * finalRadius;
   const z = randomFromInterval(-DEPTH, DEPTH);
-  const distanceFromCenter = Math.sqrt(x * x + y * y + z * z);
-  const delay = distanceFromCenter * 100; // 100ms per unit distance
+
   const color = calculateColor(x);
 
-  return { idx: k + 1, position: [x, y, z], color, delay };
+  return { idx: k + 1, position: [x, y, z], color };
 });
 
 export const pointsOuter = Array.from({ length: NUM_POINTS / 4 }, (_, k) => {

@@ -27,7 +27,7 @@ const modalVariants = {
   },
 };
 
-const Model = ({ isOpen, onClose, children }) => {
+const Modal = ({ isOpen, onClose, children }) => {
   return (
     <AnimatePresence mode="wait">
       {isOpen && (
@@ -56,4 +56,4 @@ const Model = ({ isOpen, onClose, children }) => {
   );
 };
 
-export default Model;
+export default Modal;

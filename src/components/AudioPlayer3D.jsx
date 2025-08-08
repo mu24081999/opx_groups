@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import music from "../assets/fake_verthandi.mp3";
 import Modal from "./Modal";
+import ContactModal from "./ContactModal";
 // Wavy animation for smooth flowing line
 const wave = keyframes`
   0% { d: path("M0 10 Q 10 0 20 10 T 40 10 T 60 10 T 80 10"); }
@@ -112,10 +113,15 @@ const FloatingNavBar = () => {
       </>
 
       <Modal isOpen={modalContent} onClose={closeModal}>
-        <div className="p-6">
-          <h1 className="text-2xl font-bold">About Us</h1>
-          <p>Some content here...</p>
-        </div>
+        {modalContent === "about" && (
+          <div className="p-6">
+            <h1 className="text-2xl font-bold">About Us</h1>
+            <p>Some content here...</p>
+          </div>
+        )}
+        {modalContent === "contact" && (
+          <ContactModal onClose={closeModal} />
+        )}
       </Modal>
     </>
   );

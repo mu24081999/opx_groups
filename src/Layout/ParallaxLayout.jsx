@@ -5,7 +5,7 @@ import "./ParallaxLayout.css";
 import MainLayer from "../components/main";
 // import Nav from "../components/Nav";
 import ParticleRing from "../components/ParticleRing";
-import SoundBar from "../components/AudioPlayer3d";
+import SoundBar from "../components/AudioPlayer3D";
 const ParallaxLayout = () => {
   const [debug, setDebug] = useState(false);
 
@@ -28,9 +28,9 @@ const ParallaxLayout = () => {
           Debug
         </label>
       </div>
-      <div className="fixed top-0 left-0 w-full h-full z-50 pointer-events-none">
+      <SoundBar />
+      <div className="fixed top-0 left-0 w-full h-full z-40 pointer-events-none">
         <div className="w-full h-full flex flex-col items-center justify-center">
-          <SoundBar />
           <MainLayer />
         </div>
       </div>
