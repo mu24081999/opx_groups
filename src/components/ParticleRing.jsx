@@ -311,6 +311,33 @@ const MouseTracker = ({ onMouseMove }) => {
   );
 };
 
+const ScrollCamera = ({ scrollProgress }) => {
+  const { camera } = useThree();
+  const targetPosition = useRef([0, 0, 20]);
+  const currentPosition = useRef([0, 0, 20]);
+
+  useFrame((state, delta) => {
+    // Calculate target camera position based on scroll
+    const scrollDepth = 20 + scrollProgress * 15; // Move camera closer as we scroll
+    const scrollY = Math.sin(scrollProgress * Math.PI) * 3; // Subtle vertical movement
+    const scrollX = Math.cos(scrollProgress * Math.PI * 0.5) * 2; // Gentle horizontal sweep
+
+    targetPosition.current = [scrollX, scrollY, scrollDepth];
+
+    // Smooth camera movement
+    const smoothingFactor = Math.min(delta * 2, 0.1);
+
+    currentPosition.current[0] += (targetPosition.current[0] - currentPosition.current[0]) * smoothingFactor;
+    currentPosition.current[1] += (targetPosition.current[1] - currentPosition.current[1]) * smoothingFactor;
+    currentPosition.current[2] += (targetPosition.current[2] - currentPosition.current[2]) * smoothingFactor;
+
+    camera.position.set(...currentPosition.current);
+    camera.lookAt(0, 0, 0);
+  });
+
+  return null;
+};
+
 const ParticleRing = ({ children }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [ripples, setRipples] = useState([]);
