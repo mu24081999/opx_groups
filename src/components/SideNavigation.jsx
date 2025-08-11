@@ -71,28 +71,33 @@ const NavLabel = styled.div`
 `;
 
 const sections = [
-  { id: 'home', label: 'Home', icon: '🏠' },
-  { id: 'work', label: 'Work', icon: '💼' },
-  { id: 'about', label: 'About', icon: 'ℹ️' },
-  { id: 'contact', label: 'Contact', icon: '📧' }
+  { id: 'experiences', label: 'Experiences', icon: '🎨' },
+  { id: 'ai-chat', label: 'AI Chat', icon: '🤖' },
+  { id: 'stat-analysis', label: 'Analytics', icon: '📊' },
+  { id: 'software-dev', label: 'Development', icon: '💻' }
 ];
 
-const SideNavigation = ({ onSectionClick, onContactClick, onAboutClick }) => {
-  const [activeSection, setActiveSection] = useState('home');
+const SideNavigation = () => {
+  const [activeSection, setActiveSection] = useState('experiences');
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const totalHeight = document.body.scrollHeight;
+      const sections = ['experiences', 'ai-chat', 'stat-analysis', 'software-dev'];
+      const scrollY = window.scrollY + window.innerHeight / 2;
 
-      // Determine active section based on scroll position
-      if (scrollY < windowHeight * 0.8) {
-        setActiveSection('home');
-      } else if (scrollY < windowHeight * 1.8) {
-        setActiveSection('work');
-      } else {
-        setActiveSection('contact');
+      // Find which section is currently in view
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const elementTop = rect.top + window.scrollY;
+          const elementBottom = elementTop + rect.height;
+
+          if (scrollY >= elementTop && scrollY <= elementBottom) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
       }
     };
 
@@ -104,22 +109,9 @@ const SideNavigation = ({ onSectionClick, onContactClick, onAboutClick }) => {
 
   const handleNavClick = (sectionId) => {
     setActiveSection(sectionId);
-    
-    switch (sectionId) {
-      case 'home':
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        break;
-      case 'work':
-        onSectionClick('work');
-        break;
-      case 'about':
-        onAboutClick();
-        break;
-      case 'contact':
-        onContactClick();
-        break;
-      default:
-        break;
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
 
