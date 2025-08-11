@@ -396,9 +396,11 @@ const ParticleRing = ({ children }) => {
 
         <MouseTracker onMouseMove={handleMouseMove} />
 
-        <ambientLight intensity={0.6} />
-        <pointLight position={[0, 0, 25]} intensity={1.2} />
-        <pointLight position={[10, 10, 15]} intensity={0.5} color="#8b5cf6" />
+        <ambientLight intensity={0.3} />
+        <directionalLight position={[10, 10, 5]} intensity={1.5} color="#ffffff" castShadow />
+        <pointLight position={[0, 0, 25]} intensity={2} color="#ffffff" />
+        <pointLight position={[-15, 10, 15]} intensity={1} color="#8b5cf6" />
+        <pointLight position={[15, -10, 10]} intensity={0.8} color="#faf3e7" />
 
         <PointCircle
           mousePos={mousePos}
@@ -678,11 +680,11 @@ const Point = ({
     meshRef.current.material.color = currentColor.current;
     meshRef.current.material.emissive = currentColor.current;
 
-    // Smooth material property transitions
-    const baseOpacity = 0.3;
+    // Smooth material property transitions for glass effect
+    const baseOpacity = 0.8;
     const effectOpacity = Math.max(intensity, mouseInfluence);
-    targetOpacity.current = baseOpacity + effectOpacity * 0.7;
-    targetEmissive.current = 0.2 + effectOpacity * 1.5;
+    targetOpacity.current = Math.min(baseOpacity + effectOpacity * 0.2, 0.95);
+    targetEmissive.current = 0.1 + effectOpacity * 0.8;
 
     currentOpacity.current = smoothLerp(
       currentOpacity.current,
@@ -700,16 +702,22 @@ const Point = ({
   });
 
   return (
-    <Sphere ref={meshRef} position={position} args={[0.08, 16, 16]}>
-      <meshStandardMaterial
+    <Sphere ref={meshRef} position={position} args={[0.1, 32, 32]}>
+      <meshPhysicalMaterial
         color={color}
-        emissive={color}
-        emissiveIntensity={0.2}
-        roughness={0.1}
-        metalness={0.1}
+        emissive={new THREE.Color(color).multiplyScalar(0.1)}
+        emissiveIntensity={0.3}
+        roughness={0.0}
+        metalness={0.0}
         transparent
-        opacity={0.3}
-        depthWrite={true}
+        opacity={0.8}
+        transmission={0.9}
+        thickness={0.5}
+        ior={1.5}
+        clearcoat={1.0}
+        clearcoatRoughness={0.0}
+        envMapIntensity={1.5}
+        reflectivity={0.9}
         toneMapped={false}
       />
     </Sphere>
