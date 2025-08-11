@@ -15,3 +15,30 @@
   font-family: "Electrolize", sans-serif;
   scroll-behavior: smooth;
 }
+
+/* Global smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Side navigation responsive adjustments */
+@media (max-width: 1024px) {
+  /* Adjust left positioning for smaller screens */
+  .side-navigation {
+    left: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Hide side navigation on mobile to avoid overlap */
+  .side-navigation {
+    left: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Very small screens - minimal spacing */
+  .side-navigation {
+    left: 0.25rem;
+  }
+}

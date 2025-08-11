@@ -25,7 +25,7 @@ const DynamicContentSection = ({ title, desc, align }) => {
           isRight ? "md:mr-16" : "md:ml-16"
         }`}
       >
-        <p>{desc}</p>
+        {desc}
       </div>
     </div>
   );

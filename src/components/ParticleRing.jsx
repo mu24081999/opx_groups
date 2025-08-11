@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Sphere, OrbitControls } from "@react-three/drei";
+import { Sphere, OrbitControls, Environment } from "@react-three/drei";
 import * as THREE from "three";
 
 // Particle generation utilities
@@ -287,7 +287,7 @@ const pointsOuter = Array.from({ length: NUM_POINTS / 4 }, (_, k) => {
   const z = randomFromInterval(-DEPTH * 10, DEPTH * 10);
   const color = calculateColor(x, y, z, currentShape);
 
-  return { idx: k + 1, position: [x, y, z], color };
+  return { idx: NUM_POINTS + k + 1, position: [x, y, z], color };
 });
 
 const MouseTracker = ({ onMouseMove }) => {
@@ -311,9 +311,37 @@ const MouseTracker = ({ onMouseMove }) => {
   );
 };
 
+const ScrollCamera = ({ scrollProgress }) => {
+  const { camera } = useThree();
+  const targetPosition = useRef([0, 0, 20]);
+  const currentPosition = useRef([0, 0, 20]);
+
+  useFrame((state, delta) => {
+    // Calculate target camera position based on scroll
+    const scrollDepth = 20 + scrollProgress * 15; // Move camera closer as we scroll
+    const scrollY = Math.sin(scrollProgress * Math.PI) * 3; // Subtle vertical movement
+    const scrollX = Math.cos(scrollProgress * Math.PI * 0.5) * 2; // Gentle horizontal sweep
+
+    targetPosition.current = [scrollX, scrollY, scrollDepth];
+
+    // Smooth camera movement
+    const smoothingFactor = Math.min(delta * 2, 0.1);
+
+    currentPosition.current[0] += (targetPosition.current[0] - currentPosition.current[0]) * smoothingFactor;
+    currentPosition.current[1] += (targetPosition.current[1] - currentPosition.current[1]) * smoothingFactor;
+    currentPosition.current[2] += (targetPosition.current[2] - currentPosition.current[2]) * smoothingFactor;
+
+    camera.position.set(...currentPosition.current);
+    camera.lookAt(0, 0, 0);
+  });
+
+  return null;
+};
+
 const ParticleRing = ({ children }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [ripples, setRipples] = useState([]);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [currentShape, setCurrentShape] = useState(SHAPES.DRUM);
   const [points, setPoints] = useState(() => ({
     inner: generatePoints(SHAPES.CIRCLE, NUM_POINTS),
@@ -324,7 +352,7 @@ const ParticleRing = ({ children }) => {
       const y = Math.sin(angle) * radius;
       const z = randomFromInterval(-DEPTH * 10, DEPTH * 10);
       const color = calculateColor(x, y, z, SHAPES.CIRCLE);
-      return { idx: k + 1, position: [x, y, z], color };
+      return { idx: NUM_POINTS + k + 1, position: [x, y, z], color };
     }),
   }));
 
@@ -353,10 +381,37 @@ const ParticleRing = ({ children }) => {
         const y = Math.sin(angle) * radius;
         const z = randomFromInterval(-DEPTH * 10, DEPTH * 10);
         const color = calculateColor(x, y, z, newShape);
-        return { idx: k + 1, position: [x, y, z], color };
+        return { idx: NUM_POINTS + k + 1, position: [x, y, z], color };
       }),
     });
   };
+
+  // Scroll tracking for 3D rotation
+  React.useEffect(() => {
+    let animationFrameId;
+
+    const handleScroll = () => {
+      if (animationFrameId) return;
+
+      animationFrameId = requestAnimationFrame(() => {
+        const totalScroll = document.body.scrollHeight - window.innerHeight;
+        const scrollY = window.scrollY;
+        const progress = Math.min(scrollY / totalScroll, 1);
+        setScrollProgress(progress);
+        animationFrameId = null;
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Set initial value
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, []);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -374,32 +429,49 @@ const ParticleRing = ({ children }) => {
       <Canvas
         camera={{ position: [0, 0, 20], fov: 60 }}
         style={{ height: "100vh", background: "transparent" }}
+        dpr={Math.min(window.devicePixelRatio, 2)}
+        shadows
+        gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: "high-performance",
+          outputColorSpace: "srgb",
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.2
+        }}
       >
         <OrbitControls
-          enableZoom={false}
+          enableZoom={true}
           enablePan={true}
           enableRotate={true}
-          zoomSpeed={0.6}
-          panSpeed={0.3}
-          rotateSpeed={0.4}
-          minDistance={1}
-          maxDistance={50}
-          minPolarAngle={Math.PI / 4} // 45 degrees
-          maxPolarAngle={Math.PI / 2} // 90 degrees
-          autoRotate={true}
-          autoRotateSpeed={1.0}
+          zoomSpeed={0.8}
+          panSpeed={0.5}
+          rotateSpeed={0.6}
+          minDistance={15}
+          maxDistance={35}
+          minPolarAngle={Math.PI / 6} // 30 degrees
+          maxPolarAngle={(Math.PI * 2) / 3} // 120 degrees
+          autoRotate={false}
+          dampingFactor={0.05}
+          enableDamping={true}
         />
 
         <MouseTracker onMouseMove={handleMouseMove} />
+        <ScrollCamera scrollProgress={scrollProgress} />
 
-        <ambientLight intensity={0.4} />
-        <pointLight position={[0, 0, 25]} intensity={1} />
+        <Environment preset="city" background={false} />
+        <ambientLight intensity={0.2} />
+        <directionalLight position={[10, 10, 5]} intensity={1.5} color="#ffffff" castShadow />
+        <pointLight position={[0, 0, 25]} intensity={2} color="#ffffff" />
+        <pointLight position={[-15, 10, 15]} intensity={1} color="#8b5cf6" />
+        <pointLight position={[15, -10, 10]} intensity={0.8} color="#faf3e7" />
 
         <PointCircle
           mousePos={mousePos}
           ripples={ripples}
           points={points}
           currentShape={currentShape}
+          scrollProgress={scrollProgress}
         />
       </Canvas>
       <div className="relative z-10">{children}</div>
@@ -440,12 +512,40 @@ const ParticleRing = ({ children }) => {
   );
 };
 
-const PointCircle = ({ mousePos, ripples, points, currentShape }) => {
+const PointCircle = ({ mousePos, ripples, points, currentShape, scrollProgress }) => {
   const ref = useRef();
   const [time, setTime] = useState(0);
+  const targetRotation = useRef({ x: 0, y: 0, z: 0 });
+  const currentRotation = useRef({ x: 0, y: 0, z: 0 });
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock }, delta) => {
     setTime(clock.getElapsedTime());
+
+    if (!ref.current) return;
+
+    // Calculate target rotation based on scroll progress - slower and smoother
+    const scrollRotationY = scrollProgress * Math.PI * 1.5; // Reduced from 4 to 1.5 rotations
+    const scrollRotationX = Math.sin(scrollProgress * Math.PI * 1.2) * 0.15; // Slower, gentler X-axis tilt
+    const scrollRotationZ = Math.cos(scrollProgress * Math.PI * 1.8) * 0.08; // Slower, subtler Z-axis wobble
+
+    // Add continuous very slow rotation for life
+    const timeRotationY = time * 0.03; // Much slower continuous rotation
+
+    targetRotation.current.x = scrollRotationX;
+    targetRotation.current.y = scrollRotationY + timeRotationY;
+    targetRotation.current.z = scrollRotationZ;
+
+    // Ultra-smooth interpolation for butter-smooth rotation
+    const smoothingFactor = Math.min(delta * 1.5, 0.05); // Slower, smoother interpolation
+
+    currentRotation.current.x += (targetRotation.current.x - currentRotation.current.x) * smoothingFactor;
+    currentRotation.current.y += (targetRotation.current.y - currentRotation.current.y) * smoothingFactor;
+    currentRotation.current.z += (targetRotation.current.z - currentRotation.current.z) * smoothingFactor;
+
+    // Apply the smooth rotation
+    ref.current.rotation.x = currentRotation.current.x;
+    ref.current.rotation.y = currentRotation.current.y;
+    ref.current.rotation.z = currentRotation.current.z;
   });
 
   const total = points.inner.length + points.outer.length;
@@ -491,8 +591,8 @@ const Point = ({
   const targetScale = useRef(1);
   const currentColor = useRef(new THREE.Color(color));
   const targetColor = useRef(new THREE.Color(color));
-  const currentOpacity = useRef(0.1);
-  const targetOpacity = useRef(0.1);
+  const currentOpacity = useRef(0.8);
+  const targetOpacity = useRef(0.8);
   const currentEmissive = useRef(0.1);
   const targetEmissive = useRef(0.1);
 
@@ -673,11 +773,11 @@ const Point = ({
     meshRef.current.material.color = currentColor.current;
     meshRef.current.material.emissive = currentColor.current;
 
-    // Smooth material property transitions
-    const baseOpacity = 0.1;
+    // Smooth material property transitions for glass effect
+    const baseOpacity = 0.8;
     const effectOpacity = Math.max(intensity, mouseInfluence);
-    targetOpacity.current = baseOpacity + effectOpacity * 0.8;
-    targetEmissive.current = 0.1 + effectOpacity * 1.2;
+    targetOpacity.current = Math.min(baseOpacity + effectOpacity * 0.2, 0.95);
+    targetEmissive.current = 0.1 + effectOpacity * 0.8;
 
     currentOpacity.current = smoothLerp(
       currentOpacity.current,
@@ -695,15 +795,23 @@ const Point = ({
   });
 
   return (
-    <Sphere ref={meshRef} position={position} args={[0.08, 8, 8]}>
-      <meshStandardMaterial
+    <Sphere ref={meshRef} position={position} args={[0.1, 32, 32]}>
+      <meshPhysicalMaterial
         color={color}
-        emissive={color}
-        emissiveIntensity={0.1}
-        roughness={0.3}
+        emissive={new THREE.Color(color).multiplyScalar(0.1)}
+        emissiveIntensity={0.3}
+        roughness={0.0}
+        metalness={0.0}
         transparent
-        opacity={0.1}
-        depthWrite={true}
+        opacity={0.8}
+        transmission={0.9}
+        thickness={0.5}
+        ior={1.5}
+        clearcoat={1.0}
+        clearcoatRoughness={0.0}
+        envMapIntensity={1.5}
+        reflectivity={0.9}
+        toneMapped={false}
       />
     </Sphere>
   );
