@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import O from "../assets/O.png";
 import P from "../assets/P.png";
 import X from "../assets/X.png";
@@ -6,6 +6,8 @@ import ParticleRing from "./ParticleRing";
 
 const LogoScroll = () => {
   const [scrollRatio, setScrollRatio] = useState(0);
+  const [smoothCoinRotation, setSmoothCoinRotation] = useState(0);
+  const animationFrameRef = useRef();
 
   useEffect(() => {
     let animationFrameId;
@@ -35,8 +37,27 @@ const LogoScroll = () => {
   const step3 = scrollRatio >= 0.12; // show X
   const step4 = scrollRatio >= 0.2; // coin spin
 
-  // Coin rotation for "O" (still matches scroll)
-  const coinRotation = step4 ? scrollRatio * 720 : 0;
+  // Smooth coin rotation for "O"
+  const targetCoinRotation = step4 ? scrollRatio * 360 : 0; // Reduced from 720 to 360 degrees
+
+  // Smooth interpolation for coin rotation
+  useEffect(() => {
+    const animate = () => {
+      setSmoothCoinRotation(prev => {
+        const diff = targetCoinRotation - prev;
+        return prev + diff * 0.08; // Smooth interpolation factor
+      });
+      animationFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [targetCoinRotation]);
 
   return (
     <div className="h-[150vh] bg-black text-white relative scroll-smooth">
@@ -61,7 +82,7 @@ const LogoScroll = () => {
             style={{
               transform: `
                 translateX(${step1 ? "-80px" : "0px"}) 
-                rotateY(${coinRotation}deg)
+                rotateY(${smoothCoinRotation}deg)
               `,
               transformStyle: "preserve-3d",
             }}
