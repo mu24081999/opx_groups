@@ -419,7 +419,7 @@ const ParticleRing = ({ children }) => {
       setRipples((prev) =>
         prev.filter((ripple) => now - ripple.startTime < ripple.duration)
       );
-    }, 100);
+    }, 200); // Reduced frequency for better performance
 
     return () => clearInterval(interval);
   }, []);
