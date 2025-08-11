@@ -457,6 +457,7 @@ const ParticleRing = ({ children }) => {
         />
 
         <MouseTracker onMouseMove={handleMouseMove} />
+        <ScrollCamera scrollProgress={scrollProgress} />
 
         <Environment preset="city" background={false} />
         <ambientLight intensity={0.2} />
