@@ -616,11 +616,11 @@ const Point = ({
   useFrame((state, delta) => {
     if (!meshRef.current) return;
 
-    // Smooth interpolation factors (higher = more responsive, lower = smoother)
-    const positionSmoothing = Math.min(delta * 8, 0.15); // Clamp for stable frame rates
-    const scaleSmoothing = Math.min(delta * 12, 0.2);
-    const colorSmoothing = Math.min(delta * 10, 0.18);
-    const materialSmoothing = Math.min(delta * 15, 0.25);
+    // Smooth interpolation factors (optimized for better performance)
+    const positionSmoothing = Math.min(delta * 6, 0.12); // Reduced responsiveness for smoother performance
+    const scaleSmoothing = Math.min(delta * 8, 0.16);
+    const colorSmoothing = Math.min(delta * 7, 0.14);
+    const materialSmoothing = Math.min(delta * 10, 0.2);
 
     // Original wave animation with smoother transitions
     const sequenceDuration = 4;
