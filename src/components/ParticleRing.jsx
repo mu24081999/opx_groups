@@ -483,12 +483,40 @@ const ParticleRing = ({ children }) => {
   );
 };
 
-const PointCircle = ({ mousePos, ripples, points, currentShape }) => {
+const PointCircle = ({ mousePos, ripples, points, currentShape, scrollProgress }) => {
   const ref = useRef();
   const [time, setTime] = useState(0);
+  const targetRotation = useRef({ x: 0, y: 0, z: 0 });
+  const currentRotation = useRef({ x: 0, y: 0, z: 0 });
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock }, delta) => {
     setTime(clock.getElapsedTime());
+
+    if (!ref.current) return;
+
+    // Calculate target rotation based on scroll progress
+    const scrollRotationY = scrollProgress * Math.PI * 4; // 4 full rotations during scroll
+    const scrollRotationX = Math.sin(scrollProgress * Math.PI * 2) * 0.3; // Subtle X-axis tilt
+    const scrollRotationZ = Math.cos(scrollProgress * Math.PI * 3) * 0.15; // Gentle Z-axis wobble
+
+    // Add continuous slow rotation for life
+    const timeRotationY = time * 0.1;
+
+    targetRotation.current.x = scrollRotationX;
+    targetRotation.current.y = scrollRotationY + timeRotationY;
+    targetRotation.current.z = scrollRotationZ;
+
+    // Smooth interpolation for butter-smooth rotation
+    const smoothingFactor = Math.min(delta * 3, 0.1);
+
+    currentRotation.current.x += (targetRotation.current.x - currentRotation.current.x) * smoothingFactor;
+    currentRotation.current.y += (targetRotation.current.y - currentRotation.current.y) * smoothingFactor;
+    currentRotation.current.z += (targetRotation.current.z - currentRotation.current.z) * smoothingFactor;
+
+    // Apply the smooth rotation
+    ref.current.rotation.x = currentRotation.current.x;
+    ref.current.rotation.y = currentRotation.current.y;
+    ref.current.rotation.z = currentRotation.current.z;
   });
 
   const total = points.inner.length + points.outer.length;
