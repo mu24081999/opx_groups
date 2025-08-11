@@ -414,18 +414,19 @@ const ParticleRing = ({ children }) => {
         }}
       >
         <OrbitControls
-          enableZoom={false}
+          enableZoom={true}
           enablePan={true}
           enableRotate={true}
-          zoomSpeed={0.6}
-          panSpeed={0.3}
-          rotateSpeed={0.4}
-          minDistance={1}
-          maxDistance={50}
-          minPolarAngle={Math.PI / 4} // 45 degrees
-          maxPolarAngle={Math.PI / 2} // 90 degrees
-          autoRotate={true}
-          autoRotateSpeed={1.0}
+          zoomSpeed={0.8}
+          panSpeed={0.5}
+          rotateSpeed={0.6}
+          minDistance={15}
+          maxDistance={35}
+          minPolarAngle={Math.PI / 6} // 30 degrees
+          maxPolarAngle={(Math.PI * 2) / 3} // 120 degrees
+          autoRotate={false}
+          dampingFactor={0.05}
+          enableDamping={true}
         />
 
         <MouseTracker onMouseMove={handleMouseMove} />
