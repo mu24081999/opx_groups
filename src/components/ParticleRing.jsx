@@ -374,6 +374,10 @@ const ParticleRing = ({ children }) => {
       <Canvas
         camera={{ position: [0, 0, 20], fov: 60 }}
         style={{ height: "100vh", background: "transparent" }}
+        dpr={Math.min(window.devicePixelRatio, 2)}
+        antialias={true}
+        alpha={true}
+        powerPreference="high-performance"
       >
         <OrbitControls
           enableZoom={false}
@@ -695,15 +699,17 @@ const Point = ({
   });
 
   return (
-    <Sphere ref={meshRef} position={position} args={[0.08, 8, 8]}>
+    <Sphere ref={meshRef} position={position} args={[0.08, 16, 16]}>
       <meshStandardMaterial
         color={color}
         emissive={color}
-        emissiveIntensity={0.1}
-        roughness={0.3}
+        emissiveIntensity={0.2}
+        roughness={0.1}
+        metalness={0.1}
         transparent
-        opacity={0.1}
+        opacity={0.3}
         depthWrite={true}
+        toneMapped={false}
       />
     </Sphere>
   );
