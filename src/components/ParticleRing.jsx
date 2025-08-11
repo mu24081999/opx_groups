@@ -9,7 +9,7 @@ const MAX_RADIUS = 15;
 const DEPTH = 2;
 const LEFT_COLOR = "faf3e7";
 const RIGHT_COLOR = "8b5cf6";
-const NUM_POINTS = 2500;
+const NUM_POINTS = 800;
 
 // Available shape configurations
 const SHAPES = {
@@ -73,7 +73,7 @@ const randomFromInterval = (min, max) => {
 // Shape generation functions
 const generateCirclePoints = (numPoints) => {
   return Array.from({ length: numPoints }, (_, k) => {
-    const rings = 8;
+    const rings = 6;
     const pointsPerRing = numPoints / rings;
     const ringIndex = Math.floor(k / pointsPerRing);
     const pointInRing = k % pointsPerRing;
@@ -100,7 +100,7 @@ const generateCirclePoints = (numPoints) => {
 const generateDrumPoints = (numPoints) => {
   return Array.from({ length: numPoints }, (_, k) => {
     // Create cylindrical drum shape
-    const heightLevels = 15;
+    const heightLevels = 10;
     const pointsPerLevel = numPoints / heightLevels;
     const levelIndex = Math.floor(k / pointsPerLevel);
     const pointInLevel = k % pointsPerLevel;
@@ -127,7 +127,7 @@ const generateDrumPoints = (numPoints) => {
 const generateRollerStairsPoints = (numPoints) => {
   return Array.from({ length: numPoints }, (_, k) => {
     // Create stair-like steps in a cylindrical arrangement
-    const steps = 12;
+    const steps = 8;
     const pointsPerStep = numPoints / steps;
     const stepIndex = Math.floor(k / pointsPerStep);
     const pointInStep = k % pointsPerStep;
@@ -201,7 +201,7 @@ const generateHelixPoints = (numPoints) => {
 
 const generateWaveTubePoints = (numPoints) => {
   return Array.from({ length: numPoints }, (_, k) => {
-    const rings = 20;
+    const rings = 12;
     const pointsPerRing = numPoints / rings;
     const ringIndex = Math.floor(k / pointsPerRing);
     const pointInRing = k % pointsPerRing;
@@ -232,7 +232,7 @@ const generateWaveTubePoints = (numPoints) => {
 
 const generateTwistedRingPoints = (numPoints) => {
   return Array.from({ length: numPoints }, (_, k) => {
-    const rings = 8;
+    const rings = 6;
     const pointsPerRing = numPoints / rings;
     const ringIndex = Math.floor(k / pointsPerRing);
     const pointInRing = k % pointsPerRing;
