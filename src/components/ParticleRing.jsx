@@ -402,7 +402,8 @@ const ParticleRing = ({ children }) => {
 
         <MouseTracker onMouseMove={handleMouseMove} />
 
-        <ambientLight intensity={0.3} />
+        <Environment preset="city" background={false} />
+        <ambientLight intensity={0.2} />
         <directionalLight position={[10, 10, 5]} intensity={1.5} color="#ffffff" castShadow />
         <pointLight position={[0, 0, 25]} intensity={2} color="#ffffff" />
         <pointLight position={[-15, 10, 15]} intensity={1} color="#8b5cf6" />
