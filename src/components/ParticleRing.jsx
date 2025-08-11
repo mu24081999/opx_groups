@@ -33,7 +33,7 @@ const PointCircle = () => {
 
   useFrame(({ clock }) => {
     if (ref.current) {
-      ref.current.rotation.z = clock.getElapsedTime() * 0.09;
+      ref.current.rotation.z = clock.getElapsedTime() * 0.05;
     }
   });
   //   const [tintStrength, setTintStrength] = useState(0);
@@ -78,7 +78,7 @@ const Point = ({ position, color, delay }) => {
     if (!visible || !meshRef.current) return;
 
     // Pulsing scale (bubble effect)
-    const s = 1 + 0.2 * Math.sin(Date.now() * 0.005);
+    const s = 1 + 0.3 * Math.sin(Date.now() * 0.005);
     meshRef.current.scale.set(s, s, s);
   });
   return (
@@ -86,7 +86,7 @@ const Point = ({ position, color, delay }) => {
       <meshStandardMaterial
         emissive={color}
         emissiveIntensity={0.5}
-        roughness={0.5}
+        roughness={0.05}
         color={color}
       />
     </Sphere>
