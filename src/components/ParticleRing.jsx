@@ -495,10 +495,10 @@ const Point = ({
   const targetScale = useRef(1);
   const currentColor = useRef(new THREE.Color(color));
   const targetColor = useRef(new THREE.Color(color));
-  const currentOpacity = useRef(0.1);
-  const targetOpacity = useRef(0.1);
-  const currentEmissive = useRef(0.1);
-  const targetEmissive = useRef(0.1);
+  const currentOpacity = useRef(0.3);
+  const targetOpacity = useRef(0.3);
+  const currentEmissive = useRef(0.2);
+  const targetEmissive = useRef(0.2);
 
   // Smooth easing function
   const smoothLerp = (current, target, factor) => {
