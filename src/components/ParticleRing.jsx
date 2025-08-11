@@ -375,11 +375,11 @@ const ParticleRing = ({ children }) => {
         camera={{ position: [0, 0, 20], fov: 60 }}
         style={{ height: "100vh", background: "transparent" }}
         dpr={Math.min(window.devicePixelRatio, 2)}
-        antialias={true}
-        alpha={true}
-        powerPreference="high-performance"
         shadows
         gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: "high-performance",
           outputColorSpace: "srgb",
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.2
