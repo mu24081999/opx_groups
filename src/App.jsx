@@ -115,11 +115,7 @@ const App = () => {
         showContact || showAbout ? "overflow-hidden" : ""
       }`}
     >
-      <SideNavigation
-        onSectionClick={handleSectionScroll}
-        onContactClick={handleOpenContact}
-        onAboutClick={handleOpenAbout}
-      />
+      <SideNavigation />
       <FloatingNavBar />
 
       <div id="home" ref={homeRef}>
