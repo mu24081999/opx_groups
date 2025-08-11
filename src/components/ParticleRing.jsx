@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Sphere, OrbitControls } from "@react-three/drei";
+import { Sphere, OrbitControls, Environment } from "@react-three/drei";
 import * as THREE from "three";
 
 // Particle generation utilities
