@@ -85,14 +85,12 @@ const SideNavigation = ({ onSectionClick, onContactClick, onAboutClick }) => {
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
       const totalHeight = document.body.scrollHeight;
-      
+
       // Determine active section based on scroll position
-      if (scrollY < windowHeight * 0.3) {
+      if (scrollY < windowHeight * 0.8) {
         setActiveSection('home');
-      } else if (scrollY < windowHeight * 1.5) {
+      } else if (scrollY < windowHeight * 1.8) {
         setActiveSection('work');
-      } else if (scrollY < totalHeight - windowHeight * 0.5) {
-        setActiveSection('about');
       } else {
         setActiveSection('contact');
       }
@@ -100,7 +98,7 @@ const SideNavigation = ({ onSectionClick, onContactClick, onAboutClick }) => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Set initial active section
-    
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
