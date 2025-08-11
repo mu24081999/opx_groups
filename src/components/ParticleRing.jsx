@@ -378,6 +378,12 @@ const ParticleRing = ({ children }) => {
         antialias={true}
         alpha={true}
         powerPreference="high-performance"
+        shadows
+        gl={{
+          outputColorSpace: "srgb",
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.2
+        }}
       >
         <OrbitControls
           enableZoom={false}
@@ -498,10 +504,10 @@ const Point = ({
   const targetScale = useRef(1);
   const currentColor = useRef(new THREE.Color(color));
   const targetColor = useRef(new THREE.Color(color));
-  const currentOpacity = useRef(0.3);
-  const targetOpacity = useRef(0.3);
-  const currentEmissive = useRef(0.2);
-  const targetEmissive = useRef(0.2);
+  const currentOpacity = useRef(0.8);
+  const targetOpacity = useRef(0.8);
+  const currentEmissive = useRef(0.1);
+  const targetEmissive = useRef(0.1);
 
   // Smooth easing function
   const smoothLerp = (current, target, factor) => {
