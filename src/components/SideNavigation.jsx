@@ -16,10 +16,10 @@ const NavButton = styled.button`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 2px solid ${props => props.active ? '#8b5cf6' : '#4a4a4a'};
-  background: ${props => props.active ? '#8b5cf6' : 'rgba(27, 26, 26, 0.8)'};
+  border: 2px solid ${props => props.$active ? '#8b5cf6' : '#4a4a4a'};
+  background: ${props => props.$active ? '#8b5cf6' : 'rgba(27, 26, 26, 0.8)'};
   backdrop-filter: blur(10px);
-  color: ${props => props.active ? 'white' : '#888'};
+  color: ${props => props.$active ? 'white' : '#888'};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -27,9 +27,9 @@ const NavButton = styled.button`
   font-size: 0.8rem;
   font-weight: 600;
   transition: all 0.3s ease;
-  
+
   &:hover {
-    background: ${props => props.active ? '#8b5cf6' : 'rgba(139, 92, 246, 0.2)'};
+    background: ${props => props.$active ? '#8b5cf6' : 'rgba(139, 92, 246, 0.2)'};
     border-color: #8b5cf6;
     color: white;
     transform: scale(1.1);
@@ -120,7 +120,7 @@ const SideNavigation = () => {
       {sections.map((section) => (
         <div key={section.id} style={{ position: 'relative' }}>
           <NavButton
-            active={activeSection === section.id}
+            $active={activeSection === section.id}
             onClick={() => handleNavClick(section.id)}
             aria-label={section.label}
           >
