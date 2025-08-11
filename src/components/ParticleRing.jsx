@@ -279,7 +279,7 @@ const generatePoints = (shape, numPoints) => {
 // Generate points based on current shape
 const pointsInner = generatePoints(currentShape, NUM_POINTS);
 
-const pointsOuter = Array.from({ length: NUM_POINTS / 4 }, (_, k) => {
+const pointsOuter = Array.from({ length: NUM_POINTS / 6 }, (_, k) => {
   const radius = randomFromInterval(MIN_RADIUS / 2, MAX_RADIUS * 2);
   const angle = Math.random() * Math.PI * 2;
   const x = Math.cos(angle) * radius;
