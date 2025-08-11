@@ -345,7 +345,7 @@ const ParticleRing = ({ children }) => {
   const [currentShape, setCurrentShape] = useState(SHAPES.DRUM);
   const [points, setPoints] = useState(() => ({
     inner: generatePoints(SHAPES.CIRCLE, NUM_POINTS),
-    outer: Array.from({ length: NUM_POINTS / 4 }, (_, k) => {
+    outer: Array.from({ length: NUM_POINTS / 6 }, (_, k) => {
       const radius = randomFromInterval(MIN_RADIUS / 2, MAX_RADIUS * 2);
       const angle = Math.random() * Math.PI * 2;
       const x = Math.cos(angle) * radius;
@@ -374,7 +374,7 @@ const ParticleRing = ({ children }) => {
     setCurrentShape(newShape);
     setPoints({
       inner: generatePoints(newShape, NUM_POINTS),
-      outer: Array.from({ length: NUM_POINTS / 4 }, (_, k) => {
+      outer: Array.from({ length: NUM_POINTS / 6 }, (_, k) => {
         const radius = randomFromInterval(MIN_RADIUS / 2, MAX_RADIUS * 2);
         const angle = Math.random() * Math.PI * 2;
         const x = Math.cos(angle) * radius;
