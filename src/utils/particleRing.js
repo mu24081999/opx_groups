@@ -70,7 +70,7 @@ export const pointsInner = Array.from({ length: NUM_POINTS }, (_, k) => {
   return { idx: k + 1, position: [x, y, z], color };
 });
 
-export const pointsOuter = Array.from({ length: NUM_POINTS / 4 }, (_, k) => {
+export const pointsOuter = Array.from({ length: NUM_POINTS / 6 }, (_, k) => {
   const radius = randomFromInterval(MIN_RADIUS / 2, MAX_RADIUS * 2);
   const angle = Math.random() * Math.PI * 2;
   const x = Math.cos(angle) * radius;
