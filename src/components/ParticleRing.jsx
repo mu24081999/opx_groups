@@ -795,7 +795,7 @@ const Point = ({
   });
 
   return (
-    <Sphere ref={meshRef} position={position} args={[0.1, 32, 32]}>
+    <Sphere ref={meshRef} position={position} args={[0.1, 16, 16]}>
       <meshPhysicalMaterial
         color={color}
         emissive={new THREE.Color(color).multiplyScalar(0.1)}
