@@ -287,7 +287,7 @@ const pointsOuter = Array.from({ length: NUM_POINTS / 4 }, (_, k) => {
   const z = randomFromInterval(-DEPTH * 10, DEPTH * 10);
   const color = calculateColor(x, y, z, currentShape);
 
-  return { idx: k + 1, position: [x, y, z], color };
+  return { idx: NUM_POINTS + k + 1, position: [x, y, z], color };
 });
 
 const MouseTracker = ({ onMouseMove }) => {
@@ -324,7 +324,7 @@ const ParticleRing = ({ children }) => {
       const y = Math.sin(angle) * radius;
       const z = randomFromInterval(-DEPTH * 10, DEPTH * 10);
       const color = calculateColor(x, y, z, SHAPES.CIRCLE);
-      return { idx: k + 1, position: [x, y, z], color };
+      return { idx: NUM_POINTS + k + 1, position: [x, y, z], color };
     }),
   }));
 
@@ -353,7 +353,7 @@ const ParticleRing = ({ children }) => {
         const y = Math.sin(angle) * radius;
         const z = randomFromInterval(-DEPTH * 10, DEPTH * 10);
         const color = calculateColor(x, y, z, newShape);
-        return { idx: k + 1, position: [x, y, z], color };
+        return { idx: NUM_POINTS + k + 1, position: [x, y, z], color };
       }),
     });
   };
