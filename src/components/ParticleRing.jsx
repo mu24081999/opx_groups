@@ -523,20 +523,20 @@ const PointCircle = ({ mousePos, ripples, points, currentShape, scrollProgress }
 
     if (!ref.current) return;
 
-    // Calculate target rotation based on scroll progress
-    const scrollRotationY = scrollProgress * Math.PI * 4; // 4 full rotations during scroll
-    const scrollRotationX = Math.sin(scrollProgress * Math.PI * 2) * 0.3; // Subtle X-axis tilt
-    const scrollRotationZ = Math.cos(scrollProgress * Math.PI * 3) * 0.15; // Gentle Z-axis wobble
+    // Calculate target rotation based on scroll progress - slower and smoother
+    const scrollRotationY = scrollProgress * Math.PI * 1.5; // Reduced from 4 to 1.5 rotations
+    const scrollRotationX = Math.sin(scrollProgress * Math.PI * 1.2) * 0.15; // Slower, gentler X-axis tilt
+    const scrollRotationZ = Math.cos(scrollProgress * Math.PI * 1.8) * 0.08; // Slower, subtler Z-axis wobble
 
-    // Add continuous slow rotation for life
-    const timeRotationY = time * 0.1;
+    // Add continuous very slow rotation for life
+    const timeRotationY = time * 0.03; // Much slower continuous rotation
 
     targetRotation.current.x = scrollRotationX;
     targetRotation.current.y = scrollRotationY + timeRotationY;
     targetRotation.current.z = scrollRotationZ;
 
-    // Smooth interpolation for butter-smooth rotation
-    const smoothingFactor = Math.min(delta * 3, 0.1);
+    // Ultra-smooth interpolation for butter-smooth rotation
+    const smoothingFactor = Math.min(delta * 1.5, 0.05); // Slower, smoother interpolation
 
     currentRotation.current.x += (targetRotation.current.x - currentRotation.current.x) * smoothingFactor;
     currentRotation.current.y += (targetRotation.current.y - currentRotation.current.y) * smoothingFactor;
