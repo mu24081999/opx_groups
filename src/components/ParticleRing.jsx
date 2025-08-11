@@ -678,10 +678,10 @@ const Point = ({
     meshRef.current.material.emissive = currentColor.current;
 
     // Smooth material property transitions
-    const baseOpacity = 0.1;
+    const baseOpacity = 0.3;
     const effectOpacity = Math.max(intensity, mouseInfluence);
-    targetOpacity.current = baseOpacity + effectOpacity * 0.8;
-    targetEmissive.current = 0.1 + effectOpacity * 1.2;
+    targetOpacity.current = baseOpacity + effectOpacity * 0.7;
+    targetEmissive.current = 0.2 + effectOpacity * 1.5;
 
     currentOpacity.current = smoothLerp(
       currentOpacity.current,
