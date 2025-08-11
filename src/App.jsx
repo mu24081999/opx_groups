@@ -4,6 +4,10 @@ import RippleSection from "./components/RippleSection";
 import FloatingNavBar from "./components/Navbar";
 import ParticleRing from "./components/ParticleRing";
 import Preloader from "./components/PreLoader";
+import SideNavigation from "./components/SideNavigation";
+import Modal from "./components/Modal";
+import AboutModal from "./components/AboutModal";
+import ContactModal from "./components/ContactModal";
 
 const App = () => {
   const orbRef = useRef(null);
@@ -14,11 +18,40 @@ const App = () => {
 
   const [language, setLanguage] = useState(null);
   const [showContact, setShowContact] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
   const [loadingFinished, setLoadingFinished] = useState(false);
   const workRef = useRef(null);
+  const homeRef = useRef(null);
+  const aboutRef = useRef(null);
 
   const handleScrollToWork = () => {
-    workRef.current.scrollIntoView({ behavior: "smooth" });
+    workRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleSectionScroll = (section) => {
+    switch (section) {
+      case 'home':
+        homeRef.current?.scrollIntoView({ behavior: "smooth" });
+        break;
+      case 'work':
+        workRef.current?.scrollIntoView({ behavior: "smooth" });
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleOpenContact = () => {
+    setShowContact(true);
+  };
+
+  const handleOpenAbout = () => {
+    setShowAbout(true);
+  };
+
+  const handleCloseModals = () => {
+    setShowContact(false);
+    setShowAbout(false);
   };
 
   const handleLanguageSelect = (lang) => {
@@ -79,22 +112,39 @@ const App = () => {
   return (
     <div
       className={`relative bg-black text-[#888888] ${
-        showContact ? "overflow-hidden" : ""
+        showContact || showAbout ? "overflow-hidden" : ""
       }`}
     >
+      <SideNavigation
+        onSectionClick={handleSectionScroll}
+        onContactClick={handleOpenContact}
+        onAboutClick={handleOpenAbout}
+      />
       <FloatingNavBar />
-      <ParticleRing>
-        <LogoScroll />
-      </ParticleRing>
 
-      <div ref={workRef}>
+      <div id="home" ref={homeRef}>
+        <ParticleRing>
+          <LogoScroll />
+        </ParticleRing>
+      </div>
+
+      <div id="work" ref={workRef}>
         <RippleSection />
       </div>
 
-      <footer className="h-[60vh] flex flex-col items-center justify-center space-y-4">
+      <footer id="contact" className="h-[60vh] flex flex-col items-center justify-center space-y-4">
         <p className="text-lg">Made with ❤️ Inspired by Hamad</p>
         <p className="text-sm">© 2025 OPX</p>
       </footer>
+
+      {/* Modals */}
+      <Modal isOpen={showContact} onClose={handleCloseModals}>
+        <ContactModal onClose={handleCloseModals} />
+      </Modal>
+
+      <Modal isOpen={showAbout} onClose={handleCloseModals}>
+        <AboutModal onClose={handleCloseModals} />
+      </Modal>
     </div>
   );
 };
