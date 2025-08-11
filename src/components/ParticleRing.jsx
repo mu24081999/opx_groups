@@ -454,7 +454,7 @@ const PointCircle = ({ mousePos, ripples, points, currentShape }) => {
     <group ref={ref}>
       {[...points.inner, ...points.outer].map((point, i) => (
         <Point
-          key={`pt-${point.idx}`}
+          key={`pt-${i}`} // Unique key using combined index
           {...point}
           time={time}
           sequenceIndex={i}
