@@ -4,6 +4,7 @@ import DynamicContentSection from "./DynamicContentSection";
 
 const cardData = [
   {
+    id: "experiences",
     title: "Creative Digital Experiences",
     desc: (
       <div>
@@ -20,13 +21,20 @@ const cardData = [
     ),
     align: "left",
   },
-  { title: "OPX AI CHAT", desc: "Natural AI chat interfaces.", align: "right" },
   {
+    id: "ai-chat",
+    title: "OPX AI CHAT",
+    desc: "Natural AI chat interfaces.",
+    align: "right"
+  },
+  {
+    id: "stat-analysis",
     title: "OPX Stat Analysis",
     desc: "Predictive and real-time data analysis.",
     align: "left",
   },
   {
+    id: "software-dev",
     title: "OPX Software Development",
     desc: "Enterprise-grade custom software.",
     align: "right",
@@ -92,12 +100,13 @@ const RippleSection = () => {
       {/* Cards */}
       <div className="relative z-10 w-full flex flex-col items-center gap-12">
         {cardData.map((card, i) => (
-          <DynamicContentSection
-            key={i}
-            title={card.title}
-            desc={card.desc}
-            align={card.align}
-          />
+          <div key={i} id={card.id}>
+            <DynamicContentSection
+              title={card.title}
+              desc={card.desc}
+              align={card.align}
+            />
+          </div>
         ))}
       </div>
     </div>
