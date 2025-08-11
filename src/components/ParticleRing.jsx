@@ -314,6 +314,7 @@ const MouseTracker = ({ onMouseMove }) => {
 const ParticleRing = ({ children }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [ripples, setRipples] = useState([]);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [currentShape, setCurrentShape] = useState(SHAPES.DRUM);
   const [points, setPoints] = useState(() => ({
     inner: generatePoints(SHAPES.CIRCLE, NUM_POINTS),
@@ -357,6 +358,33 @@ const ParticleRing = ({ children }) => {
       }),
     });
   };
+
+  // Scroll tracking for 3D rotation
+  React.useEffect(() => {
+    let animationFrameId;
+
+    const handleScroll = () => {
+      if (animationFrameId) return;
+
+      animationFrameId = requestAnimationFrame(() => {
+        const totalScroll = document.body.scrollHeight - window.innerHeight;
+        const scrollY = window.scrollY;
+        const progress = Math.min(scrollY / totalScroll, 1);
+        setScrollProgress(progress);
+        animationFrameId = null;
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Set initial value
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, []);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -414,6 +442,7 @@ const ParticleRing = ({ children }) => {
           ripples={ripples}
           points={points}
           currentShape={currentShape}
+          scrollProgress={scrollProgress}
         />
       </Canvas>
       <div className="relative z-10">{children}</div>
