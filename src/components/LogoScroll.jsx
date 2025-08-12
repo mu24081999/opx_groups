@@ -131,26 +131,26 @@ const LogoScroll = () => {
           />
 
           {/* Letter P */}
-          {step1Progress > 0 && (
+          {step1Progress > 0 && !hidePXComplete && (
             <img
               src={P}
               alt="P"
               className="w-32"
               style={{
                 transform: `translateX(${pTranslateX}px)`,
-                opacity: pOpacity * hideOpacity,
+                opacity: pOpacity,
               }}
             />
           )}
 
           {/* Letter X */}
-          {step2Progress > 0 && (
+          {step2Progress > 0 && !hidePXComplete && (
             <img
               src={X}
               alt="X"
               className="w-32"
               style={{
-                opacity: xOpacity * hideOpacity,
+                opacity: xOpacity,
               }}
             />
           )}
