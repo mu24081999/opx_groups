@@ -70,9 +70,19 @@ const LogoScroll = () => {
   const easedStep3 = easeInOutCubic(step3Progress);
   const easedStep4 = easeInOutCubic(step4Progress);
 
-  // Calculate transforms - O stays centered with rotation based on scroll
-  const oRotation = scrollRatio * 360; // Direct rotation based on scroll progress
-  const oScale = 1 + (scrollRatio * 1.5); // Gradual scale increase with scroll
+  // Calculate transforms with smooth transitions
+  const oTranslateX = easedStep1 * -80;
+  const oRotation = easedStep4 * 360;
+  const oScale = 1 + (easedStep4 * 1.5);
+
+  const pTranslateX = 80 - (easedStep2 * 80);
+  const pOpacity = easedStep2;
+
+  const xOpacity = easedStep3;
+
+  // Hide P and X after full logo formation (after step4 completes)
+  const hideLetters = scrollRatio > 0.5; // Hide P and X after 50% scroll
+  const hideOpacity = hideLetters ? Math.max(0, 1 - ((scrollRatio - 0.5) / 0.1)) : 1;
 
   return (
     <div className="h-[150vh] bg-black text-white relative scroll-smooth">
