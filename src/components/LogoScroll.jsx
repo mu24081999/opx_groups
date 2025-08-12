@@ -97,19 +97,45 @@ const LogoScroll = () => {
           className="relative flex items-center justify-center space-x-2"
           style={{ perspective: 800 }}
         >
-          {/* Letter O - Centered with scroll rotation */}
+          {/* Letter O */}
           <img
             src={O}
             alt="O"
             className="w-32"
             style={{
               transform: `
+                translateX(${oTranslateX}px)
                 rotateY(${oRotation}deg)
                 scale(${oScale})
               `,
               transformStyle: "preserve-3d",
             }}
           />
+
+          {/* Letter P */}
+          {step1Progress > 0 && (
+            <img
+              src={P}
+              alt="P"
+              className="w-32"
+              style={{
+                transform: `translateX(${pTranslateX}px)`,
+                opacity: pOpacity * hideOpacity,
+              }}
+            />
+          )}
+
+          {/* Letter X */}
+          {step2Progress > 0 && (
+            <img
+              src={X}
+              alt="X"
+              className="w-32"
+              style={{
+                opacity: xOpacity * hideOpacity,
+              }}
+            />
+          )}
         </div>
 
         {/* Particle burst */}
