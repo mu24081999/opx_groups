@@ -54,51 +54,29 @@ const NavButton = styled.button`
 const NavLabel = styled.div`
   position: absolute;
   left: 65px;
-  background: linear-gradient(135deg, rgba(27, 26, 26, 0.95) 0%, rgba(40, 40, 40, 0.9) 100%);
-  backdrop-filter: blur(15px);
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
   color: white;
-  padding: 0.6rem 1.2rem;
-  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
   font-size: 0.85rem;
   font-weight: 500;
   white-space: nowrap;
   opacity: 0;
   visibility: hidden;
-  transform: translateX(-10px) translateY(-50%);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: 1px solid rgba(139, 92, 246, 0.4);
-  top: 50%;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(136, 136, 136, 0.3);
 
-  /* Enhanced 3D depth */
+  /* Glass effect for 3D look */
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.4),
-    0 4px 12px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-
-  /* Elegant arrow pointer */
-  &::before {
-    content: '';
-    position: absolute;
-    left: -8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 6px 8px 6px 0;
-    border-color: transparent rgba(40, 40, 40, 0.9) transparent transparent;
-    filter: drop-shadow(-1px 0 2px rgba(0, 0, 0, 0.3));
-  }
+    inset 0 1px 0 rgba(136, 136, 136, 0.1);
 
   ${NavButton}:hover + & {
     opacity: 1;
     visibility: visible;
-    transform: translateX(0) translateY(-50%);
-    box-shadow:
-      0 12px 32px rgba(139, 92, 246, 0.2),
-      0 6px 16px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transform: translateX(0);
   }
 
   @media (max-width: 768px) {
