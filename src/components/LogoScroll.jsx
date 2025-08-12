@@ -70,19 +70,37 @@ const LogoScroll = () => {
   const easedStep3 = easeInOutCubic(step3Progress);
   const easedStep4 = easeInOutCubic(step4Progress);
 
+  // Define the phases of animation
+  const fullLogoComplete = scrollRatio > 0.3; // When full OPX logo is complete
+  const hidePXStart = scrollRatio > 0.4; // When to start hiding P and X
+  const hidePXComplete = scrollRatio > 0.5; // When P and X are completely hidden
+
   // Calculate transforms with smooth transitions
-  const oTranslateX = easedStep1 * -80;
-  const oRotation = easedStep4 * 360;
-  const oScale = 1 + (easedStep4 * 1.5);
+  const oTranslateX = fullLogoComplete ?
+    // After full logo, move O back to center smoothly
+    easedStep1 * -80 * (1 - Math.min((scrollRatio - 0.3) / 0.2, 1)) :
+    // Normal movement during logo formation
+    easedStep1 * -80;
+
+  const oRotation = fullLogoComplete ?
+    // Continue rotation after logo is complete
+    (scrollRatio - 0.3) * 720 : // More rotation after completion
+    easedStep4 * 360;
+
+  const oScale = fullLogoComplete ?
+    // Scale during center rotation phase
+    1 + ((scrollRatio - 0.3) * 2) :
+    // Normal scaling during logo formation
+    1 + (easedStep4 * 1.5);
 
   const pTranslateX = 80 - (easedStep2 * 80);
-  const pOpacity = easedStep2;
+  const pOpacity = hidePXStart ?
+    Math.max(0, easedStep2 * (1 - ((scrollRatio - 0.4) / 0.1))) :
+    easedStep2;
 
-  const xOpacity = easedStep3;
-
-  // Hide P and X after full logo formation (after step4 completes)
-  const hideLetters = scrollRatio > 0.5; // Hide P and X after 50% scroll
-  const hideOpacity = hideLetters ? Math.max(0, 1 - ((scrollRatio - 0.5) / 0.1)) : 1;
+  const xOpacity = hidePXStart ?
+    Math.max(0, easedStep3 * (1 - ((scrollRatio - 0.4) / 0.1))) :
+    easedStep3;
 
   return (
     <div className="h-[150vh] bg-black text-white relative scroll-smooth">
