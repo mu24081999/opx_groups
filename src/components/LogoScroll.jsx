@@ -6,8 +6,6 @@ import ParticleRing from "./ParticleRing";
 
 const LogoScroll = () => {
   const [scrollRatio, setScrollRatio] = useState(0);
-  const [smoothCoinRotation, setSmoothCoinRotation] = useState(0);
-  const animationFrameRef = useRef();
 
   useEffect(() => {
     let animationFrameId;
@@ -31,33 +29,56 @@ const LogoScroll = () => {
     };
   }, []);
 
-  // Steps
-  const step1 = scrollRatio >= 0.03; // move O left
-  const step2 = scrollRatio >= 0.08; // show P
-  const step3 = scrollRatio >= 0.12; // show X
-  const step4 = scrollRatio >= 0.2; // coin spin
+  // Smooth step transitions based on scroll
+  const getStep1Progress = () => {
+    if (scrollRatio < 0.03) return 0;
+    if (scrollRatio >= 0.08) return 1;
+    return (scrollRatio - 0.03) / (0.08 - 0.03);
+  };
 
-  // Smooth coin rotation for "O"
-  const targetCoinRotation = step4 ? scrollRatio * 360 : 0; // Reduced from 720 to 360 degrees
+  const getStep2Progress = () => {
+    if (scrollRatio < 0.08) return 0;
+    if (scrollRatio >= 0.12) return 1;
+    return (scrollRatio - 0.08) / (0.12 - 0.08);
+  };
 
-  // Smooth interpolation for coin rotation
-  useEffect(() => {
-    const animate = () => {
-      setSmoothCoinRotation(prev => {
-        const diff = targetCoinRotation - prev;
-        return prev + diff * 0.08; // Smooth interpolation factor
-      });
-      animationFrameRef.current = requestAnimationFrame(animate);
-    };
+  const getStep3Progress = () => {
+    if (scrollRatio < 0.12) return 0;
+    if (scrollRatio >= 0.2) return 1;
+    return (scrollRatio - 0.12) / (0.2 - 0.12);
+  };
 
-    animate();
+  const getStep4Progress = () => {
+    if (scrollRatio < 0.2) return 0;
+    return (scrollRatio - 0.2) / (1 - 0.2);
+  };
 
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, [targetCoinRotation]);
+  // Calculate smooth transforms based on scroll
+  const step1Progress = getStep1Progress();
+  const step2Progress = getStep2Progress();
+  const step3Progress = getStep3Progress();
+  const step4Progress = getStep4Progress();
+
+  // Smooth easing function for more natural movement
+  const easeInOutCubic = (t) => {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  };
+
+  // Apply easing to progress values
+  const easedStep1 = easeInOutCubic(step1Progress);
+  const easedStep2 = easeInOutCubic(step2Progress);
+  const easedStep3 = easeInOutCubic(step3Progress);
+  const easedStep4 = easeInOutCubic(step4Progress);
+
+  // Calculate transforms
+  const oTranslateX = easedStep1 * -80;
+  const oRotation = easedStep4 * 360;
+  const oScale = 1 + (easedStep4 * 1.5); // Scale from 1 to 2.5 (w-32 to w-80 equivalent)
+
+  const pTranslateX = 80 - (easedStep2 * 80);
+  const pOpacity = easedStep2;
+
+  const xOpacity = easedStep3;
 
   return (
     <div className="h-[150vh] bg-black text-white relative scroll-smooth">
