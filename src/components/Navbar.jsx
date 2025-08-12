@@ -16,36 +16,20 @@ const Container = styled.div`
   position: fixed;
   top: 1.5rem;
   right: 1.5rem;
-  background: linear-gradient(135deg, rgba(27, 26, 26, 0.95) 0%, rgba(40, 40, 40, 0.9) 100%);
-  backdrop-filter: blur(20px);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
   border-radius: 2rem;
-  padding: 0.8rem 1.5rem;
+  padding: 0.6rem 1.2rem;
   display: flex;
   align-items: center;
-  gap: 1.2rem;
+  gap: 1rem;
   z-index: 100;
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(136, 136, 136, 0.2);
 
-  /* Enhanced 3D depth */
+  /* Glass effect for 3D look */
   box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.3),
-    0 10px 20px rgba(0, 0, 0, 0.2),
-    0 4px 8px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-
-  /* Subtle glow effect */
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 2rem;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(139, 92, 246, 0.1));
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: xor;
-    pointer-events: none;
-  }
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(136, 136, 136, 0.1);
 `;
 
 const Button = styled.button`
