@@ -148,10 +148,10 @@ const NavLabel = styled.div`
 `;
 
 const sections = [
-  { id: 'experiences', label: 'Experiences', icon: '🎨' },
-  { id: 'ai-chat', label: 'AI Chat', icon: '🤖' },
-  { id: 'stat-analysis', label: 'Analytics', icon: '📊' },
-  { id: 'software-dev', label: 'Development', icon: '💻' }
+  { id: 'experiences', label: 'Experiences', icon: ExperiencesIcon },
+  { id: 'ai-chat', label: 'AI Chat', icon: AIIcon },
+  { id: 'stat-analysis', label: 'Analytics', icon: AnalyticsIcon },
+  { id: 'software-dev', label: 'Development', icon: DevelopmentIcon }
 ];
 
 const SideNavigation = () => {
