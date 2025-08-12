@@ -16,15 +16,36 @@ const Container = styled.div`
   position: fixed;
   top: 1.5rem;
   right: 1.5rem;
-  background: #1b1a1ad6;
-  backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, rgba(27, 26, 26, 0.95) 0%, rgba(40, 40, 40, 0.9) 100%);
+  backdrop-filter: blur(20px);
   border-radius: 2rem;
-  padding: 0.6rem 1.2rem;
+  padding: 0.8rem 1.5rem;
   display: flex;
   align-items: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  gap: 1rem;
+  gap: 1.2rem;
   z-index: 100;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+
+  /* Enhanced 3D depth */
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 10px 20px rgba(0, 0, 0, 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+
+  /* Subtle glow effect */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 2rem;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(139, 92, 246, 0.1));
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    pointer-events: none;
+  }
 `;
 
 const Button = styled.button`
