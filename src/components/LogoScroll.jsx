@@ -97,43 +97,39 @@ const LogoScroll = () => {
           <img
             src={O}
             alt="O"
-            className={`w-32 ${
-              step4 && " w-80"
-            } transition-all duration-700 ease-in-out`}
+            className="w-32"
             style={{
               transform: `
-                translateX(${step1 ? "-80px" : "0px"}) 
-                rotateY(${smoothCoinRotation}deg)
+                translateX(${oTranslateX}px)
+                rotateY(${oRotation}deg)
+                scale(${oScale})
               `,
               transformStyle: "preserve-3d",
             }}
           />
 
           {/* Letter P */}
-          {step1 && !step4 && (
+          {step1Progress > 0 && step4Progress < 1 && (
             <img
               src={P}
               alt="P"
-              className={`
-                w-32 transition-all duration-700 ease-in-out
-                ${
-                  step2
-                    ? "translate-x-0 opacity-100"
-                    : "translate-x-[80px] opacity-0"
-                }
-              `}
+              className="w-32"
+              style={{
+                transform: `translateX(${pTranslateX}px)`,
+                opacity: pOpacity,
+              }}
             />
           )}
 
           {/* Letter X */}
-          {step2 && !step4 && (
+          {step2Progress > 0 && step4Progress < 1 && (
             <img
               src={X}
               alt="X"
-              className={`
-                w-32 transition-all duration-700 ease-in-out
-                ${step3 ? "opacity-100" : "opacity-0"}
-              `}
+              className="w-32"
+              style={{
+                opacity: xOpacity,
+              }}
             />
           )}
         </div>
