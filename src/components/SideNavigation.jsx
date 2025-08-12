@@ -201,7 +201,7 @@ const SideNavigation = () => {
             onClick={() => handleNavClick(section.id)}
             aria-label={section.label}
           >
-            {section.icon}
+            <section.icon size={20} />
           </NavButton>
           <NavLabel>{section.label}</NavLabel>
         </div>
