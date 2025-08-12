@@ -64,16 +64,39 @@ const Button = styled.button`
   }
 `;
 
-const WaveContainer = styled.svg`
-  width: 80px;
-  height: 20px;
+const WaveContainer = styled.div`
+  width: 60px;
+  height: 40px;
   cursor: pointer;
-  path {
-    fill: none;
-    stroke: #888;
-    stroke-width: 2;
-    animation: ${wave} 2s ease-in-out infinite;
-    animation-play-state: ${(props) => (props.playing ? "running" : "paused")};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 12px;
+  background: ${(props) => props.playing
+    ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%)'
+    : 'transparent'
+  };
+  border: 1px solid ${(props) => props.playing ? 'rgba(139, 92, 246, 0.4)' : 'transparent'};
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+
+  box-shadow: ${(props) => props.playing
+    ? `
+      0 4px 12px rgba(139, 92, 246, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1)
+    `
+    : 'none'
+  };
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0.05) 100%);
+    border-color: rgba(139, 92, 246, 0.3);
+    transform: scale(1.05);
+    box-shadow:
+      0 6px 16px rgba(139, 92, 246, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 `;
 
