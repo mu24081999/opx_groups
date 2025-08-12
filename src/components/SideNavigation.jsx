@@ -17,29 +17,78 @@ const NavButton = styled.button`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 2px solid ${props => props.$active ? '#8b5cf6' : '#4a4a4a'};
-  background: ${props => props.$active ? '#8b5cf6' : 'rgba(27, 26, 26, 0.8)'};
-  backdrop-filter: blur(10px);
+  border: 2px solid ${props => props.$active ? '#8b5cf6' : 'rgba(139, 92, 246, 0.3)'};
+  background: ${props => props.$active
+    ? 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
+    : 'linear-gradient(135deg, rgba(27, 26, 26, 0.9) 0%, rgba(40, 40, 40, 0.8) 100%)'
+  };
+  backdrop-filter: blur(15px);
   color: ${props => props.$active ? 'white' : '#888'};
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+
+  /* 3D depth effect */
+  box-shadow: ${props => props.$active
+    ? `
+      0 8px 20px rgba(139, 92, 246, 0.3),
+      0 4px 12px rgba(139, 92, 246, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1)
+    `
+    : `
+      0 4px 12px rgba(0, 0, 0, 0.3),
+      0 2px 6px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2)
+    `
+  };
+
+  /* Elegant shine effect */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+  }
 
   &:hover {
-    background: ${props => props.$active ? '#8b5cf6' : 'rgba(139, 92, 246, 0.2)'};
+    background: ${props => props.$active
+      ? 'linear-gradient(135deg, #9333ea 0%, #8b5cf6 100%)'
+      : 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%)'
+    };
     border-color: #8b5cf6;
     color: white;
-    transform: scale(1.1);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: ${props => props.$active
+      ? `
+        0 12px 28px rgba(139, 92, 246, 0.4),
+        0 6px 16px rgba(139, 92, 246, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3)
+      `
+      : `
+        0 8px 20px rgba(139, 92, 246, 0.3),
+        0 4px 12px rgba(139, 92, 246, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2)
+      `
+    };
+
+    &::before {
+      left: 100%;
+    }
   }
 
   @media (max-width: 768px) {
     width: 40px;
     height: 40px;
-    font-size: 0.7rem;
   }
 `;
 
