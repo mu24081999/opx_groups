@@ -88,45 +88,28 @@ const FloatingNavBar = () => {
       <>
         <Container>
           <a
-            className="
-              rounded-full font-medium cursor-pointer px-4 py-2 text-sm
-              text-gray-300 hover:text-white transition-all duration-300
-              hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-purple-600/10
-              border border-transparent hover:border-purple-500/30
-              shadow-sm hover:shadow-lg hover:shadow-purple-500/10
-            "
+            className="rounded-full text-bold hover:bg-gray-300 cursor-pointer px-3 py-1 text-sm text-[#888] hover:text-white transition-all duration-300"
             href="#layer2"
             style={{
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+              filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))'
             }}
           >
             Work
           </a>
 
           <WaveContainer
+            viewBox="0 0 80 20"
             onClick={toggleAudio}
             playing={playing ? 1 : 0}
           >
-            {playing ? (
-              <PauseIcon size={16} color="#8b5cf6" />
-            ) : (
-              <PlayIcon size={16} color="#888" />
-            )}
+            <path d="M0 10 Q 10 0 20 10 T 40 10 T 60 10 T 80 10" />
           </WaveContainer>
 
           <button
-            className="
-              rounded-full font-medium cursor-pointer px-4 py-2 text-sm
-              text-white transition-all duration-300
-              bg-gradient-to-r from-gray-600 to-gray-500
-              hover:from-purple-600 hover:to-purple-500
-              border border-gray-500/50 hover:border-purple-500/50
-              shadow-lg hover:shadow-xl hover:shadow-purple-500/20
-              hover:scale-105
-            "
+            className="rounded-full text-bold cursor-pointer px-3 py-1 text-sm text-white bg-gray-500 hover:bg-[#888] transition-all duration-300"
             onClick={() => openModal("contact")}
             style={{
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+              filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))'
             }}
           >
             Contact
