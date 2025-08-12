@@ -33,7 +33,9 @@ const Modal = ({ isOpen, onClose, children }) => {
       {isOpen && (
         <motion.div
           className="fixed inset-0 bg-black/40 flex justify-center items-center z-50"
-          style={{ backdropFilter: "blur(5px)" }}
+          style={{
+            backdropFilter: "blur(5px)"
+          }}
           variants={backdropVariants}
           initial="hidden"
           animate="visible"
@@ -41,12 +43,17 @@ const Modal = ({ isOpen, onClose, children }) => {
           onClick={onClose}
         >
           <motion.div
-            className=" w-full h-full md:w-[80%] md:h-[90%] overflow-auto relative"
+            className="w-full h-full md:w-[80%] md:h-[90%] overflow-auto relative"
+            style={{
+              background: 'rgba(0, 0, 0, 0.9)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(136, 136, 136, 0.2)',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(136, 136, 136, 0.1)'
+            }}
             variants={modalVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
-            // onClick={(e) => e.stopPropagation()}
             onClick={onClose}
           >
             {children}

@@ -9,7 +9,7 @@ const MAX_RADIUS = 15;
 const DEPTH = 2;
 const LEFT_COLOR = "faf3e7";
 const RIGHT_COLOR = "8b5cf6";
-const NUM_POINTS = 2500;
+const NUM_POINTS = 800;
 
 // Available shape configurations
 const SHAPES = {
@@ -73,7 +73,7 @@ const randomFromInterval = (min, max) => {
 // Shape generation functions
 const generateCirclePoints = (numPoints) => {
   return Array.from({ length: numPoints }, (_, k) => {
-    const rings = 8;
+    const rings = 6;
     const pointsPerRing = numPoints / rings;
     const ringIndex = Math.floor(k / pointsPerRing);
     const pointInRing = k % pointsPerRing;
@@ -100,7 +100,7 @@ const generateCirclePoints = (numPoints) => {
 const generateDrumPoints = (numPoints) => {
   return Array.from({ length: numPoints }, (_, k) => {
     // Create cylindrical drum shape
-    const heightLevels = 15;
+    const heightLevels = 10;
     const pointsPerLevel = numPoints / heightLevels;
     const levelIndex = Math.floor(k / pointsPerLevel);
     const pointInLevel = k % pointsPerLevel;
@@ -127,7 +127,7 @@ const generateDrumPoints = (numPoints) => {
 const generateRollerStairsPoints = (numPoints) => {
   return Array.from({ length: numPoints }, (_, k) => {
     // Create stair-like steps in a cylindrical arrangement
-    const steps = 12;
+    const steps = 8;
     const pointsPerStep = numPoints / steps;
     const stepIndex = Math.floor(k / pointsPerStep);
     const pointInStep = k % pointsPerStep;
@@ -201,7 +201,7 @@ const generateHelixPoints = (numPoints) => {
 
 const generateWaveTubePoints = (numPoints) => {
   return Array.from({ length: numPoints }, (_, k) => {
-    const rings = 20;
+    const rings = 12;
     const pointsPerRing = numPoints / rings;
     const ringIndex = Math.floor(k / pointsPerRing);
     const pointInRing = k % pointsPerRing;
@@ -232,7 +232,7 @@ const generateWaveTubePoints = (numPoints) => {
 
 const generateTwistedRingPoints = (numPoints) => {
   return Array.from({ length: numPoints }, (_, k) => {
-    const rings = 8;
+    const rings = 6;
     const pointsPerRing = numPoints / rings;
     const ringIndex = Math.floor(k / pointsPerRing);
     const pointInRing = k % pointsPerRing;
@@ -279,7 +279,7 @@ const generatePoints = (shape, numPoints) => {
 // Generate points based on current shape
 const pointsInner = generatePoints(currentShape, NUM_POINTS);
 
-const pointsOuter = Array.from({ length: NUM_POINTS / 4 }, (_, k) => {
+const pointsOuter = Array.from({ length: NUM_POINTS / 6 }, (_, k) => {
   const radius = randomFromInterval(MIN_RADIUS / 2, MAX_RADIUS * 2);
   const angle = Math.random() * Math.PI * 2;
   const x = Math.cos(angle) * radius;
@@ -345,7 +345,7 @@ const ParticleRing = ({ children }) => {
   const [currentShape, setCurrentShape] = useState(SHAPES.DRUM);
   const [points, setPoints] = useState(() => ({
     inner: generatePoints(SHAPES.CIRCLE, NUM_POINTS),
-    outer: Array.from({ length: NUM_POINTS / 4 }, (_, k) => {
+    outer: Array.from({ length: NUM_POINTS / 6 }, (_, k) => {
       const radius = randomFromInterval(MIN_RADIUS / 2, MAX_RADIUS * 2);
       const angle = Math.random() * Math.PI * 2;
       const x = Math.cos(angle) * radius;
@@ -374,7 +374,7 @@ const ParticleRing = ({ children }) => {
     setCurrentShape(newShape);
     setPoints({
       inner: generatePoints(newShape, NUM_POINTS),
-      outer: Array.from({ length: NUM_POINTS / 4 }, (_, k) => {
+      outer: Array.from({ length: NUM_POINTS / 6 }, (_, k) => {
         const radius = randomFromInterval(MIN_RADIUS / 2, MAX_RADIUS * 2);
         const angle = Math.random() * Math.PI * 2;
         const x = Math.cos(angle) * radius;
@@ -419,7 +419,7 @@ const ParticleRing = ({ children }) => {
       setRipples((prev) =>
         prev.filter((ripple) => now - ripple.startTime < ripple.duration)
       );
-    }, 100);
+    }, 200); // Reduced frequency for better performance
 
     return () => clearInterval(interval);
   }, []);
@@ -616,11 +616,11 @@ const Point = ({
   useFrame((state, delta) => {
     if (!meshRef.current) return;
 
-    // Smooth interpolation factors (higher = more responsive, lower = smoother)
-    const positionSmoothing = Math.min(delta * 8, 0.15); // Clamp for stable frame rates
-    const scaleSmoothing = Math.min(delta * 12, 0.2);
-    const colorSmoothing = Math.min(delta * 10, 0.18);
-    const materialSmoothing = Math.min(delta * 15, 0.25);
+    // Smooth interpolation factors (optimized for better performance)
+    const positionSmoothing = Math.min(delta * 6, 0.12); // Reduced responsiveness for smoother performance
+    const scaleSmoothing = Math.min(delta * 8, 0.16);
+    const colorSmoothing = Math.min(delta * 7, 0.14);
+    const materialSmoothing = Math.min(delta * 10, 0.2);
 
     // Original wave animation with smoother transitions
     const sequenceDuration = 4;
@@ -795,7 +795,7 @@ const Point = ({
   });
 
   return (
-    <Sphere ref={meshRef} position={position} args={[0.1, 32, 32]}>
+    <Sphere ref={meshRef} position={position} args={[0.1, 16, 16]}>
       <meshPhysicalMaterial
         color={color}
         emissive={new THREE.Color(color).multiplyScalar(0.1)}

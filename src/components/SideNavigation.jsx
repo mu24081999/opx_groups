@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { ExperiencesIcon, AIIcon, AnalyticsIcon, DevelopmentIcon } from "./Icons";
 
 const NavigationContainer = styled.div`
   position: fixed;
@@ -16,10 +17,10 @@ const NavButton = styled.button`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 2px solid ${props => props.$active ? '#8b5cf6' : '#4a4a4a'};
-  background: ${props => props.$active ? '#8b5cf6' : 'rgba(27, 26, 26, 0.8)'};
+  border: 2px solid ${props => props.$active ? '#888' : '#4a4a4a'};
+  background: ${props => props.$active ? '#888' : 'rgba(0, 0, 0, 0.8)'};
   backdrop-filter: blur(10px);
-  color: ${props => props.$active ? 'white' : '#888'};
+  color: ${props => props.$active ? 'black' : '#888'};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -28,11 +29,19 @@ const NavButton = styled.button`
   font-weight: 600;
   transition: all 0.3s ease;
 
+  /* Glass effect for 3D look */
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(136, 136, 136, 0.1);
+
   &:hover {
-    background: ${props => props.$active ? '#8b5cf6' : 'rgba(139, 92, 246, 0.2)'};
-    border-color: #8b5cf6;
-    color: white;
+    background: ${props => props.$active ? '#888' : 'rgba(136, 136, 136, 0.2)'};
+    border-color: #888;
+    color: ${props => props.$active ? 'black' : 'white'};
     transform: scale(1.1);
+    box-shadow:
+      0 12px 32px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(136, 136, 136, 0.2);
   }
 
   @media (max-width: 768px) {
@@ -45,7 +54,7 @@ const NavButton = styled.button`
 const NavLabel = styled.div`
   position: absolute;
   left: 65px;
-  background: rgba(27, 26, 26, 0.9);
+  background: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(10px);
   color: white;
   padding: 0.5rem 1rem;
@@ -57,7 +66,12 @@ const NavLabel = styled.div`
   visibility: hidden;
   transform: translateX(-10px);
   transition: all 0.3s ease;
-  border: 1px solid rgba(139, 92, 246, 0.3);
+  border: 1px solid rgba(136, 136, 136, 0.3);
+
+  /* Glass effect for 3D look */
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(136, 136, 136, 0.1);
 
   ${NavButton}:hover + & {
     opacity: 1;
@@ -71,10 +85,10 @@ const NavLabel = styled.div`
 `;
 
 const sections = [
-  { id: 'experiences', label: 'Experiences', icon: '🎨' },
-  { id: 'ai-chat', label: 'AI Chat', icon: '🤖' },
-  { id: 'stat-analysis', label: 'Analytics', icon: '📊' },
-  { id: 'software-dev', label: 'Development', icon: '💻' }
+  { id: 'experiences', label: 'Experiences', icon: ExperiencesIcon },
+  { id: 'ai-chat', label: 'AI Chat', icon: AIIcon },
+  { id: 'stat-analysis', label: 'Analytics', icon: AnalyticsIcon },
+  { id: 'software-dev', label: 'Development', icon: DevelopmentIcon }
 ];
 
 const SideNavigation = () => {
@@ -124,7 +138,7 @@ const SideNavigation = () => {
             onClick={() => handleNavClick(section.id)}
             aria-label={section.label}
           >
-            {section.icon}
+            <section.icon size={20} />
           </NavButton>
           <NavLabel>{section.label}</NavLabel>
         </div>
