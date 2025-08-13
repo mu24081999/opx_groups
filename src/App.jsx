@@ -6,8 +6,8 @@ import ParticleRing from "./components/ParticleRing";
 import Preloader from "./components/PreLoader";
 import SideNavigation from "./components/SideNavigation";
 import Modal from "./components/Modal";
-import AboutModal from "./components/AboutModal";
 import ContactModal from "./components/ContactModal";
+import ParallaxScroll from "./Layout/ParallaxScroll";
 
 const App = () => {
   const orbRef = useRef(null);
@@ -22,32 +22,6 @@ const App = () => {
   const [loadingFinished, setLoadingFinished] = useState(false);
   const workRef = useRef(null);
   const homeRef = useRef(null);
-  const aboutRef = useRef(null);
-
-  const handleScrollToWork = () => {
-    workRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleSectionScroll = (section) => {
-    switch (section) {
-      case 'home':
-        homeRef.current?.scrollIntoView({ behavior: "smooth" });
-        break;
-      case 'work':
-        workRef.current?.scrollIntoView({ behavior: "smooth" });
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleOpenContact = () => {
-    setShowContact(true);
-  };
-
-  const handleOpenAbout = () => {
-    setShowAbout(true);
-  };
 
   const handleCloseModals = () => {
     setShowContact(false);
@@ -110,37 +84,37 @@ const App = () => {
 
   // Main site
   return (
-    <div
-      className={`relative bg-black text-[#888888] ${
-        showContact || showAbout ? "overflow-hidden" : ""
-      }`}
-    >
-      <SideNavigation />
-      <FloatingNavBar />
+    <div>
+      <ParallaxScroll />
+      {/* <div
+        className={`relative bg-black text-[#888888] ${
+          showContact || showAbout ? "overflow-hidden" : ""
+        }`}
+      >
+        <SideNavigation />
+        <FloatingNavBar />
 
-      <div id="home" ref={homeRef}>
-        <ParticleRing>
-          <LogoScroll />
-        </ParticleRing>
-      </div>
+        <div id="home" ref={homeRef}>
+          <ParticleRing>
+            <LogoScroll />
+          </ParticleRing>
+        </div>
 
-      <div id="work" ref={workRef}>
-        <RippleSection />
-      </div>
+        <div id="work" ref={workRef}>
+          <RippleSection />
+        </div>
+        <footer
+          id="contact"
+          className="h-[60vh] flex flex-col items-center justify-center space-y-4"
+        >
+          <p className="text-lg">Made with ❤️ Inspired by Hamad</p>
+          <p className="text-sm">© 2025 OPX</p>
+        </footer>
 
-      <footer id="contact" className="h-[60vh] flex flex-col items-center justify-center space-y-4">
-        <p className="text-lg">Made with ❤️ Inspired by Hamad</p>
-        <p className="text-sm">© 2025 OPX</p>
-      </footer>
-
-      {/* Modals */}
-      <Modal isOpen={showContact} onClose={handleCloseModals}>
-        <ContactModal onClose={handleCloseModals} />
-      </Modal>
-
-      <Modal isOpen={showAbout} onClose={handleCloseModals}>
-        <AboutModal onClose={handleCloseModals} />
-      </Modal>
+        <Modal isOpen={showContact} onClose={handleCloseModals}>
+          <ContactModal onClose={handleCloseModals} />
+        </Modal>
+      </div> */}
     </div>
   );
 };

@@ -1,0 +1,15 @@
+@layer parallax {
+  @keyframes parallax {
+    from {
+      transform: translate(0%, -50%);
+    }
+    to {
+      transform: translate(0%, 50%);
+    }
+  }
+  @supports not (animation-timeline: scroll()) {
+    img {
+      transform: translate(0%, 0%) !important;
+    }
+  }
+}
