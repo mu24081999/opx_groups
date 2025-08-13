@@ -3,11 +3,10 @@ import LogoScroll from "./components/LogoScroll";
 import RippleSection from "./components/RippleSection";
 import FloatingNavBar from "./components/Navbar";
 import ParticleRing from "./components/ParticleRing";
-import Preloader from "./components/PreLoader";
-import SideNavigation from "./components/SideNavigation";
-import Modal from "./components/Modal";
-import ContactModal from "./components/ContactModal";
-import ParallaxScroll from "./Layout/ParallaxScroll";
+import ParallaxLayout from "./Layout/ParallaxLayout";
+import AnimatedBackgroundElements from "./components/AnimatedBackgroundElements";
+import EnhancedHeroSection from "./components/EnhancedHeroSection";
+import SmoothScrollNav from "./components/SmoothScrollNav";
 
 const App = () => {
   const orbRef = useRef(null);
@@ -84,38 +83,22 @@ const App = () => {
 
   // Main site
   return (
-    <div>
-      <ParallaxScroll />
-      {/* <div
-        className={`relative bg-black text-[#888888] ${
-          showContact || showAbout ? "overflow-hidden" : ""
-        }`}
-      >
-        <SideNavigation />
-        <FloatingNavBar />
+    <>
+      <SmoothScrollNav />
 
-        <div id="home" ref={homeRef}>
-          <ParticleRing>
-            <LogoScroll />
-          </ParticleRing>
-        </div>
+      {/* Enhanced Hero Section */}
+      <section id="hero">
+        <EnhancedHeroSection />
+        <AnimatedBackgroundElements />
+      </section>
 
-        <div id="work" ref={workRef}>
-          <RippleSection />
-        </div>
-        <footer
-          id="contact"
-          className="h-[60vh] flex flex-col items-center justify-center space-y-4"
-        >
-          <p className="text-lg">Made with ❤️ Inspired by Hamad</p>
-          <p className="text-sm">© 2025 OPX</p>
-        </footer>
+      {/* Original Layout */}
+      <section id="about">
+        <ParallaxLayout />
+      </section>
 
-        <Modal isOpen={showContact} onClose={handleCloseModals}>
-          <ContactModal onClose={handleCloseModals} />
-        </Modal>
-      </div> */}
-    </div>
+      {/* <ParticleRing /> */}
+    </>
   );
 };
 
