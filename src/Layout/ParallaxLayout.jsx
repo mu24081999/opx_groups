@@ -46,30 +46,37 @@ const ParallaxLayout = ({ children }) => {
       }
     };
 
+    // Throttled mouse movement for better performance
+    let throttleTimeout;
     const handleMouseMove = (e) => {
-      if (!containerRef.current) return;
+      if (!containerRef.current || throttleTimeout) return;
 
-      const rect = containerRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+      throttleTimeout = setTimeout(() => {
+        const rect = containerRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
 
-      const normalizedX = (e.clientX - centerX) / (rect.width / 2);
-      const normalizedY = (e.clientY - centerY) / (rect.height / 2);
+        const normalizedX = (e.clientX - centerX) / (rect.width / 2);
+        const normalizedY = (e.clientY - centerY) / (rect.height / 2);
 
-      setMousePosition({ x: normalizedX, y: normalizedY });
-      mouseX.set(normalizedX * 20);
-      mouseY.set(normalizedY * 20);
+        setMousePosition({ x: normalizedX, y: normalizedY });
+        mouseX.set(normalizedX * (dimensions.width < 768 ? 10 : 20));
+        mouseY.set(normalizedY * (dimensions.width < 768 ? 10 : 20));
+
+        throttleTimeout = null;
+      }, 16); // ~60fps throttling
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('resize', updateDimensions);
     updateDimensions();
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', updateDimensions);
+      if (throttleTimeout) clearTimeout(throttleTimeout);
     };
-  }, [mouseX, mouseY]);
+  }, [mouseX, mouseY, dimensions.width]);
 
   return (
     <div
