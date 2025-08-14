@@ -73,7 +73,7 @@ const ParallaxLayout = ({ children }) => {
   return (
     <div
       ref={containerRef}
-      className="relative min-h-screen overflow-hidden bg-black"
+      className="relative min-h-screen overflow-hidden bg-black cinematic-container"
     >
       {/* Animated Background Particles */}
       <motion.div
