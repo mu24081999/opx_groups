@@ -192,6 +192,43 @@ const ParallaxLayout = ({ children }) => {
         ))}
       </div>
 
+      {/* Cinematic Effects Overlay */}
+      <div className="cinematic-overlay">
+        {/* Film Grain */}
+        <div className="film-grain" />
+
+        {/* Dark Vignette */}
+        <div className="dark-vignette" />
+
+        {/* Scanlines */}
+        <div className="scanlines" />
+
+        {/* Light Beams */}
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className="light-beam"
+            style={{
+              left: `${30 + i * 20}%`,
+              animationDelay: `${i * 5}s`,
+            }}
+          />
+        ))}
+
+        {/* Floating Particles */}
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className="floating-particle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 20}s`,
+              animationDuration: `${15 + Math.random() * 10}s`,
+            }}
+          />
+        ))}
+      </div>
+
       {/* Scrolling Progress Indicator */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 z-50 origin-left"
