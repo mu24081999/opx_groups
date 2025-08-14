@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import BackgroundLayout from "../components/BackgroundLayout";
+import "./cinematic.css";
 
 const ParallaxLayout = ({ children }) => {
   const containerRef = useRef(null);
