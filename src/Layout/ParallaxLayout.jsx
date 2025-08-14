@@ -116,7 +116,7 @@ const ParallaxLayout = ({ children }) => {
         {[...Array(8)].map((_, i) => {
           const shapes = ['circle', 'square', 'triangle', 'diamond'];
           const colors = ['purple-500/15', 'blue-500/15', 'pink-500/10', 'cyan-500/10'];
-          const sizes = [16, 20, 24, 28, 32];
+          const sizes = ['w-4 h-4', 'w-5 h-5', 'w-6 h-6', 'w-7 h-7', 'w-8 h-8'];
 
           return (
             <motion.div
