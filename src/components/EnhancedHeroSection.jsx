@@ -45,7 +45,7 @@ const EnhancedHeroSection = () => {
   return (
     <div
       ref={containerRef}
-      className="relative h-screen overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black"
+      className="relative h-screen overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       {/* Animated Background Grid */}
