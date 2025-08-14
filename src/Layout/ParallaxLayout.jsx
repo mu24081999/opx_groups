@@ -113,38 +113,49 @@ const ParallaxLayout = ({ children }) => {
 
       {/* Floating Geometric Elements */}
       <div className="fixed inset-0 z-20 pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute"
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{
-              opacity: [0.1, 0.3, 0.1],
-              scale: [1, 1.2, 1],
-              rotate: [0, 360],
-              x: [0, Math.sin(i) * 50, 0],
-              y: [0, Math.cos(i) * 30, 0],
-            }}
-            transition={{
-              duration: 15 + i * 3,
-              repeat: Infinity,
-              delay: i * 2,
-              ease: "easeInOut",
-            }}
-            style={{
-              left: `${20 + (i % 3) * 30}%`,
-              top: `${20 + Math.floor(i / 3) * 40}%`,
-              x: springX,
-              y: springY,
-            }}
-          >
-            <div
-              className={`w-${8 + i * 2} h-${8 + i * 2} border border-purple-500/20 ${
-                i % 2 === 0 ? 'rounded-full' : 'rotate-45'
-              }`}
-            />
-          </motion.div>
-        ))}
+        {[...Array(8)].map((_, i) => {
+          const shapes = ['circle', 'square', 'triangle', 'diamond'];
+          const colors = ['purple-500/15', 'blue-500/15', 'pink-500/10', 'cyan-500/10'];
+          const sizes = [16, 20, 24, 28, 32];
+
+          return (
+            <motion.div
+              key={i}
+              className="absolute"
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{
+                opacity: [0.05, 0.2, 0.05],
+                scale: [0.8, 1.1, 0.8],
+                rotate: i % 2 === 0 ? [0, 360] : [360, 0],
+                x: [0, Math.sin(i * 0.5) * 60, 0],
+                y: [0, Math.cos(i * 0.5) * 40, 0],
+              }}
+              transition={{
+                duration: 18 + i * 4,
+                repeat: Infinity,
+                delay: i * 2.5,
+                ease: "easeInOut",
+              }}
+              style={{
+                left: `${15 + (i % 4) * 22}%`,
+                top: `${15 + Math.floor(i / 4) * 35}%`,
+                x: springX,
+                y: springY,
+              }}
+            >
+              <div
+                className={`w-${sizes[i % sizes.length]} h-${sizes[i % sizes.length]} border border-${colors[i % colors.length]} ${
+                  shapes[i % shapes.length] === 'circle' ? 'rounded-full' :
+                  shapes[i % shapes.length] === 'diamond' ? 'rotate-45' :
+                  shapes[i % shapes.length] === 'triangle' ? 'clip-triangle' : ''
+                }`}
+                style={{
+                  boxShadow: `0 0 ${10 + i * 2}px rgba(${i % 2 === 0 ? '168, 85, 247' : '59, 130, 246'}, 0.1)`,
+                }}
+              />
+            </motion.div>
+          );
+        })}
       </div>
 
       {/* Cinematic Overlay */}
