@@ -6,7 +6,12 @@ import ParticleRing from "./components/ParticleRing";
 import ParallaxLayout from "./Layout/ParallaxLayout";
 import AnimatedBackgroundElements from "./components/AnimatedBackgroundElements";
 import EnhancedHeroSection from "./components/EnhancedHeroSection";
+import SlidingHeroSection from "./components/SlidingHeroSection";
 import SmoothScrollNav from "./components/SmoothScrollNav";
+import FloatingNav from "./components/FloatingNav";
+import ModalWrapper from "./components/ModalWrapper";
+import ContactModal from "./components/ContactModal";
+import AboutUsModal from "./components/AboutModal";
 import Preloader from "./components/PreLoader";
 
 const App = () => {
