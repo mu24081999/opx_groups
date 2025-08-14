@@ -21,10 +21,11 @@ const ParallaxLayout = ({ children }) => {
   const springX = useSpring(mouseX, { stiffness: 150, damping: 20 });
   const springY = useSpring(mouseY, { stiffness: 150, damping: 20 });
 
-  // Transform values based on scroll
-  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, -400]);
-  const foregroundY = useTransform(scrollYProgress, [0, 1], [0, -200]);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.3, 0.5, 0.7, 0.9]);
+  // Transform values based on scroll (with device-specific optimizations)
+  const isMobile = dimensions.width < 768;
+  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -200 : -400]);
+  const foregroundY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -100 : -200]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.4, 0.6, 0.75, 0.9]);
 
   // Cinematic effects
   const cinematicGradient = useTransform(
