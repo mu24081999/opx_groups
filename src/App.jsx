@@ -7,7 +7,7 @@ import ParallaxLayout from "./Layout/ParallaxLayout";
 import AnimatedBackgroundElements from "./components/AnimatedBackgroundElements";
 import EnhancedHeroSection from "./components/EnhancedHeroSection";
 import SmoothScrollNav from "./components/SmoothScrollNav";
-import Preloader from "./components/Preloader";
+import Preloader from "./components/PreLoader";
 
 const App = () => {
   const orbRef = useRef(null);
