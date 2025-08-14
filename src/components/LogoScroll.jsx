@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import O from "../assets/O.png";
 import P from "../assets/P.png";
 import X from "../assets/X.png";
-import ParticleRing from "./ParticleRing";
 
 const LogoScroll = () => {
   const [scrollRatio, setScrollRatio] = useState(0);
@@ -76,31 +75,31 @@ const LogoScroll = () => {
   const hidePXComplete = scrollRatio > 0.5; // When P and X are completely hidden
 
   // Calculate transforms with smooth transitions
-  const oTranslateX = fullLogoComplete ?
-    // After full logo, move O back to center smoothly
-    easedStep1 * -80 * (1 - Math.min((scrollRatio - 0.3) / 0.2, 1)) :
-    // Normal movement during logo formation
-    easedStep1 * -80;
+  const oTranslateX = fullLogoComplete
+    ? // After full logo, move O back to center smoothly
+      easedStep1 * -80 * (1 - Math.min((scrollRatio - 0.3) / 0.2, 1))
+    : // Normal movement during logo formation
+      easedStep1 * -80;
 
-  const oRotation = fullLogoComplete ?
-    // Continue rotation after logo is complete
-    (scrollRatio - 0.3) * 720 : // More rotation after completion
-    easedStep4 * 360;
+  const oRotation = fullLogoComplete
+    ? // Continue rotation after logo is complete
+      (scrollRatio - 0.3) * 720 // More rotation after completion
+    : easedStep4 * 360;
 
-  const oScale = fullLogoComplete ?
-    // Scale during center rotation phase
-    1 + ((scrollRatio - 0.3) * 2) :
-    // Normal scaling during logo formation
-    1 + (easedStep4 * 1.5);
+  const oScale = fullLogoComplete
+    ? // Scale during center rotation phase
+      1 + (scrollRatio - 0.3) * 2
+    : // Normal scaling during logo formation
+      1 + easedStep4 * 1.5;
 
-  const pTranslateX = 80 - (easedStep2 * 80);
-  const pOpacity = hidePXStart ?
-    Math.max(0, easedStep2 * (1 - ((scrollRatio - 0.4) / 0.1))) :
-    easedStep2;
+  const pTranslateX = 80 - easedStep2 * 80;
+  const pOpacity = hidePXStart
+    ? Math.max(0, easedStep2 * (1 - (scrollRatio - 0.4) / 0.1))
+    : easedStep2;
 
-  const xOpacity = hidePXStart ?
-    Math.max(0, easedStep3 * (1 - ((scrollRatio - 0.4) / 0.1))) :
-    easedStep3;
+  const xOpacity = hidePXStart
+    ? Math.max(0, easedStep3 * (1 - (scrollRatio - 0.4) / 0.1))
+    : easedStep3;
 
   return (
     <div className="h-[150vh] bg-black text-white relative scroll-smooth">

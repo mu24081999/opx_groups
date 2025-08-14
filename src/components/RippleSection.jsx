@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import ParticleRing from "./ParticleRing";
 import DynamicContentSection from "./DynamicContentSection";
 
 const cardData = [
@@ -25,7 +24,7 @@ const cardData = [
     id: "ai-chat",
     title: "OPX AI CHAT",
     desc: "Natural AI chat interfaces.",
-    align: "right"
+    align: "right",
   },
   {
     id: "stat-analysis",

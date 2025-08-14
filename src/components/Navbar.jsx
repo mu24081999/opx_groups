@@ -16,7 +16,7 @@ const Container = styled.div`
   position: fixed;
   top: 1.5rem;
   right: 1.5rem;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0)
   backdrop-filter: blur(10px);
   border-radius: 2rem;
   padding: 0.6rem 1.2rem;
@@ -27,8 +27,7 @@ const Container = styled.div`
   border: 1px solid rgba(136, 136, 136, 0.2);
 
   /* Glass effect for 3D look */
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.3),
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(136, 136, 136, 0.1);
 `;
 
@@ -91,7 +90,7 @@ const FloatingNavBar = () => {
             className="rounded-full text-bold hover:bg-gray-300 cursor-pointer px-3 py-1 text-sm text-[#888] hover:text-white transition-all duration-300"
             href="#layer2"
             style={{
-              filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))'
+              filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))",
             }}
           >
             Work
@@ -109,7 +108,7 @@ const FloatingNavBar = () => {
             className="rounded-full text-bold cursor-pointer px-3 py-1 text-sm text-white bg-gray-500 hover:bg-[#888] transition-all duration-300"
             onClick={() => openModal("contact")}
             style={{
-              filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))'
+              filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))",
             }}
           >
             Contact
