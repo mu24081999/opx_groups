@@ -144,7 +144,7 @@ const ParallaxLayout = ({ children }) => {
               }}
             >
               <div
-                className={`w-${sizes[i % sizes.length]} h-${sizes[i % sizes.length]} border border-${colors[i % colors.length]} ${
+                className={`${sizes[i % sizes.length]} border border-${colors[i % colors.length]} ${
                   shapes[i % shapes.length] === 'circle' ? 'rounded-full' :
                   shapes[i % shapes.length] === 'diamond' ? 'rotate-45' :
                   shapes[i % shapes.length] === 'triangle' ? 'clip-triangle' : ''
