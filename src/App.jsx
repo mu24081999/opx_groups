@@ -84,22 +84,70 @@ const App = () => {
 
   // Main site
   return (
-    <>
+    <ParallaxLayout>
       <SmoothScrollNav />
 
       {/* Enhanced Hero Section */}
-      <section id="hero">
+      <section id="hero" className="min-h-screen">
         <EnhancedHeroSection />
         <AnimatedBackgroundElements />
       </section>
 
-      {/* Original Layout */}
-      <section id="about">
-        <ParallaxLayout />
+      {/* Additional Content Sections */}
+      <section id="about" className="min-h-screen flex items-center justify-center">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">
+            About OPX Groups
+          </h2>
+          <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+            We are a cutting-edge technology company specializing in immersive digital experiences.
+            Our team combines creativity with technical expertise to deliver innovative solutions
+            that push the boundaries of web development.
+          </p>
+        </div>
       </section>
 
-      {/* <ParticleRing /> */}
-    </>
+      <section id="services" className="min-h-screen flex items-center justify-center">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">
+            Our Services
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="bg-white/5 backdrop-blur-sm p-8 rounded-lg border border-white/10">
+              <h3 className="text-2xl font-semibold text-white mb-4">3D Web Experiences</h3>
+              <p className="text-gray-300">Creating immersive 3D environments and interactive experiences for the web.</p>
+            </div>
+            <div className="bg-white/5 backdrop-blur-sm p-8 rounded-lg border border-white/10">
+              <h3 className="text-2xl font-semibold text-white mb-4">Advanced Animations</h3>
+              <p className="text-gray-300">Sophisticated motion design and animations that enhance user engagement.</p>
+            </div>
+            <div className="bg-white/5 backdrop-blur-sm p-8 rounded-lg border border-white/10">
+              <h3 className="text-2xl font-semibold text-white mb-4">Custom Development</h3>
+              <p className="text-gray-300">Tailored solutions built with cutting-edge technologies and frameworks.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" className="min-h-screen flex items-center justify-center">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">
+            Get In Touch
+          </h2>
+          <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+            Ready to bring your vision to life? Let's create something extraordinary together.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105">
+              Start a Project
+            </button>
+            <button className="px-8 py-4 border-2 border-white/30 text-white rounded-full font-semibold hover:bg-white/10 transition-all duration-300">
+              View Portfolio
+            </button>
+          </div>
+        </div>
+      </section>
+    </ParallaxLayout>
   );
 };
 
