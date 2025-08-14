@@ -9,7 +9,7 @@ const MAX_RADIUS = 15;
 const DEPTH = 2;
 const LEFT_COLOR = "faf3e7";
 const RIGHT_COLOR = "8b5cf6";
-const NUM_POINTS = 2500;
+const NUM_POINTS = 400;
 
 // Available shape configurations
 const SHAPES = {
@@ -327,9 +327,15 @@ const ScrollCamera = ({ scrollProgress }) => {
     // Smooth camera movement
     const smoothingFactor = Math.min(delta * 2, 0.1);
 
-    currentPosition.current[0] += (targetPosition.current[0] - currentPosition.current[0]) * smoothingFactor;
-    currentPosition.current[1] += (targetPosition.current[1] - currentPosition.current[1]) * smoothingFactor;
-    currentPosition.current[2] += (targetPosition.current[2] - currentPosition.current[2]) * smoothingFactor;
+    currentPosition.current[0] +=
+      (targetPosition.current[0] - currentPosition.current[0]) *
+      smoothingFactor;
+    currentPosition.current[1] +=
+      (targetPosition.current[1] - currentPosition.current[1]) *
+      smoothingFactor;
+    currentPosition.current[2] +=
+      (targetPosition.current[2] - currentPosition.current[2]) *
+      smoothingFactor;
 
     camera.position.set(...currentPosition.current);
     camera.lookAt(0, 0, 0);
@@ -402,11 +408,11 @@ const ParticleRing = ({ children }) => {
       });
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // Set initial value
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
       }
@@ -437,7 +443,7 @@ const ParticleRing = ({ children }) => {
           powerPreference: "high-performance",
           outputColorSpace: "srgb",
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.2
+          toneMappingExposure: 1.2,
         }}
       >
         <OrbitControls
@@ -461,7 +467,12 @@ const ParticleRing = ({ children }) => {
 
         <Environment preset="city" background={false} />
         <ambientLight intensity={0.2} />
-        <directionalLight position={[10, 10, 5]} intensity={1.5} color="#ffffff" castShadow />
+        <directionalLight
+          position={[10, 10, 5]}
+          intensity={1.5}
+          color="#ffffff"
+          castShadow
+        />
         <pointLight position={[0, 0, 25]} intensity={2} color="#ffffff" />
         <pointLight position={[-15, 10, 15]} intensity={1} color="#8b5cf6" />
         <pointLight position={[15, -10, 10]} intensity={0.8} color="#faf3e7" />
@@ -512,7 +523,13 @@ const ParticleRing = ({ children }) => {
   );
 };
 
-const PointCircle = ({ mousePos, ripples, points, currentShape, scrollProgress }) => {
+const PointCircle = ({
+  mousePos,
+  ripples,
+  points,
+  currentShape,
+  scrollProgress,
+}) => {
   const ref = useRef();
   const [time, setTime] = useState(0);
   const targetRotation = useRef({ x: 0, y: 0, z: 0 });
@@ -538,9 +555,12 @@ const PointCircle = ({ mousePos, ripples, points, currentShape, scrollProgress }
     // Ultra-smooth interpolation for butter-smooth rotation
     const smoothingFactor = Math.min(delta * 1.5, 0.05); // Slower, smoother interpolation
 
-    currentRotation.current.x += (targetRotation.current.x - currentRotation.current.x) * smoothingFactor;
-    currentRotation.current.y += (targetRotation.current.y - currentRotation.current.y) * smoothingFactor;
-    currentRotation.current.z += (targetRotation.current.z - currentRotation.current.z) * smoothingFactor;
+    currentRotation.current.x +=
+      (targetRotation.current.x - currentRotation.current.x) * smoothingFactor;
+    currentRotation.current.y +=
+      (targetRotation.current.y - currentRotation.current.y) * smoothingFactor;
+    currentRotation.current.z +=
+      (targetRotation.current.z - currentRotation.current.z) * smoothingFactor;
 
     // Apply the smooth rotation
     ref.current.rotation.x = currentRotation.current.x;
