@@ -4,6 +4,7 @@ import music from "../assets/fake_verthandi.mp3";
 import Modal from "./Modal";
 import ContactModal from "./ContactModal";
 import AboutUsModal from "./AboutModal";
+import { PlayIcon, PauseIcon } from "./Icons";
 // Wavy animation for smooth flowing line
 const wave = keyframes`
   0% { d: path("M0 10 Q 10 0 20 10 T 40 10 T 60 10 T 80 10"); }
@@ -15,15 +16,20 @@ const Container = styled.div`
   position: fixed;
   top: 1.5rem;
   right: 1.5rem;
-  background: #1b1a1ad6;
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(10px);
   border-radius: 2rem;
   padding: 0.6rem 1.2rem;
   display: flex;
   align-items: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   gap: 1rem;
   z-index: 100;
+  border: 1px solid rgba(136, 136, 136, 0.2);
+
+  /* Glass effect for 3D look */
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(136, 136, 136, 0.1);
 `;
 
 const Button = styled.button`
@@ -53,6 +59,9 @@ const WaveContainer = styled.svg`
     animation: ${wave} 2s ease-in-out infinite;
     animation-play-state: ${(props) => (props.playing ? "running" : "paused")};
   }
+
+  /* Glass effect for 3D look */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 `;
 
 const FloatingNavBar = () => {
@@ -77,10 +86,13 @@ const FloatingNavBar = () => {
   return (
     <>
       <>
-        <Container className="shadow-lg border border-gray-50">
+        <Container>
           <a
-            className="rounded-full text-bold hover:bg-gry-300 cursor-pointer px-3 py-1 text-sm text-[#888]"
+            className="rounded-full text-bold hover:bg-gray-300 cursor-pointer px-3 py-1 text-sm text-[#888] hover:text-white transition-all duration-300"
             href="#layer2"
+            style={{
+              filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))'
+            }}
           >
             Work
           </a>
@@ -94,8 +106,11 @@ const FloatingNavBar = () => {
           </WaveContainer>
 
           <button
-            className="rounded-full text-bold hover:bg-gry-300 cursor-pointer px-3 py-1 text-sm text-white bg-gray-500"
+            className="rounded-full text-bold cursor-pointer px-3 py-1 text-sm text-white bg-gray-500 hover:bg-[#888] transition-all duration-300"
             onClick={() => openModal("contact")}
+            style={{
+              filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))'
+            }}
           >
             Contact
           </button>

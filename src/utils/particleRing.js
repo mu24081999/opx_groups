@@ -3,7 +3,7 @@ const MAX_RADIUS = 15;
 const DEPTH = 2;
 const LEFT_COLOR = "faf3e7";
 const RIGHT_COLOR = "8b5cf6";
-const NUM_POINTS = 2500;
+const NUM_POINTS = 800;
 
 const getGradientStop = (ratio) => {
   ratio = ratio > 1 ? 1 : ratio < 0 ? 0 : ratio;
@@ -70,7 +70,7 @@ export const pointsInner = Array.from({ length: NUM_POINTS }, (_, k) => {
   return { idx: k + 1, position: [x, y, z], color };
 });
 
-export const pointsOuter = Array.from({ length: NUM_POINTS / 4 }, (_, k) => {
+export const pointsOuter = Array.from({ length: NUM_POINTS / 6 }, (_, k) => {
   const radius = randomFromInterval(MIN_RADIUS / 2, MAX_RADIUS * 2);
   const angle = Math.random() * Math.PI * 2;
   const x = Math.cos(angle) * radius;
