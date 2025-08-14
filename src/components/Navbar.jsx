@@ -3,8 +3,6 @@ import styled, { keyframes } from "styled-components";
 import music from "../assets/fake_verthandi.mp3";
 import Modal from "./Modal";
 import ContactModal from "./ContactModal";
-import AboutUsModal from "./AboutModal";
-import { PlayIcon, PauseIcon } from "./Icons";
 // Wavy animation for smooth flowing line
 const wave = keyframes`
   0% { d: path("M0 10 Q 10 0 20 10 T 40 10 T 60 10 T 80 10"); }

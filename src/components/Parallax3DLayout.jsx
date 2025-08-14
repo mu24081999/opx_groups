@@ -1,184 +1,135 @@
-// import React, { useState, useEffect, useRef } from "react";
-
-// // Example custom slider component
-// const MySlider = () => {
-//   return (
-//     <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg text-white">
-//       <p>🔹 This is the slider placeholder</p>
-//     </div>
-//   );
-// };
-
-// const Parallax3DLayout = () => {
-//   const [scrollY, setScrollY] = useState(0);
-//   const containerRef = useRef(null);
-
-//   useEffect(() => {
-//     const onScroll = () => setScrollY(window.scrollY);
-//     window.addEventListener("scroll", onScroll, { passive: true });
-//     return () => window.removeEventListener("scroll", onScroll);
-//   }, []);
-
-//   const sections = [
-//     {
-//       title: "Welcome to the Future",
-//       subtitle: "Experience seamless 3D parallax",
-//       bg: "from-gray-900 via-gray-900 to-indigo-900",
-//       hasSlider: false,
-//     },
-//     {
-//       title: "Innovative Design",
-//       subtitle: "Smooth animations that captivate",
-//       bg: "from-gray-900 via-gray-900 to-indigo-900",
-//       hasSlider: true, // only in this section
-//     },
-//     {
-//       title: "Cutting Edge Technology",
-//       subtitle: "Performance meets aesthetics",
-//       bg: "from-gray-900 via-gray-900 to-indigo-900",
-//       hasSlider: false,
-//     },
-//   ];
-
-//   const sectionHeight = window.innerHeight * 2.5;
-//   const totalHeight = sections.length * sectionHeight;
-
-//   const getProgress = (index) => {
-//     const start = index * sectionHeight;
-//     const pos = scrollY - start;
-//     return Math.min(Math.max(pos / sectionHeight, 0), 1);
-//   };
-
-//   const isSectionActive = (index) => {
-//     const start = index * sectionHeight;
-//     const end = start + sectionHeight;
-//     const center = scrollY + window.innerHeight / 2;
-//     return center >= start && center < end;
-//   };
-
-//   return (
-//     <div
-//       ref={containerRef}
-//       className="relative w-full"
-//       style={{ height: totalHeight }}
-//     >
-//       {/* Navigation */}
-//       <div className="fixed left-6 top-1/2 -translate-y-1/2 z-50 flex flex-col space-y-3">
-//         {sections.map((sec, index) => {
-//           const isActive = isSectionActive(index);
-//           return (
-//             <a
-//               className="flex items-center space-x-2 cursor-pointer"
-//               key={index}
-//               href={`#section-${index}`}
-//             >
-//               <button
-//                 className={`w-2 h-2 rounded-full backdrop-blur-md border border-white/20 transition-all duration-300 ${
-//                   isActive
-//                     ? "scale-110 bg-white/30 shadow-lg"
-//                     : "bg-white/10 hover:bg-white/20"
-//                 }`}
-//               />
-//               <span
-//                 className="text-xs font-medium text-white/50"
-//                 style={{ opacity: isActive ? 1 : 0.6 }}
-//               >
-//                 {sec.title}
-//               </span>
-//             </a>
-//           );
-//         })}
-//       </div>
-
-//       {/* Sections */}
-//       {sections.map((sec, i) => {
-//         const progress = getProgress(i);
-//         const titleOpacity = Math.min(progress / 0.25, 1);
-//         const subtitleOpacity =
-//           progress > 0.25 ? Math.min((progress - 0.25) / 0.25, 1) : 0;
-//         const sliderOpacity =
-//           progress > 0.5 ? Math.min((progress - 0.5) / 0.25, 1) : 0;
-
-//         return (
-//           <div
-//             key={i}
-//             className="absolute inset-0 top-auto"
-//             style={{ top: i * sectionHeight }}
-//             id={`section-${i}`}
-//           >
-//             <div
-//               className={`sticky top-0 h-screen flex flex-col items-center justify-center bg-gradient-to-br ${sec.bg}`}
-//               style={{
-//                 clipPath:
-//                   i % 2 === 0
-//                     ? "polygon(0 50px, 100% 0, 100% 100%, 0% 100%)"
-//                     : "polygon(0 0, 100% 50px, 100% 100%, 0% 100%)",
-//               }}
-//             >
-//               {/* Title */}
-//               <h1
-//                 style={{
-//                   opacity: titleOpacity,
-//                   transform: `translateY(${(1 - titleOpacity) * 40}px)`,
-//                 }}
-//                 className="text-white text-6xl md:text-8xl font-bold mb-4 transition-all duration-500"
-//               >
-//                 {sec.title}
-//               </h1>
-
-//               {/* Subtitle */}
-//               <p
-//                 style={{
-//                   opacity: subtitleOpacity,
-//                   transform: `translateY(${(1 - subtitleOpacity) * 40}px)`,
-//                 }}
-//                 className="text-white text-xl md:text-2xl transition-all duration-500 delay-100"
-//               >
-//                 {sec.subtitle}
-//               </p>
-
-//               {/* Extra Component */}
-//               {sec.hasSlider && (
-//                 <div
-//                   style={{
-//                     opacity: sliderOpacity,
-//                     transform: `translateY(${(1 - sliderOpacity) * 40}px)`,
-//                   }}
-//                   className="mt-6 transition-all duration-500 delay-200"
-//                 >
-//                   <MySlider />
-//                 </div>
-//               )}
-//             </div>
-//           </div>
-//         );
-//       })}
-//     </div>
-//   );
-// };
-
-// export default Parallax3DLayout;
 import React, { useState, useEffect, useRef } from "react";
-import AutoSlider from "./AutoSlider"; // Import the custom slider component
-// Example custom slider component
-const MySlider = () => {
-  const slidesData = [
-    {
-      title: "Slide One",
-      description: "This is the first slide's description.",
-    },
-    {
-      title: "Slide Two",
-      description: "This is the second slide's description.",
-    },
-    {
-      title: "Slide Three",
-      description: "This is the third slide's description.",
-    },
-  ];
+
+// Enhanced Smooth Tab Slider Component
+const TabSlider = ({ tabs, interval = 4000 }) => {
+  const [activeTab, setActiveTab] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const intervalRef = useRef(null);
+  const [progress, setProgress] = useState(0);
+
+  // Auto-advance tabs with progress tracking
+  useEffect(() => {
+    const startInterval = () => {
+      intervalRef.current = setInterval(() => {
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setActiveTab((prev) => (prev + 1) % tabs.length);
+          setIsTransitioning(false);
+          setProgress(0);
+        }, 200);
+      }, interval);
+    };
+
+    startInterval();
+
+    // Progress bar animation
+    const progressInterval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          return 0;
+        }
+        return prev + 100 / (interval / 50);
+      });
+    }, 50);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      clearInterval(progressInterval);
+    };
+  }, [tabs.length, interval]);
+
+  const switchToTab = (index) => {
+    if (index === activeTab || isTransitioning) return;
+
+    setIsTransitioning(true);
+    setProgress(0);
+
+    setTimeout(() => {
+      setActiveTab(index);
+      setIsTransitioning(false);
+    }, 200);
+
+    // Reset intervals
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    setTimeout(() => {
+      intervalRef.current = setInterval(() => {
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setActiveTab((prev) => (prev + 1) % tabs.length);
+          setIsTransitioning(false);
+          setProgress(0);
+        }, 200);
+      }, interval);
+    }, 100);
+  };
+
   return (
-    <div>
-      <AutoSlider slides={slidesData} interval={5000} />
+    <div className="bg-black/20 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl max-w-2xl mx-auto">
+      {/* Tab Headers */}
+      <div className="grid grid-cols-2 gap-3 mb-8">
+        {tabs.map((tab, index) => (
+          <button
+            key={index}
+            onClick={() => switchToTab(index)}
+            className={`relative p-4 rounded-xl text-left transition-all duration-500 overflow-hidden ${
+              index === activeTab
+                ? "bg-white/15 shadow-lg border border-white/20"
+                : "bg-white/5 hover:bg-white/10 border border-white/5"
+            }`}
+          >
+            {/* Active tab progress indicator */}
+            {index === activeTab && (
+              <div
+                className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-blue-400 to-indigo-400 transition-all duration-100 ease-linear"
+                style={{ width: `${progress}%` }}
+              />
+            )}
+
+            <h4
+              className={`font-semibold text-sm transition-all duration-300 ${
+                index === activeTab ? "text-white" : "text-white/70"
+              }`}
+            >
+              {tab.title}
+            </h4>
+          </button>
+        ))}
+      </div>
+
+      {/* Tab Content */}
+      <div className="relative min-h-[120px]">
+        <div
+          className={`absolute inset-0 transition-all duration-500 ease-out ${
+            isTransitioning
+              ? "opacity-0 translate-y-6 scale-95"
+              : "opacity-100 translate-y-0 scale-100"
+          }`}
+        >
+          <div className="text-center">
+            <h3 className="text-xl font-bold mb-4 text-white bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+              {tabs[activeTab]?.title}
+            </h3>
+            <p className="text-white/80 leading-relaxed text-sm">
+              {tabs[activeTab]?.description}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Tab Navigation Dots */}
+      <div className="flex justify-center space-x-2 mt-6">
+        {tabs.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => switchToTab(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-400 ${
+              index === activeTab
+                ? "bg-white scale-125 shadow-lg shadow-white/30"
+                : "bg-white/30 hover:bg-white/50"
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 };
@@ -195,29 +146,79 @@ const Parallax3DLayout = () => {
 
   const sections = [
     {
-      title: "Welcome to the Future",
-      subtitle: "Experience seamless 3D parallax",
-      bg: "from-gray-900 via-gray-900 to-indigo-900",
-      hasSlider: false,
-      position: "right",
-    },
-    {
-      title: "Innovative Design",
-      subtitle: "Smooth animations that captivate",
-      bg: "from-gray-900 via-gray-900 to-indigo-900",
+      title: "Answer Every Call. Close Every Opportunity.",
+      description:
+        "Our AI-powered Automated Call Center ensures no customer is left waiting. With human-like voice interaction, intelligent routing, and instant booking capabilities, we help you capture leads, schedule appointments, and deliver exceptional service — all without adding extra staff.",
       hasSlider: true,
-      position: "right",
+      tabsData: [
+        {
+          title: "AI Voice That Sounds Human",
+          description:
+            "Experience natural, conversational AI that makes customers feel like they're talking to a real person — without awkward pauses or robotic tones.",
+        },
+        {
+          title: "Instant Appointment Booking",
+          description:
+            "Customers can book appointments in real time while on the call, with automatic calendar sync to avoid double bookings.",
+        },
+        {
+          title: "Smart Call Routing",
+          description:
+            "Our system identifies caller needs and routes them to the right person or department instantly, improving efficiency and customer satisfaction.",
+        },
+        {
+          title: "24/7 Availability",
+          description:
+            "Never miss a call again. Our AI works around the clock, capturing leads and resolving customer queries day and night.",
+        },
+      ],
     },
     {
-      title: "Cutting Edge Technology",
-      subtitle: "Performance meets aesthetics",
-      bg: "from-gray-900 via-gray-900 to-indigo-900",
+      title: "Your 24/7 AI Sales & Support Assistant.",
+      description:
+        "Intellex AI engages your customers instantly across web chat, social media, and messaging apps. It answers questions, captures leads, books appointments, and closes sales — all while matching your brand's voice and personality.",
+      hasSlider: true,
+      tabsData: [
+        {
+          title: "Instant, Natural Conversations",
+          description:
+            "AI that chats like a real team member — providing fast, accurate, and friendly responses to every customer inquiry.",
+        },
+        {
+          title: "Lead Capture & CRM Sync",
+          description:
+            "Automatically collects and organizes customer details, pushing them straight to your CRM for quick follow-up.",
+        },
+        {
+          title: "Built-In Booking Engine",
+          description:
+            "Lets customers schedule services directly from chat with real-time availability checks and confirmations.",
+        },
+        {
+          title: "Multi-Channel Ready",
+          description:
+            "Deployed on your website today, ready for expansion to WhatsApp, Instagram, SMS, and more tomorrow.",
+        },
+      ],
+    },
+    {
+      title: "Building Digital Solutions That Work for You.",
+      description:
+        "From custom web platforms to advanced mobile apps, OPX Software Development delivers tailor-made solutions that streamline your operations, delight your customers, and grow your business.",
       hasSlider: false,
-      position: "right",
+      tabsData: [],
+    },
+    {
+      title: "Turning Data Into Actionable Insights.",
+      description:
+        "Our analytics team transforms raw numbers into clear strategies. With deep data analysis, performance tracking, and trend forecasting, we help you make smarter decisions that drive measurable results.",
+      hasSlider: false,
+      tabsData: [],
     },
   ];
 
-  const sectionHeight = window.innerHeight * 2.5;
+  const sectionHeight =
+    typeof window !== "undefined" ? window.innerHeight * 3 : 3000;
   const totalHeight = sections.length * sectionHeight;
 
   const getProgress = (index) => {
@@ -229,7 +230,8 @@ const Parallax3DLayout = () => {
   const isSectionActive = (index) => {
     const start = index * sectionHeight;
     const end = start + sectionHeight;
-    const center = scrollY + window.innerHeight / 2;
+    const center =
+      scrollY + (typeof window !== "undefined" ? window.innerHeight / 2 : 400);
     return center >= start && center < end;
   };
 
@@ -240,27 +242,37 @@ const Parallax3DLayout = () => {
       style={{ height: totalHeight }}
     >
       {/* Navigation */}
-      <div className="fixed left-6 top-1/2 -translate-y-1/2 z-50 flex flex-col space-y-3">
+      <div className="fixed left-6 top-1/2 -translate-y-1/2 z-50 flex flex-col space-y-4">
         {sections.map((sec, index) => {
           const isActive = isSectionActive(index);
+          const titles = [
+            "Automated Call Center",
+            "Intellex AI Chatbot",
+            "OPX Software Development",
+            "OPX Statistics & Analysis",
+          ];
+
           return (
             <a
-              className="flex items-center space-x-2 cursor-pointer"
+              className="flex items-center space-x-3 cursor-pointer group"
               key={index}
               href={`#section-${index}`}
             >
               <button
-                className={`w-2 h-2 rounded-full backdrop-blur-md border border-white/20 transition-all duration-300 ${
+                className={`w-3 h-3 rounded-full backdrop-blur-md border transition-all duration-700 ${
                   isActive
-                    ? "scale-110 bg-white/30 shadow-lg"
-                    : "bg-white/10 hover:bg-white/20"
+                    ? "scale-150 bg-white/60 border-white/50 shadow-lg shadow-white/30"
+                    : "bg-white/15 border-white/25 hover:bg-white/30 group-hover:scale-125"
                 }`}
               />
               <span
-                className="text-xs font-medium text-white/50"
-                style={{ opacity: isActive ? 1 : 0.6 }}
+                className={`text-xs font-medium transition-all duration-500 whitespace-nowrap ${
+                  isActive
+                    ? "text-white font-semibold"
+                    : "text-white/60 group-hover:text-white/85"
+                }`}
               >
-                {sec.title}
+                {titles[index]}
               </span>
             </a>
           );
@@ -270,11 +282,20 @@ const Parallax3DLayout = () => {
       {/* Sections */}
       {sections.map((sec, i) => {
         const progress = getProgress(i);
-        const titleOpacity = Math.min(progress / 0.25, 1);
-        const subtitleOpacity =
-          progress > 0.25 ? Math.min((progress - 0.25) / 0.25, 1) : 0;
+        const titleOpacity = Math.min(progress / 0.2, 1);
+        const titleTransform = `translateY(${(1 - titleOpacity) * 50}px)`;
+
+        const descriptionOpacity =
+          progress > 0.2 ? Math.min((progress - 0.2) / 0.2, 1) : 0;
+        const descriptionTransform = `translateY(${
+          (1 - descriptionOpacity) * 50
+        }px)`;
+
         const sliderOpacity =
-          progress > 0.5 ? Math.min((progress - 0.5) / 0.25, 1) : 0;
+          progress > 0.4 ? Math.min((progress - 0.4) / 0.3, 1) : 0;
+        const sliderTransform = `translateY(${
+          (1 - sliderOpacity) * 50
+        }px) scale(${0.95 + sliderOpacity * 0.05})`;
 
         return (
           <div
@@ -284,52 +305,47 @@ const Parallax3DLayout = () => {
             id={`section-${i}`}
           >
             <div
-              className={`sticky top-0 h-screen flex items-center bg-gradient-to-br ${sec.bg}`}
+              className="sticky top-0 h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-indigo-900"
               style={{
                 clipPath:
                   i % 2 === 0
-                    ? "polygon(0 50px, 100% 0, 100% 100%, 0% 100%)"
-                    : "polygon(0 0, 100% 50px, 100% 100%, 0% 100%)",
+                    ? "polygon(0 60px, 100% 0, 100% 100%, 0% 100%)"
+                    : "polygon(0 0, 100% 60px, 100% 100%, 0% 100%)",
               }}
             >
-              {/* Position handling */}
-              <div
-                className={`flex flex-col items-${
-                  sec.position === "left" ? "start" : "center"
-                } justify-center w-full lg:pl-42`}
-              >
+              <div className="flex flex-col items-center justify-center w-full max-w-5xl px-8 space-y-8">
                 {/* Title */}
                 <h1
                   style={{
                     opacity: titleOpacity,
-                    transform: `translateY(${(1 - titleOpacity) * 40}px)`,
+                    transform: titleTransform,
                   }}
-                  className="text-white text-6xl md:text-6xl font-bold mb-4 transition-all duration-500"
+                  className="text-white text-4xl md:text-5xl lg:text-6xl font-bold text-center transition-all duration-1000 ease-out leading-tight"
                 >
                   {sec.title}
                 </h1>
 
-                {/* Subtitle */}
+                {/* Description */}
                 <p
                   style={{
-                    opacity: subtitleOpacity,
-                    transform: `translateY(${(1 - subtitleOpacity) * 40}px)`,
+                    opacity: descriptionOpacity,
+                    transform: descriptionTransform,
                   }}
-                  className="text-white text-xl md:text-2xl transition-all duration-500 delay-100 max-w-lg"
+                  className="text-white/85 text-lg md:text-xl text-center max-w-4xl leading-relaxed transition-all duration-1000 ease-out delay-200"
                 >
-                  {sec.subtitle}
+                  {sec.description}
                 </p>
 
-                {/* Extra Component */}
-                {sec.hasSlider && (
+                {/* Tab Slider Component */}
+                {sec.hasSlider && sec.tabsData.length > 0 && (
                   <div
                     style={{
                       opacity: sliderOpacity,
-                      transform: `translateY(${(1 - sliderOpacity) * 40}px)`,
+                      transform: sliderTransform,
                     }}
-                    className="mt-6 lg:w-1/2 transition-all duration-500 delay-200"
+                    className="w-full transition-all duration-1000 ease-out delay-400"
                   >
-                    <MySlider />
+                    <TabSlider tabs={sec.tabsData} interval={5000} />
                   </div>
                 )}
               </div>
