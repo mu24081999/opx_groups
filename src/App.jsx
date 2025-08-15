@@ -41,8 +41,8 @@ const App = () => {
         setShowParallax(false);
       }
 
-      // Show reverse scroll only when we reach the very end
-      if (scrollTop >= reverseScrollStartPosition) {
+      // Show reverse scroll when we start the reverse section (improved timing)
+      if (scrollTop >= reverseScrollStartPosition - windowHeight * 0.5) {
         setShowReverseScroll(true);
       } else {
         setShowReverseScroll(false);
