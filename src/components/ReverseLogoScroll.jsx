@@ -24,20 +24,18 @@ const ReverseLogoScroll = () => {
     const logoSectionHeight = window.innerHeight * 4; // Main logo section
     const parallaxHeight = window.innerHeight * 3 * 4; // 4 sections of 3vh each
     const reverseLogoSectionHeight = window.innerHeight * 3; // This component's height
-    
+
     // Calculate when this component should be active
     const componentStartPosition = logoSectionHeight + parallaxHeight;
     const componentEndPosition = componentStartPosition + reverseLogoSectionHeight;
-    
+
     if (scrollTop >= componentStartPosition && scrollTop <= componentEndPosition) {
       // Calculate reverse progress (1 to 0 as user scrolls down)
       const localScroll = scrollTop - componentStartPosition;
       const reverseProgress = 1 - (localScroll / reverseLogoSectionHeight);
       scrollProgressRef.current = Math.max(0, Math.min(1, reverseProgress));
-    } else if (scrollTop < componentStartPosition) {
-      scrollProgressRef.current = 1; // Full reverse when above
     } else {
-      scrollProgressRef.current = 0; // Zero when below
+      scrollProgressRef.current = 0; // Hide when not in this section
     }
   }, []);
 
