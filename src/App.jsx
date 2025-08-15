@@ -21,31 +21,40 @@ const App = () => {
   const [logoScrollY, setLogoScrollY] = useState(0);
   const [showReverseScroll, setShowReverseScroll] = useState(false);
 
-  // Scroll detection for component transition
+  // Scroll detection for component transition with throttling
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop;
-      const windowHeight = window.innerHeight;
-      const logoAnimationHeight = windowHeight * 4; // 400vh from LogoScroll
-      const parallaxSectionHeight = windowHeight * 3 * 4; // 4 sections * 3vh each
-      const reverseScrollStartPosition =
-        logoAnimationHeight + parallaxSectionHeight;
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollTop =
+            window.pageYOffset || document.documentElement.scrollTop;
+          const windowHeight = window.innerHeight;
+          const logoAnimationHeight = windowHeight * 4; // 400vh from LogoScroll
+          const parallaxSectionHeight = windowHeight * 3 * 4; // 4 sections * 3vh each
+          const reverseScrollStartPosition =
+            logoAnimationHeight + parallaxSectionHeight;
 
-      setLogoScrollY(scrollTop);
+          setLogoScrollY(scrollTop);
 
-      // Show parallax layout after logo animation starts finishing (70% complete)
-      if (scrollTop >= logoAnimationHeight * 0.7) {
-        setShowParallax(true);
-      } else {
-        setShowParallax(false);
-      }
+          // Show parallax layout after logo animation starts finishing (70% complete)
+          if (scrollTop >= logoAnimationHeight * 0.7) {
+            setShowParallax(true);
+          } else {
+            setShowParallax(false);
+          }
 
-      // Show reverse scroll when we start the reverse section (improved timing)
-      if (scrollTop >= reverseScrollStartPosition - windowHeight * 0.5) {
-        setShowReverseScroll(true);
-      } else {
-        setShowReverseScroll(false);
+          // Show reverse scroll when we start the reverse section (improved timing)
+          if (scrollTop >= reverseScrollStartPosition - windowHeight * 0.5) {
+            setShowReverseScroll(true);
+          } else {
+            setShowReverseScroll(false);
+          }
+
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
