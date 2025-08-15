@@ -146,74 +146,127 @@ const Parallax3DLayout = () => {
 
   const sections = [
     {
-      title: "Answer Every Call. Close Every Opportunity.",
-      description:
-        "Our AI-powered Automated Call Center ensures no customer is left waiting. With human-like voice interaction, intelligent routing, and instant booking capabilities, we help you capture leads, schedule appointments, and deliver exceptional service — all without adding extra staff.",
+      title: "Creative Digital Experiences",
+      description: (
+        <div className="space-y-2">
+          <p>Founded in 2012</p>
+          <p>
+            We blend story, art & technology as an in‑house team of passionate
+            makers
+          </p>
+          <p>
+            Our industry‑leading web toolset consistently delivers award‑winning
+            work through quality & performance
+          </p>
+        </div>
+      ),
       hasSlider: true,
       tabsData: [
         {
-          title: "AI Voice That Sounds Human",
+          title: "Storytelling Through Design",
           description:
-            "Experience natural, conversational AI that makes customers feel like they're talking to a real person — without awkward pauses or robotic tones.",
+            "Crafting compelling narratives that connect with your audience on an emotional level, turning visitors into customers through powerful storytelling techniques.",
         },
         {
-          title: "Instant Appointment Booking",
+          title: "Cutting-Edge Technology",
           description:
-            "Customers can book appointments in real time while on the call, with automatic calendar sync to avoid double bookings.",
+            "Leveraging the latest web technologies and frameworks to create fast, responsive, and engaging digital experiences that set you apart from the competition.",
         },
         {
-          title: "Smart Call Routing",
+          title: "Award-Winning Results",
           description:
-            "Our system identifies caller needs and routes them to the right person or department instantly, improving efficiency and customer satisfaction.",
+            "Our proven track record speaks for itself - consistently delivering projects that not only meet but exceed expectations, earning recognition in the industry.",
         },
         {
-          title: "24/7 Availability",
+          title: "Performance Optimized",
           description:
-            "Never miss a call again. Our AI works around the clock, capturing leads and resolving customer queries day and night.",
+            "Every project is built with performance in mind, ensuring lightning-fast load times and smooth interactions across all devices and platforms.",
         },
       ],
     },
     {
-      title: "Your 24/7 AI Sales & Support Assistant.",
+      title: "OPX AI CHAT",
       description:
-        "Intellex AI engages your customers instantly across web chat, social media, and messaging apps. It answers questions, captures leads, books appointments, and closes sales — all while matching your brand's voice and personality.",
+        "Revolutionary natural AI chat interfaces that transform customer interactions with intelligent, context-aware conversations. Experience the future of customer engagement through AI that understands, learns, and responds like a human expert.",
       hasSlider: true,
       tabsData: [
         {
-          title: "Instant, Natural Conversations",
+          title: "Natural Language Processing",
           description:
-            "AI that chats like a real team member — providing fast, accurate, and friendly responses to every customer inquiry.",
+            "Advanced AI that understands context, emotion, and intent, providing human-like responses that feel natural and engaging to your customers.",
         },
         {
-          title: "Lead Capture & CRM Sync",
+          title: "Real-Time Learning",
           description:
-            "Automatically collects and organizes customer details, pushing them straight to your CRM for quick follow-up.",
+            "Our AI continuously learns from interactions, becoming smarter and more effective over time while maintaining consistency in your brand voice.",
         },
         {
-          title: "Built-In Booking Engine",
+          title: "Multi-Platform Integration",
           description:
-            "Lets customers schedule services directly from chat with real-time availability checks and confirmations.",
+            "Seamlessly integrate across websites, mobile apps, social media platforms, and messaging services for a unified customer experience.",
         },
         {
-          title: "Multi-Channel Ready",
+          title: "24/7 Intelligent Support",
           description:
-            "Deployed on your website today, ready for expansion to WhatsApp, Instagram, SMS, and more tomorrow.",
+            "Never miss a customer inquiry again with AI that works around the clock, handling complex queries and escalating when human intervention is needed.",
         },
       ],
     },
     {
-      title: "Building Digital Solutions That Work for You.",
+      title: "OPX Stat Analysis",
       description:
-        "From custom web platforms to advanced mobile apps, OPX Software Development delivers tailor-made solutions that streamline your operations, delight your customers, and grow your business.",
-      hasSlider: false,
-      tabsData: [],
+        "Transform raw data into actionable insights with our predictive and real-time data analysis platform. Make informed decisions faster with comprehensive analytics that reveal hidden patterns and opportunities in your business data.",
+      hasSlider: true,
+      tabsData: [
+        {
+          title: "Predictive Analytics",
+          description:
+            "Forecast trends and anticipate market changes with advanced machine learning algorithms that help you stay ahead of the competition.",
+        },
+        {
+          title: "Real-Time Dashboards",
+          description:
+            "Monitor your business metrics in real-time with intuitive dashboards that provide instant insights into performance and growth opportunities.",
+        },
+        {
+          title: "Custom Data Models",
+          description:
+            "Tailored analytics solutions that fit your specific business needs, providing relevant insights that drive strategic decision-making.",
+        },
+        {
+          title: "Automated Reporting",
+          description:
+            "Generate comprehensive reports automatically, saving time while ensuring stakeholders always have access to the latest performance data.",
+        },
+      ],
     },
     {
-      title: "Turning Data Into Actionable Insights.",
+      title: "OPX Software Development",
       description:
-        "Our analytics team transforms raw numbers into clear strategies. With deep data analysis, performance tracking, and trend forecasting, we help you make smarter decisions that drive measurable results.",
-      hasSlider: false,
-      tabsData: [],
+        "Enterprise-grade custom software solutions designed to scale with your business. From concept to deployment, we build robust, secure, and maintainable applications that solve complex business challenges and drive operational efficiency.",
+      hasSlider: true,
+      tabsData: [
+        {
+          title: "Enterprise Architecture",
+          description:
+            "Scalable, secure software architecture designed to handle enterprise-level demands while maintaining flexibility for future growth and adaptation.",
+        },
+        {
+          title: "Custom Development",
+          description:
+            "Bespoke software solutions tailored to your unique business requirements, built with modern technologies and industry best practices.",
+        },
+        {
+          title: "DevOps & Deployment",
+          description:
+            "Streamlined deployment processes with continuous integration and monitoring, ensuring reliable, efficient software delivery and maintenance.",
+        },
+        {
+          title: "Ongoing Support",
+          description:
+            "Comprehensive maintenance and support services to keep your software running smoothly, with regular updates and performance optimization.",
+        },
+      ],
     },
   ];
 
