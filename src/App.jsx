@@ -141,15 +141,15 @@ const App = () => {
         <Parallax3DLayout />
       </div>
 
-      {/* Reverse Logo Scroll Section - After parallax layout */}
-      <div
-        className="relative z-40"
-        style={{ height: reverseLogoSectionHeight + 'px' }}
-      >
-        <div className="fixed inset-0 z-40">
+      {/* Reverse Logo Scroll Section - Only at the very end */}
+      {showReverseScroll && (
+        <div className="fixed inset-0 z-50">
           <ReverseLogoScroll />
         </div>
-      </div>
+      )}
+
+      {/* Spacer for reverse scroll section */}
+      <div style={{ height: reverseLogoSectionHeight + 'px' }} className="relative z-10" />
     </div>
   );
 };
