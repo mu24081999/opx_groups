@@ -112,7 +112,7 @@ const App = () => {
   const parallaxSectionHeight =
     typeof window !== "undefined" ? window.innerHeight * 3 * 4 : 12000; // 4 sections * 3vh each
   const reverseLogoSectionHeight =
-    typeof window !== "undefined" ? window.innerHeight * 3 : 3000; // 300vh
+    typeof window !== "undefined" ? window.innerHeight * 4 : 4000; // 400vh - Match main logo
   const totalHeight =
     logoSectionHeight + parallaxSectionHeight + reverseLogoSectionHeight;
   const isLogoComplete = logoScrollY >= logoSectionHeight * 0.8;
