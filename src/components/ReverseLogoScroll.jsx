@@ -337,18 +337,37 @@ const ReverseLogoScroll = () => {
           let opacity = 0;
           let showParticle = false;
 
-          // Reverse visibility based on progress
-          if (progress > 0) {
-            showParticle = true;
-            opacity = progress * userData.maxOpacity;
+          // Reverse stage-based visibility (same stages but reversed progress)
+          const reverseProgress = progress; // Already reversed in scroll handler
+          const particleIndex = i / particleCount;
 
-            // Reverse expansion - contract as we scroll down
-            const contractionFactor = progress;
-            const expandedRadius = userData.radius * (2 - contractionFactor);
-            
-            particle.position.x = Math.cos(userData.angle + userData.spiralOffset + time * 0.2) * expandedRadius;
-            particle.position.y = Math.sin(userData.angle + userData.spiralOffset + time * 0.2) * expandedRadius;
-            particle.position.z = userData.originalZ + Math.sin(time * 0.15 + i * 0.1) * 2;
+          if (reverseProgress >= 0.66) {
+            showParticle = true;
+            const stage3Progress = (reverseProgress - 0.66) / 0.34;
+            opacity = Math.min(userData.maxOpacity, stage3Progress + 0.4);
+            const fullGrowthHeight = 25;
+            particle.position.y = userData.bottomY + fullGrowthHeight;
+
+            // Reverse expansion
+            const screenExpansion = (1 - stage3Progress) * 30; // Contract as progress increases
+            const expansionAngle = userData.originalAngle - time * 0.3; // Reverse rotation
+            particle.position.x =
+              userData.originalX + Math.cos(expansionAngle) * screenExpansion;
+          } else if (reverseProgress > 0.33 && reverseProgress <= 0.66) {
+            if (particleIndex < 0.5) {
+              showParticle = true;
+              const stage2Progress = (reverseProgress - 0.33) / 0.33;
+              opacity = Math.min(0.8, stage2Progress * 0.8 + 0.3);
+              const growthHeight = (1 - stage2Progress) * 12; // Reverse height
+              particle.position.y = userData.bottomY + growthHeight;
+            }
+          } else if (reverseProgress >= 0 && reverseProgress <= 0.33) {
+            if (particleIndex < 0.25) {
+              showParticle = true;
+              const fadeIn = Math.min(1, reverseProgress * 4);
+              opacity = fadeIn * 0.7;
+              particle.position.y = userData.bottomY;
+            }
           }
 
           // Reverse pulse wave effect (from outside to inside)
