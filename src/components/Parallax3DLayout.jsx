@@ -342,10 +342,10 @@ const Parallax3DLayout = () => {
           ];
 
           return (
-            <a
+            <div
               className="flex items-center space-x-3 cursor-pointer group"
               key={index}
-              href={`#section-${index}`}
+              onClick={() => smoothScrollTo(index * sectionHeight)}
             >
               <button
                 className={`w-3 h-3 rounded-full backdrop-blur-md border transition-all duration-700 ${
@@ -363,7 +363,7 @@ const Parallax3DLayout = () => {
               >
                 {titles[index]}
               </span>
-            </a>
+            </div>
           );
         })}
       </div>
