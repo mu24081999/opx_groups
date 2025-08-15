@@ -258,7 +258,7 @@ const ContactModal = ({ onClose }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="flex items-end justify-between w-full max-w-6xl"
+          className="flex flex-col sm:flex-row items-center sm:items-end justify-between w-full max-w-6xl gap-6 sm:gap-0"
         >
           {/* Left side - Social and links */}
           <div className="flex flex-col gap-6">
