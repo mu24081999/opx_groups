@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from "three";
-import Parallax3DLayout from "./Parallax3DLayout";
 
 const LogoParticleAnimation = () => {
   const mountRef = useRef(null);
@@ -494,18 +493,26 @@ const LogoParticleAnimation = () => {
         }}
       />
 
-      {/* Scrollable content */}
+      {/* Scrollable content with responsive design */}
       <div
         className="relative"
         style={{
-          height: "500vh",
+          height: "400vh", // Reduced height for logo animation only
           zIndex: 10,
           pointerEvents: "none",
         }}
       >
-        {/* Content sections for smooth scrolling */}
-        <div className="h-screen flex items-center justify-center">
-          <div className="text-transparent">Scroll to animate</div>
+        {/* Responsive content sections for smooth scrolling */}
+        <div className="h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+          <div className="text-transparent text-sm sm:text-base lg:text-lg">Scroll to animate</div>
+        </div>
+
+        {/* Logo completion indicator */}
+        <div className="h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+          <div className="text-center text-white/20 text-xs sm:text-sm lg:text-base">
+            <div className="mb-2">OPX Groups</div>
+            <div className="text-xs sm:text-sm opacity-50">Continue scrolling</div>
+          </div>
         </div>
       </div>
     </div>
