@@ -6,6 +6,7 @@ import Preloader from "./components/PreLoader";
 import Parallax3DLayout from "./components/Parallax3DLayout";
 import FloatingNavBar from "./components/Navbar";
 import LogoScroll from "./components/LogoParticleAnimation";
+import ReverseLogoScroll from "./components/ReverseLogoScroll";
 
 const App = () => {
   const orbRef = useRef(null);
