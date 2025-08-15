@@ -92,12 +92,12 @@ const ReverseLogoScroll = () => {
     directionalLight.position.set(-10, -10, 5);
     scene.add(directionalLight);
 
-    // Point lights with different colors for reverse effect
-    const pointLight1 = new THREE.PointLight(0xff6b6b, 1, 100); // Red tint
+    // Point lights same as main logo
+    const pointLight1 = new THREE.PointLight(0x64ffda, 1, 100); // Same cyan
     pointLight1.position.set(0, 0, 20);
     scene.add(pointLight1);
 
-    const pointLight2 = new THREE.PointLight(0x4ecdc4, 0.5, 50); // Teal tint
+    const pointLight2 = new THREE.PointLight(0xffffff, 0.5, 50); // White light
     pointLight2.position.set(10, -10, 10);
     scene.add(pointLight2);
 
