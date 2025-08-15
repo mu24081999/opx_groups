@@ -10,9 +10,10 @@ const LogoParticleAnimation = () => {
   const scrollProgressRef = useRef(0);
   const animationIdRef = useRef(null);
   const isInitializedRef = useRef(false);
+  const pulseWaveRef = useRef({ position: 0, active: false, time: 0 });
 
   // Reduced particle count for better performance
-  const particleCount = 1000; // Reduced from 2000
+  const particleCount = 1000;
   const particlePoolRef = useRef([]);
   const activeParticlesRef = useRef([]);
 
@@ -21,30 +22,34 @@ const LogoParticleAnimation = () => {
   // Optimized scroll handler with throttling
   const handleScroll = useCallback(() => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const logoSectionHeight = window.innerHeight * 4; // Match App.jsx
+    const logoSectionHeight = window.innerHeight * 4;
     let scrollProgress = Math.min(scrollTop / Math.max(logoSectionHeight, 1), 1);
 
-    // Reset logic: when scroll reaches 100%, reset to 0 after a brief moment
     if (scrollProgress >= 0.99) {
       setTimeout(() => {
+        // Reset pulse wave
+        pulseWaveRef.current = { position: 0, active: false, time: 0 };
+        
         // Smooth reset particles
         if (particlesRef.current) {
           particlesRef.current.children.forEach((particle) => {
             if (particle.material) {
               particle.material.opacity = 0;
+              particle.material.emissive = new THREE.Color(0x000000);
+              particle.material.emissiveIntensity = 0;
             }
-            // Reset positions
             const userData = particle.userData;
             if (userData) {
               particle.position.x = userData.originalX;
               particle.position.y = userData.bottomY || userData.originalY - 15;
               particle.position.z = userData.originalHeight;
               particle.scale.setScalar(1);
+              userData.bubblePhase = 0;
+              userData.lightIntensity = 0;
             }
           });
         }
 
-        // Reset logo rotation
         if (logoGroupRef.current) {
           logoGroupRef.current.rotation.y = 0;
         }
@@ -56,7 +61,6 @@ const LogoParticleAnimation = () => {
     }
   }, []);
 
-  // Optimized mouse handler
   const handleMouseMove = useCallback((event) => {
     setMousePos({
       x: event.clientX,
@@ -67,7 +71,6 @@ const LogoParticleAnimation = () => {
   useEffect(() => {
     if (!mountRef.current || isInitializedRef.current) return;
 
-    // Prevent duplicate initialization
     const existingCanvas = mountRef.current.querySelector("canvas");
     if (existingCanvas) {
       existingCanvas.remove();
@@ -75,7 +78,7 @@ const LogoParticleAnimation = () => {
 
     isInitializedRef.current = true;
 
-    // Scene setup - optimized settings
+    // Scene setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -84,37 +87,61 @@ const LogoParticleAnimation = () => {
       1000
     );
 
-    // Renderer with performance optimizations
+    // Renderer with enhanced settings for glass effect
     const renderer = new THREE.WebGLRenderer({
-      antialias: false, // Disabled for performance
-      alpha: false,
+      antialias: true,
+      alpha: true,
       powerPreference: "high-performance",
-      stencil: false,
-      depth: false, // Simplified for 2D-like particles
     });
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 1);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Disable unnecessary features for performance
-    renderer.shadowMap.enabled = false;
-    renderer.physicallyCorrectLights = false;
+    // Enable advanced lighting for glass materials
+    renderer.physicallyCorrectLights = true;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1;
 
     mountRef.current.appendChild(renderer.domElement);
     sceneRef.current = scene;
     rendererRef.current = renderer;
 
-    // Instant logo creation with fallback
+    // Enhanced lighting setup for glass materials
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(10, 10, 5);
+    scene.add(directionalLight);
+
+    // Add point lights for glass reflections
+    const pointLight1 = new THREE.PointLight(0x64ffda, 1, 100);
+    pointLight1.position.set(0, 0, 20);
+    scene.add(pointLight1);
+
+    const pointLight2 = new THREE.PointLight(0xffffff, 0.5, 50);
+    pointLight2.position.set(-10, 10, 10);
+    scene.add(pointLight2);
+
+    // Logo creation with enhanced materials
     const logoGroup = new THREE.Group();
     let logoModel = null;
 
-    // Create immediate fallback logo for instant loading
     const createFallbackLogo = () => {
       const fallbackGeometry = new THREE.BoxGeometry(20, 20, 20);
-      const fallbackMaterial = new THREE.MeshBasicMaterial({
+      const fallbackMaterial = new THREE.MeshPhysicalMaterial({
         color: 0x64ffda,
-        wireframe: false,
+        metalness: 0.1,
+        roughness: 0.1,
+        transparent: true,
+        opacity: 0.9,
+        transmission: 0.3,
+        ior: 1.5,
+        clearcoat: 1,
+        clearcoatRoughness: 0,
+        emissive: new THREE.Color(0x64ffda),
+        emissiveIntensity: 0.3,
       });
       const fallbackMesh = new THREE.Mesh(fallbackGeometry, fallbackMaterial);
       fallbackMesh.position.set(0, 0, 0);
@@ -123,10 +150,8 @@ const LogoParticleAnimation = () => {
       return fallbackMesh;
     };
 
-    // Create instant fallback
     createFallbackLogo();
 
-    // Try to load actual logo asynchronously (non-blocking)
     const loadActualLogo = async () => {
       try {
         const { GLTFLoader } = await import(
@@ -137,7 +162,6 @@ const LogoParticleAnimation = () => {
         loader.load(
           "/O.glb",
           (gltf) => {
-            // Remove fallback
             if (logoModel && logoGroup.children.includes(logoModel)) {
               logoGroup.remove(logoModel);
               logoModel.geometry?.dispose();
@@ -154,17 +178,19 @@ const LogoParticleAnimation = () => {
 
             logoModel.traverse((child) => {
               if (child.isMesh) {
-                child.material.transparent = true;
-                child.material.opacity = 0.9;
-                if (child.material.color) {
-                  child.material.color = new THREE.Color(0x64ffda);
-                } else {
-                  child.material = new THREE.MeshBasicMaterial({
-                    color: 0x64ffda,
-                    transparent: true,
-                    opacity: 0.9,
-                  });
-                }
+                child.material = new THREE.MeshPhysicalMaterial({
+                  color: 0x64ffda,
+                  metalness: 0.1,
+                  roughness: 0.1,
+                  transparent: true,
+                  opacity: 0.9,
+                  transmission: 0.3,
+                  ior: 1.5,
+                  clearcoat: 1,
+                  clearcoatRoughness: 0,
+                  emissive: new THREE.Color(0x64ffda),
+                  emissiveIntensity: 0.3,
+                });
               }
             });
 
@@ -180,56 +206,52 @@ const LogoParticleAnimation = () => {
       }
     };
 
-    // Load actual logo without blocking
     loadActualLogo();
 
     logoGroup.position.set(0, 0, 0);
     scene.add(logoGroup);
     logoGroupRef.current = logoGroup;
 
-    // Optimized particle system with object pooling
+    // Enhanced particle system with glass ball materials
     const particles = new THREE.Group();
 
-    // Reduced particle sizes for performance
     const particleSizes = [0.03, 0.05, 0.08, 0.12, 0.18, 0.25];
-    const particleColor = 0x888888;
 
-    // Create shared geometries for better performance
+    // Create shared geometries
     const sharedGeometries = particleSizes.map(
-      (size) => new THREE.SphereGeometry(size, 8, 8) // Reduced segments from 12,12 to 8,8
+      (size) => new THREE.SphereGeometry(size, 16, 16) // Increased segments for smoother glass
     );
 
-    // Create shared material
-    const sharedMaterial = new THREE.MeshBasicMaterial({
-      // color: particleColor,
-      // transparent: true,
-      // opacity: 0,
-      color: new THREE.Color(0xffffff),
-      metalness: 0,
-      roughness: 0,
-      transparent: true,
-      opacity: 0.5,
-      transmission: 1, // glass refraction
-      ior: 1.5,
-      thickness: 0.5,
-      clearcoat: 1,
-      clearcoatRoughness: 0,
-      emissive: new THREE.Color(0x000000),
-      emissiveIntensity: 0,
-    });
-
-    // Initialize particle pool
+    // Initialize particle pool with glass materials
     for (let i = 0; i < particleCount; i++) {
       const sizeIndex = Math.floor(Math.random() * sharedGeometries.length);
+      
+      // Create glass material for each particle
+      const glassMaterial = new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(0xffffff),
+        metalness: 0,
+        roughness: 0,
+        transparent: true,
+        opacity: 0,
+        transmission: 0.95, // High transmission for glass effect
+        ior: 1.5, // Index of refraction for glass
+        thickness: 0.5,
+        clearcoat: 1,
+        clearcoatRoughness: 0,
+        emissive: new THREE.Color(0x000000),
+        emissiveIntensity: 0,
+        reflectivity: 0.9,
+      });
+
       const particle = new THREE.Mesh(
         sharedGeometries[sizeIndex],
-        sharedMaterial.clone()
+        glassMaterial
       );
 
       const angle = Math.random() * Math.PI * 2;
-      const radius = 0.5 + Math.random() * 25; // Reduced spread
-      const height = (Math.random() - 0.5) * 20; // Reduced height
-      const clusterVariation = Math.random() * 8; // Reduced variation
+      const radius = 0.5 + Math.random() * 25;
+      const height = (Math.random() - 0.5) * 20;
+      const clusterVariation = Math.random() * 8;
 
       particle.position.x =
         Math.cos(angle) * radius + (Math.random() - 0.5) * clusterVariation;
@@ -238,6 +260,10 @@ const LogoParticleAnimation = () => {
       particle.position.z = height;
 
       const bottomY = particle.position.y - 15;
+      const distanceFromCenter = Math.sqrt(
+        particle.position.x * particle.position.x + 
+        particle.position.y * particle.position.y
+      );
 
       particle.userData = {
         originalAngle: angle,
@@ -246,13 +272,17 @@ const LogoParticleAnimation = () => {
         originalX: particle.position.x,
         originalY: particle.position.y,
         bottomY: bottomY,
+        distanceFromCenter: distanceFromCenter,
         speed: 0.02 + Math.random() * 0.08,
         floatSpeed: 0.05 + Math.random() * 0.15,
         phase: Math.random() * Math.PI * 2,
         amplitude: 0.1 + Math.random() * 0.2,
-        maxOpacity: 0.6 + Math.random() * 0.4,
+        maxOpacity: 0.8 + Math.random() * 0.2,
         originalSize: particleSizes[sizeIndex],
         pulseSpeed: 0.3 + Math.random() * 1.0,
+        bubblePhase: 0,
+        lightIntensity: 0,
+        sequenceIndex: i, // For sequential light flow
         active: false,
       };
 
@@ -260,26 +290,28 @@ const LogoParticleAnimation = () => {
       particlePoolRef.current.push(particle);
     }
 
+    // Sort particles by distance from center for sequential wave effect
+    particlePoolRef.current.sort((a, b) => 
+      a.userData.distanceFromCenter - b.userData.distanceFromCenter
+    );
+
     scene.add(particles);
     particlesRef.current = particles;
 
     camera.position.set(0, 0, 40);
 
-    // Initialize scroll progress
     handleScroll();
 
-    // Event listeners
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
-    // Optimized animation loop
+    // Enhanced animation loop with pulse wave effects
     let frameCount = 0;
     let lastTime = 0;
 
     const animate = (currentTime) => {
       animationIdRef.current = requestAnimationFrame(animate);
 
-      // Throttle to 60fps max
       if (currentTime - lastTime < 16.67) return;
       lastTime = currentTime;
 
@@ -287,19 +319,37 @@ const LogoParticleAnimation = () => {
       const time = currentTime * 0.001;
       const progress = scrollProgressRef.current;
 
-      // Logo animation - simplified
+      // Logo animation
       if (logoGroupRef.current && frameCount % 2 === 0) {
         logoGroupRef.current.position.set(0, 0, 0);
-        logoGroupRef.current.rotation.y = progress * Math.PI * 5; // 2.5 rotations
+        logoGroupRef.current.rotation.y = progress * Math.PI * 5;
+
+        // Enhance logo pulse effect
+        if (logoModel && logoModel.material) {
+          const pulsePower = 0.3 + Math.sin(time * 2) * 0.2;
+          if (logoModel.material.emissiveIntensity !== undefined) {
+            logoModel.material.emissiveIntensity = pulsePower;
+          }
+        }
 
         if (logoModel) {
           logoModel.position.set(0, 0, 0);
         }
       }
 
-      // Optimized particle animation with culling
-      if (particlesRef.current && frameCount % 3 === 0) {
-        // Update every 3rd frame
+      // Pulse wave management
+      const waveSpeed = 0.02; // Speed of wave propagation
+      if (progress > 0 && progress < 0.99) {
+        pulseWaveRef.current.active = true;
+        pulseWaveRef.current.time = time;
+        
+        // Wave travels from center outward in cycles
+        const wavePosition = (Math.sin(time * 0.5) * 0.5 + 0.5) * 30; // Max radius
+        pulseWaveRef.current.position = wavePosition;
+      }
+
+      // Enhanced particle animation with glass effects and wave
+      if (particlesRef.current && frameCount % 2 === 0) {
         activeParticlesRef.current = [];
 
         particlePoolRef.current.forEach((particle, i) => {
@@ -310,62 +360,109 @@ const LogoParticleAnimation = () => {
           let opacity = 0;
           let showParticle = false;
 
-          // Stage-based visibility with reset handling
+          // Stage-based visibility
           if (progress >= 0 && progress <= 0.33) {
             if (particleIndex < 0.25) {
-              // Reduced from 0.3
               showParticle = true;
               const fadeIn = Math.min(1, progress * 4);
-              opacity = fadeIn * 0.7;
+              opacity = fadeIn * 0.4; // Reduced base opacity for glass
               particle.position.y = userData.bottomY;
             }
           } else if (progress > 0.33 && progress <= 0.66) {
             if (particleIndex < 0.5) {
-              // Reduced from 0.6
               showParticle = true;
               const stage2Progress = (progress - 0.33) / 0.33;
-              opacity = Math.min(0.8, stage2Progress * 0.8 + 0.3);
+              opacity = Math.min(0.6, stage2Progress * 0.6 + 0.2);
               const growthHeight = stage2Progress * 12;
               particle.position.y = userData.bottomY + growthHeight;
             }
           } else if (progress > 0.66 && progress < 0.99) {
             showParticle = true;
             const stage3Progress = (progress - 0.66) / 0.33;
-            opacity = Math.min(userData.maxOpacity, stage3Progress + 0.4);
+            opacity = Math.min(userData.maxOpacity * 0.7, stage3Progress + 0.3);
             const fullGrowthHeight = 25;
             particle.position.y = userData.bottomY + fullGrowthHeight;
 
-            // Simplified expansion
             const screenExpansion = stage3Progress * 30;
             const expansionAngle = userData.originalAngle + time * 0.3;
             particle.position.x =
               userData.originalX + Math.cos(expansionAngle) * screenExpansion;
           }
 
-          // Update particle
-          if (particle.material && particle.material.opacity !== undefined) {
-            particle.material.opacity = showParticle
-              ? Math.max(0, Math.min(1, opacity))
-              : 0;
+          // Pulse wave effect
+          if (pulseWaveRef.current.active && showParticle) {
+            const wavePosition = pulseWaveRef.current.position;
+            const distanceFromWave = Math.abs(userData.distanceFromCenter - wavePosition);
+            
+            // Wave influence zone
+            const waveInfluence = Math.max(0, 1 - distanceFromWave / 3);
+            
+            if (waveInfluence > 0) {
+              // Light pulse effect
+              const pulsePower = waveInfluence * (0.5 + Math.sin(time * 4 + i * 0.1) * 0.3);
+              userData.lightIntensity = pulsePower;
+              
+              // Bubble effect on light pass
+              userData.bubblePhase = Math.min(userData.bubblePhase + 0.1, 1);
+              
+              // Enhanced emissive glow
+              if (particle.material.emissive) {
+                particle.material.emissive.setRGB(
+                  0.4 * pulsePower,
+                  1.0 * pulsePower,
+                  0.85 * pulsePower
+                );
+                particle.material.emissiveIntensity = pulsePower * 2;
+              }
+            } else {
+              // Fade out light intensity
+              userData.lightIntensity *= 0.95;
+              userData.bubblePhase *= 0.98;
+              
+              if (particle.material.emissive) {
+                particle.material.emissive.multiplyScalar(0.95);
+                particle.material.emissiveIntensity *= 0.95;
+              }
+            }
           }
 
-          // Simple animations for active particles
+          // Update particle material properties
+          if (particle.material) {
+            particle.material.opacity = showParticle
+              ? Math.max(0, Math.min(0.8, opacity))
+              : 0;
+              
+            // Enhance transmission for glass effect
+            particle.material.transmission = 0.95 - userData.lightIntensity * 0.3;
+            
+            // Add subtle iridescence
+            if (userData.lightIntensity > 0) {
+              const iridescence = Math.sin(time * 2 + i * 0.2) * 0.1 + 0.9;
+              particle.material.ior = 1.5 + iridescence * 0.2;
+            }
+          }
+
+          // Enhanced animations for active particles
           if (showParticle && opacity > 0) {
             userData.active = true;
             activeParticlesRef.current.push(particle);
 
-            // Simplified floating
+            // Floating animation
             if (progress <= 0.66) {
               particle.position.z =
                 userData.originalHeight + Math.sin(time * 0.1 + i * 0.1) * 0.5;
             }
 
-            // Simplified scaling
-            const pulseSpeed = userData.pulseSpeed * 0.2;
-            const pulse = 1 + Math.sin(time * pulseSpeed + i * 0.02) * 0.05;
+            // Bubble scaling effect
+            const bubbleScale = 1 + userData.bubblePhase * 0.3;
+            const pulseScale = 1 + Math.sin(time * userData.pulseSpeed + i * 0.02) * 0.05;
             const progressScale = 1 + progress * 0.1;
+            const lightScale = 1 + userData.lightIntensity * 0.4;
+            
             particle.scale.setScalar(
-              Math.max(0.9, Math.min(1.2, pulse * progressScale))
+              Math.max(0.8, Math.min(1.5, 
+                bubbleScale * pulseScale * progressScale * lightScale
+              ))
             );
           } else {
             userData.active = false;
@@ -373,7 +470,7 @@ const LogoParticleAnimation = () => {
         });
       }
 
-      // Simplified camera movement
+      // Enhanced camera movement
       camera.position.x = Math.sin(time * 0.05) * 0.08;
       camera.position.y = Math.cos(time * 0.04) * 0.05;
       camera.lookAt(0, 0, 0);
@@ -409,14 +506,13 @@ const LogoParticleAnimation = () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
 
-      // Dispose shared geometries
+      // Dispose geometries
       sharedGeometries.forEach((geo) => geo.dispose());
-      sharedMaterial.dispose();
 
       // Clean particles
       if (particlesRef.current) {
         particlesRef.current.children.forEach((particle) => {
-          if (particle.material && particle.material !== sharedMaterial) {
+          if (particle.material) {
             particle.material.dispose();
           }
         });
@@ -449,7 +545,6 @@ const LogoParticleAnimation = () => {
         }
       }
 
-      // Clear refs
       particlePoolRef.current = [];
       activeParticlesRef.current = [];
     };
@@ -469,7 +564,7 @@ const LogoParticleAnimation = () => {
         <div ref={mountRef} className="w-full h-full" />
       </div>
 
-      {/* Optimized Custom Cursor */}
+      {/* Custom Cursor */}
       <div
         className="fixed w-2 h-2 bg-white rounded-full pointer-events-none transition-transform duration-75"
         style={{
@@ -492,7 +587,7 @@ const LogoParticleAnimation = () => {
         }}
       />
 
-      {/* Content overlay for logo animation */}
+      {/* Content overlay */}
       <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center">
         <div className="text-center text-white/20 text-xs sm:text-sm lg:text-base">
           <div className="mb-2">OPX Groups</div>
