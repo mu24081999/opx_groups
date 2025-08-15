@@ -76,14 +76,14 @@ const TabSlider = ({ tabs, interval = 4000 }) => {
   };
 
   return (
-    <div className="bg-black/20 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl max-w-2xl mx-auto">
+    <div className="bg-black/20 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl max-w-xs sm:max-w-lg lg:max-w-2xl mx-auto">
       {/* Tab Headers */}
-      <div className="grid grid-cols-2 gap-3 mb-8">
+      <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-2 sm:gap-3 mb-4 sm:mb-6 lg:mb-8`}>
         {tabs.map((tab, index) => (
           <button
             key={index}
             onClick={() => switchToTab(index)}
-            className={`relative p-4 rounded-xl text-left transition-all duration-500 overflow-hidden ${
+            className={`relative p-2 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl text-left transition-all duration-500 overflow-hidden ${
               index === activeTab
                 ? "bg-white/15 shadow-lg border border-white/20"
                 : "bg-white/5 hover:bg-white/10 border border-white/5"
@@ -98,7 +98,7 @@ const TabSlider = ({ tabs, interval = 4000 }) => {
             )}
 
             <h4
-              className={`font-semibold text-sm transition-all duration-300 ${
+              className={`font-semibold text-xs sm:text-sm lg:text-base transition-all duration-300 ${
                 index === activeTab ? "text-white" : "text-white/70"
               }`}
             >
@@ -109,7 +109,7 @@ const TabSlider = ({ tabs, interval = 4000 }) => {
       </div>
 
       {/* Tab Content */}
-      <div className="relative min-h-[120px]">
+      <div className="relative min-h-[80px] sm:min-h-[100px] lg:min-h-[120px]">
         <div
           className={`absolute inset-0 transition-all duration-500 ease-out ${
             isTransitioning
@@ -118,10 +118,10 @@ const TabSlider = ({ tabs, interval = 4000 }) => {
           }`}
         >
           <div className="text-center">
-            <h3 className="text-xl font-bold mb-4 text-white bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3 lg:mb-4 text-white bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
               {tabs[activeTab]?.title}
             </h3>
-            <p className="text-white/80 leading-relaxed text-sm">
+            <p className="text-white/80 leading-relaxed text-xs sm:text-sm lg:text-base">
               {tabs[activeTab]?.description}
             </p>
           </div>
@@ -129,12 +129,12 @@ const TabSlider = ({ tabs, interval = 4000 }) => {
       </div>
 
       {/* Tab Navigation Dots */}
-      <div className="flex justify-center space-x-2 mt-6">
+      <div className="flex justify-center space-x-1 sm:space-x-2 mt-4 sm:mt-6">
         {tabs.map((_, index) => (
           <button
             key={index}
             onClick={() => switchToTab(index)}
-            className={`w-2 h-2 rounded-full transition-all duration-400 ${
+            className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-400 ${
               index === activeTab
                 ? "bg-white scale-125 shadow-lg shadow-white/30"
                 : "bg-white/30 hover:bg-white/50"
