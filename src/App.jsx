@@ -19,6 +19,27 @@ const App = () => {
   const [showParallax, setShowParallax] = useState(false);
   const [logoScrollY, setLogoScrollY] = useState(0);
 
+  // Scroll detection for component transition
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const logoAnimationHeight = windowHeight * 4; // 400vh from LogoScroll
+
+      setLogoScrollY(scrollTop);
+
+      // Show parallax layout after logo animation completes
+      if (scrollTop >= logoAnimationHeight * 0.9) {
+        setShowParallax(true);
+      } else {
+        setShowParallax(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const handleLanguageSelect = (lang) => {
     const orb = orbRef.current;
     const targetBtn = buttonRefs[lang].current;
