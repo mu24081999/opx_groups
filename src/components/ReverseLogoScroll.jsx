@@ -451,10 +451,9 @@ const ReverseLogoScroll = () => {
         });
       }
 
-      // Reverse camera movement
-      camera.position.x = -Math.sin(time * 0.06) * 0.1;
-      camera.position.y = -Math.cos(time * 0.05) * 0.08;
-      camera.position.z = 35 + progress * 5; // Move closer as we scroll
+      // Simplified camera movement (same as main)
+      camera.position.x = Math.sin(time * 0.05) * 0.08;
+      camera.position.y = Math.cos(time * 0.04) * 0.05;
       camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
