@@ -106,17 +106,17 @@ const App = () => {
         <LogoScroll />
       </div>
 
-      {/* Parallax Layout Section - Only shows after logo animation */}
-      {showParallax && (
-        <div
-          className="relative min-h-screen"
-          style={{
-            transform: `translateY(${Math.max(0, logoScrollY - window.innerHeight * 3.6)}px)`,
-          }}
-        >
-          <Parallax3DLayout />
-        </div>
-      )}
+      {/* Parallax Layout Section - Shows after logo animation starts completing */}
+      <div
+        className={`relative min-h-screen transition-opacity duration-1000 ${
+          showParallax ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        style={{
+          marginTop: showParallax ? '0' : '-100vh',
+        }}
+      >
+        <Parallax3DLayout />
+      </div>
     </div>
   );
 };
