@@ -133,10 +133,10 @@ const App = () => {
 
       {/* Reverse Logo Scroll Section - After parallax layout */}
       <div
-        className="relative z-40 bg-gradient-to-br from-indigo-900 via-purple-900 to-red-900"
+        className="relative z-40"
         style={{ height: reverseLogoSectionHeight + 'px' }}
       >
-        <div className="sticky top-0 h-screen">
+        <div className="fixed inset-0 z-40">
           <ReverseLogoScroll />
         </div>
       </div>
