@@ -93,9 +93,13 @@ const App = () => {
   //   );
   // }
 
+  // Calculate total document height for sequential flow
+  const logoSectionHeight = typeof window !== 'undefined' ? window.innerHeight * 4 : 4000; // 400vh
+  const isLogoComplete = logoScrollY >= logoSectionHeight * 0.8;
+
   // Main site with responsive design
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-indigo-900">
+    <div style={{ height: logoSectionHeight + 'px' }} className="relative">
       {/* <ParticleRingBackground /> */}
 
       {/* Responsive Floating Navigation */}
@@ -104,30 +108,22 @@ const App = () => {
       {/* Debug scroll indicator */}
       <div className="fixed bottom-4 left-4 z-50 bg-black/80 text-white px-3 py-2 text-xs rounded backdrop-blur">
         <div>Scroll: {Math.round(logoScrollY)}</div>
-        <div>Threshold: {Math.round(window.innerHeight * 4 * 0.7)}</div>
-        <div>Show Parallax: {showParallax ? 'YES' : 'NO'}</div>
+        <div>Logo Height: {logoSectionHeight}</div>
+        <div>Logo Complete: {isLogoComplete ? 'YES' : 'NO'}</div>
       </div>
 
-      {/* Logo Animation Section */}
-      <div className="relative">
-        <LogoScroll />
-      </div>
+      {/* Logo Animation Section - Fixed positioning during animation */}
+      {!isLogoComplete && (
+        <div className="fixed inset-0 z-20">
+          <LogoScroll />
+        </div>
+      )}
 
-      {/* Parallax Layout Section - Shows after logo animation starts completing */}
-      <div
-        className={`relative min-h-screen transition-all duration-1000 ease-in-out ${
-          showParallax ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
-        }`}
-        style={{
-          backgroundColor: showParallax ? 'transparent' : 'rgba(0,0,0,0.1)',
-        }}
-      >
-        {/* Debug indicator */}
-        {showParallax && (
-          <div className="fixed top-4 left-4 z-50 bg-green-500 text-black px-2 py-1 text-xs rounded">
-            Parallax Active
-          </div>
-        )}
+      {/* Spacer for logo section scroll */}
+      <div style={{ height: logoSectionHeight + 'px' }} className="relative z-10" />
+
+      {/* Parallax Layout Section - Starts after logo completes */}
+      <div className="relative z-30 min-h-screen bg-gradient-to-br from-black via-gray-900 to-indigo-900">
         <Parallax3DLayout />
       </div>
     </div>
