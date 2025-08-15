@@ -130,6 +130,16 @@ const App = () => {
       <div className="relative z-30 min-h-screen bg-gradient-to-br from-black via-gray-900 to-indigo-900">
         <Parallax3DLayout />
       </div>
+
+      {/* Reverse Logo Scroll Section - After parallax layout */}
+      <div
+        className="relative z-40 bg-gradient-to-br from-indigo-900 via-purple-900 to-red-900"
+        style={{ height: reverseLogoSectionHeight + 'px' }}
+      >
+        <div className="sticky top-0 h-screen">
+          <ReverseLogoScroll />
+        </div>
+      </div>
     </div>
   );
 };
