@@ -149,6 +149,20 @@ const TabSlider = ({ tabs, interval = 4000 }) => {
 const Parallax3DLayout = () => {
   const [scrollY, setScrollY] = useState(0);
   const containerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+
+  // Responsive detection
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   useEffect(() => {
     let ticking = false;
