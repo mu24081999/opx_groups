@@ -108,13 +108,19 @@ const App = () => {
 
       {/* Parallax Layout Section - Shows after logo animation starts completing */}
       <div
-        className={`relative min-h-screen transition-opacity duration-1000 ${
-          showParallax ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        className={`relative min-h-screen transition-all duration-1000 ease-in-out ${
+          showParallax ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
         }`}
         style={{
-          marginTop: showParallax ? '0' : '-100vh',
+          backgroundColor: showParallax ? 'transparent' : 'rgba(0,0,0,0.1)',
         }}
       >
+        {/* Debug indicator */}
+        {showParallax && (
+          <div className="fixed top-4 left-4 z-50 bg-green-500 text-black px-2 py-1 text-xs rounded">
+            Parallax Active
+          </div>
+        )}
         <Parallax3DLayout />
       </div>
     </div>
