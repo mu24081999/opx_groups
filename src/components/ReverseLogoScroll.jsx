@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from "three";
 
-const LogoParticleAnimation = () => {
+const ReverseLogoScroll = () => {
   const mountRef = useRef(null);
   const sceneRef = useRef(null);
   const rendererRef = useRef(null);
@@ -12,52 +12,30 @@ const LogoParticleAnimation = () => {
   const isInitializedRef = useRef(false);
   const pulseWaveRef = useRef({ position: 0, active: false, time: 0 });
 
-  // Reduced particle count for better performance
-  const particleCount = 1000;
+  const particleCount = 800;
   const particlePoolRef = useRef([]);
   const activeParticlesRef = useRef([]);
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // Optimized scroll handler with throttling
+  // Reverse scroll handler - scrolls in opposite direction
   const handleScroll = useCallback(() => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const logoSectionHeight = window.innerHeight * 4;
-    let scrollProgress = Math.min(scrollTop / Math.max(logoSectionHeight, 1), 1);
+    const logoSectionHeight = window.innerHeight * 4; // Main logo section
+    const parallaxHeight = window.innerHeight * 3 * 4; // 4 sections of 3vh each
+    const reverseLogoSectionHeight = window.innerHeight * 3; // This component's height
 
-    if (scrollProgress >= 0.99) {
-      setTimeout(() => {
-        // Reset pulse wave
-        pulseWaveRef.current = { position: 0, active: false, time: 0 };
-        
-        // Smooth reset particles
-        if (particlesRef.current) {
-          particlesRef.current.children.forEach((particle) => {
-            if (particle.material) {
-              particle.material.opacity = 0;
-              particle.material.emissive = new THREE.Color(0x000000);
-              particle.material.emissiveIntensity = 0;
-            }
-            const userData = particle.userData;
-            if (userData) {
-              particle.position.x = userData.originalX;
-              particle.position.y = userData.bottomY || userData.originalY - 15;
-              particle.position.z = userData.originalHeight;
-              particle.scale.setScalar(1);
-              userData.bubblePhase = 0;
-              userData.lightIntensity = 0;
-            }
-          });
-        }
+    // Calculate when this component should be active
+    const componentStartPosition = logoSectionHeight + parallaxHeight;
+    const componentEndPosition = componentStartPosition + reverseLogoSectionHeight;
 
-        if (logoGroupRef.current) {
-          logoGroupRef.current.rotation.y = 0;
-        }
-
-        scrollProgressRef.current = 0;
-      }, 100);
+    if (scrollTop >= componentStartPosition && scrollTop <= componentEndPosition) {
+      // Calculate reverse progress (1 to 0 as user scrolls down)
+      const localScroll = scrollTop - componentStartPosition;
+      const reverseProgress = 1 - (localScroll / reverseLogoSectionHeight);
+      scrollProgressRef.current = Math.max(0, Math.min(1, reverseProgress));
     } else {
-      scrollProgressRef.current = scrollProgress;
+      scrollProgressRef.current = 0; // Hide when not in this section
     }
   }, []);
 
@@ -87,7 +65,7 @@ const LogoParticleAnimation = () => {
       1000
     );
 
-    // Renderer with enhanced settings for glass effect
+    // Renderer with enhanced settings
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
@@ -95,10 +73,9 @@ const LogoParticleAnimation = () => {
     });
 
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 1);
+    renderer.setClearColor(0x000000, 0); // Transparent background
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Enable advanced lighting for glass materials
     renderer.physicallyCorrectLights = true;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1;
@@ -107,31 +84,31 @@ const LogoParticleAnimation = () => {
     sceneRef.current = scene;
     rendererRef.current = renderer;
 
-    // Enhanced lighting setup for glass materials
-    const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
+    // Enhanced lighting setup
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(10, 10, 5);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    directionalLight.position.set(-10, -10, 5);
     scene.add(directionalLight);
 
-    // Add point lights for glass reflections
-    const pointLight1 = new THREE.PointLight(0x64ffda, 1, 100);
+    // Point lights same as main logo
+    const pointLight1 = new THREE.PointLight(0x64ffda, 1, 100); // Same cyan
     pointLight1.position.set(0, 0, 20);
     scene.add(pointLight1);
 
-    const pointLight2 = new THREE.PointLight(0xffffff, 0.5, 50);
-    pointLight2.position.set(-10, 10, 10);
+    const pointLight2 = new THREE.PointLight(0xffffff, 0.5, 50); // White light
+    pointLight2.position.set(10, -10, 10);
     scene.add(pointLight2);
 
-    // Logo creation with enhanced materials
+    // Logo creation with different color scheme
     const logoGroup = new THREE.Group();
     let logoModel = null;
 
     const createFallbackLogo = () => {
-      const fallbackGeometry = new THREE.BoxGeometry(20, 20, 20);
+      const fallbackGeometry = new THREE.BoxGeometry(20, 20, 20); // Same size as main
       const fallbackMaterial = new THREE.MeshPhysicalMaterial({
-        color: 0x64ffda,
+        color: 0x64ffda, // Same cyan color
         metalness: 0.1,
         roughness: 0.1,
         transparent: true,
@@ -169,7 +146,7 @@ const LogoParticleAnimation = () => {
             }
 
             logoModel = gltf.scene;
-            logoModel.scale.setScalar(120);
+            logoModel.scale.setScalar(120); // Same size as main logo
 
             const box = new THREE.Box3().setFromObject(logoModel);
             const center = box.getCenter(new THREE.Vector3());
@@ -179,7 +156,7 @@ const LogoParticleAnimation = () => {
             logoModel.traverse((child) => {
               if (child.isMesh) {
                 child.material = new THREE.MeshPhysicalMaterial({
-                  color: 0x64ffda,
+                  color: 0x64ffda, // Same cyan color
                   metalness: 0.1,
                   roughness: 0.1,
                   transparent: true,
@@ -212,35 +189,34 @@ const LogoParticleAnimation = () => {
     scene.add(logoGroup);
     logoGroupRef.current = logoGroup;
 
-    // Enhanced particle system with glass ball materials
+    // Enhanced particle system with different arrangement
     const particles = new THREE.Group();
-
-    const particleSizes = [0.03, 0.05, 0.08, 0.12, 0.18, 0.25];
+    const particleSizes = [0.02, 0.04, 0.06, 0.10, 0.15, 0.20];
 
     // Create shared geometries
     const sharedGeometries = particleSizes.map(
-      (size) => new THREE.SphereGeometry(size, 16, 16) // Increased segments for smoother glass
+      (size) => new THREE.SphereGeometry(size, 12, 12)
     );
 
-    // Initialize particle pool with glass materials
+    // Initialize particle pool with reverse color scheme
     for (let i = 0; i < particleCount; i++) {
       const sizeIndex = Math.floor(Math.random() * sharedGeometries.length);
       
-      // Create glass material for each particle
+      // Create glass material with red/orange tints
       const glassMaterial = new THREE.MeshPhysicalMaterial({
         color: new THREE.Color(0xffffff),
         metalness: 0,
-        roughness: 0,
+        roughness: 0.1,
         transparent: true,
         opacity: 0,
-        transmission: 0.95, // High transmission for glass effect
-        ior: 1.5, // Index of refraction for glass
-        thickness: 0.5,
+        transmission: 0.9,
+        ior: 1.5,
+        thickness: 0.3,
         clearcoat: 1,
         clearcoatRoughness: 0,
         emissive: new THREE.Color(0x000000),
         emissiveIntensity: 0,
-        reflectivity: 0.9,
+        reflectivity: 0.8,
       });
 
       const particle = new THREE.Mesh(
@@ -248,6 +224,7 @@ const LogoParticleAnimation = () => {
         glassMaterial
       );
 
+      // Same arrangement as main logo
       const angle = Math.random() * Math.PI * 2;
       const radius = 0.5 + Math.random() * 25;
       const height = (Math.random() - 0.5) * 20;
@@ -261,7 +238,7 @@ const LogoParticleAnimation = () => {
 
       const bottomY = particle.position.y - 15;
       const distanceFromCenter = Math.sqrt(
-        particle.position.x * particle.position.x + 
+        particle.position.x * particle.position.x +
         particle.position.y * particle.position.y
       );
 
@@ -277,12 +254,12 @@ const LogoParticleAnimation = () => {
         floatSpeed: 0.05 + Math.random() * 0.15,
         phase: Math.random() * Math.PI * 2,
         amplitude: 0.1 + Math.random() * 0.2,
-        maxOpacity: 0.8 + Math.random() * 0.2,
+        maxOpacity: 0.6 + Math.random() * 0.4,
         originalSize: particleSizes[sizeIndex],
         pulseSpeed: 0.3 + Math.random() * 1.0,
         bubblePhase: 0,
         lightIntensity: 0,
-        sequenceIndex: i, // For sequential light flow
+        sequenceIndex: i,
         active: false,
       };
 
@@ -290,9 +267,9 @@ const LogoParticleAnimation = () => {
       particlePoolRef.current.push(particle);
     }
 
-    // Sort particles by distance from center for sequential wave effect
-    particlePoolRef.current.sort((a, b) => 
-      a.userData.distanceFromCenter - b.userData.distanceFromCenter
+    // Sort particles by distance from center for reverse wave effect
+    particlePoolRef.current.sort((a, b) =>
+      b.userData.distanceFromCenter - a.userData.distanceFromCenter // Outside to inside
     );
 
     scene.add(particles);
@@ -305,7 +282,7 @@ const LogoParticleAnimation = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
-    // Enhanced animation loop with pulse wave effects
+    // Enhanced animation loop with reverse effects
     let frameCount = 0;
     let lastTime = 0;
 
@@ -317,24 +294,29 @@ const LogoParticleAnimation = () => {
 
       frameCount++;
       const time = currentTime * 0.001;
-      const progress = scrollProgressRef.current;
+      const progress = scrollProgressRef.current; // Already reversed
 
-      // Logo animation - perfectly centered at start
+      // Logo animation - perfectly centered at end
       if (logoGroupRef.current && frameCount % 2 === 0) {
         logoGroupRef.current.position.set(0, 0, 0);
 
-        // Only rotate when there's scroll progress, start perfectly straight
-        if (progress > 0.01) {
-          logoGroupRef.current.rotation.y = progress * Math.PI * 5;
+        // Only rotate when there's significant progress, end perfectly straight
+        if (progress > 0.99) {
+          logoGroupRef.current.rotation.y = 0; // Perfectly straight at end
+          logoGroupRef.current.rotation.x = 0; // No tilt at end
+        } else if (progress > 0.01) {
+          logoGroupRef.current.rotation.y = -progress * Math.PI * 4; // Negative for reverse
+          logoGroupRef.current.rotation.x = progress * Math.PI * 0.5; // Additional axis
         } else {
-          logoGroupRef.current.rotation.y = 0; // Perfectly straight at start
+          logoGroupRef.current.rotation.y = 0; // Straight when not active
+          logoGroupRef.current.rotation.x = 0;
         }
 
-        // Enhance logo pulse effect
+        // Enhanced logo pulse effect
         if (logoModel && logoModel.material) {
           const pulsePower = 0.3 + Math.sin(time * 2) * 0.2;
           if (logoModel.material.emissiveIntensity !== undefined) {
-            logoModel.material.emissiveIntensity = pulsePower;
+            logoModel.material.emissiveIntensity = pulsePower * progress;
           }
         }
 
@@ -343,18 +325,18 @@ const LogoParticleAnimation = () => {
         }
       }
 
-      // Pulse wave management
-      const waveSpeed = 0.02; // Speed of wave propagation
-      if (progress > 0 && progress < 0.99) {
+      // Reverse pulse wave management (from outside to inside)
+      if (progress > 0) {
         pulseWaveRef.current.active = true;
         pulseWaveRef.current.time = time;
         
-        // Wave travels from center outward in cycles
-        const wavePosition = (Math.sin(time * 0.5) * 0.5 + 0.5) * 30; // Max radius
+        // Wave travels from outside inward in reverse
+        const maxRadius = 20;
+        const wavePosition = maxRadius * (1 - progress) + Math.sin(time * 0.8) * 3;
         pulseWaveRef.current.position = wavePosition;
       }
 
-      // Enhanced particle animation with glass effects and wave
+      // Enhanced particle animation with reverse wave
       if (particlesRef.current && frameCount % 2 === 0) {
         activeParticlesRef.current = [];
 
@@ -362,72 +344,75 @@ const LogoParticleAnimation = () => {
           const userData = particle.userData;
           if (!userData) return;
 
-          const particleIndex = i / particleCount;
           let opacity = 0;
           let showParticle = false;
 
-          // Stage-based visibility
-          if (progress >= 0 && progress <= 0.33) {
-            if (particleIndex < 0.25) {
-              showParticle = true;
-              const fadeIn = Math.min(1, progress * 4);
-              opacity = fadeIn * 0.4; // Reduced base opacity for glass
-              particle.position.y = userData.bottomY;
-            }
-          } else if (progress > 0.33 && progress <= 0.66) {
-            if (particleIndex < 0.5) {
-              showParticle = true;
-              const stage2Progress = (progress - 0.33) / 0.33;
-              opacity = Math.min(0.6, stage2Progress * 0.6 + 0.2);
-              const growthHeight = stage2Progress * 12;
-              particle.position.y = userData.bottomY + growthHeight;
-            }
-          } else if (progress > 0.66 && progress < 0.99) {
+          // Reverse stage-based visibility (same stages but reversed progress)
+          const reverseProgress = progress; // Already reversed in scroll handler
+          const particleIndex = i / particleCount;
+
+          if (reverseProgress >= 0.66) {
             showParticle = true;
-            const stage3Progress = (progress - 0.66) / 0.33;
-            opacity = Math.min(userData.maxOpacity * 0.7, stage3Progress + 0.3);
+            const stage3Progress = (reverseProgress - 0.66) / 0.34;
+            opacity = Math.min(userData.maxOpacity, stage3Progress + 0.4);
             const fullGrowthHeight = 25;
             particle.position.y = userData.bottomY + fullGrowthHeight;
 
-            const screenExpansion = stage3Progress * 30;
-            const expansionAngle = userData.originalAngle + time * 0.3;
+            // Reverse expansion
+            const screenExpansion = (1 - stage3Progress) * 30; // Contract as progress increases
+            const expansionAngle = userData.originalAngle - time * 0.3; // Reverse rotation
             particle.position.x =
               userData.originalX + Math.cos(expansionAngle) * screenExpansion;
+          } else if (reverseProgress > 0.33 && reverseProgress <= 0.66) {
+            if (particleIndex < 0.5) {
+              showParticle = true;
+              const stage2Progress = (reverseProgress - 0.33) / 0.33;
+              opacity = Math.min(0.8, stage2Progress * 0.8 + 0.3);
+              const growthHeight = (1 - stage2Progress) * 12; // Reverse height
+              particle.position.y = userData.bottomY + growthHeight;
+            }
+          } else if (reverseProgress >= 0 && reverseProgress <= 0.33) {
+            if (particleIndex < 0.25) {
+              showParticle = true;
+              const fadeIn = Math.min(1, reverseProgress * 4);
+              opacity = fadeIn * 0.7;
+              particle.position.y = userData.bottomY;
+            }
           }
 
-          // Pulse wave effect
+          // Reverse pulse wave effect (from outside to inside)
           if (pulseWaveRef.current.active && showParticle) {
             const wavePosition = pulseWaveRef.current.position;
             const distanceFromWave = Math.abs(userData.distanceFromCenter - wavePosition);
             
             // Wave influence zone
-            const waveInfluence = Math.max(0, 1 - distanceFromWave / 3);
+            const waveInfluence = Math.max(0, 1 - distanceFromWave / 4);
             
             if (waveInfluence > 0) {
-              // Light pulse effect
-              const pulsePower = waveInfluence * (0.5 + Math.sin(time * 4 + i * 0.1) * 0.3);
+              // Light pulse effect with red/orange colors
+              const pulsePower = waveInfluence * (0.6 + Math.sin(time * 3 + i * 0.15) * 0.4);
               userData.lightIntensity = pulsePower;
               
               // Bubble effect on light pass
-              userData.bubblePhase = Math.min(userData.bubblePhase + 0.1, 1);
+              userData.bubblePhase = Math.min(userData.bubblePhase + 0.12, 1);
               
-              // Enhanced emissive glow
+              // Enhanced emissive glow with cyan colors (same as main)
               if (particle.material.emissive) {
                 particle.material.emissive.setRGB(
-                  0.4 * pulsePower,
-                  1.0 * pulsePower,
-                  0.85 * pulsePower
+                  0.4 * pulsePower,      // Red component
+                  1.0 * pulsePower,      // Green component
+                  0.85 * pulsePower      // Blue component (cyan = #64ffda)
                 );
                 particle.material.emissiveIntensity = pulsePower * 2;
               }
             } else {
               // Fade out light intensity
-              userData.lightIntensity *= 0.95;
-              userData.bubblePhase *= 0.98;
+              userData.lightIntensity *= 0.94;
+              userData.bubblePhase *= 0.96;
               
               if (particle.material.emissive) {
-                particle.material.emissive.multiplyScalar(0.95);
-                particle.material.emissiveIntensity *= 0.95;
+                particle.material.emissive.multiplyScalar(0.94);
+                particle.material.emissiveIntensity *= 0.94;
               }
             }
           }
@@ -435,38 +420,38 @@ const LogoParticleAnimation = () => {
           // Update particle material properties
           if (particle.material) {
             particle.material.opacity = showParticle
-              ? Math.max(0, Math.min(0.8, opacity))
+              ? Math.max(0, Math.min(0.7, opacity))
               : 0;
               
             // Enhance transmission for glass effect
-            particle.material.transmission = 0.95 - userData.lightIntensity * 0.3;
+            particle.material.transmission = 0.9 - userData.lightIntensity * 0.2;
             
-            // Add subtle iridescence
+            // Add warm iridescence
             if (userData.lightIntensity > 0) {
-              const iridescence = Math.sin(time * 2 + i * 0.2) * 0.1 + 0.9;
-              particle.material.ior = 1.5 + iridescence * 0.2;
+              const iridescence = Math.sin(time * 1.8 + i * 0.25) * 0.15 + 0.85;
+              particle.material.ior = 1.5 + iridescence * 0.3;
             }
           }
 
-          // Enhanced animations for active particles
+          // Enhanced animations for active particles (same as main)
           if (showParticle && opacity > 0) {
             userData.active = true;
             activeParticlesRef.current.push(particle);
 
-            // Floating animation
-            if (progress <= 0.66) {
+            // Floating animation (same as main)
+            if (reverseProgress <= 0.66) {
               particle.position.z =
                 userData.originalHeight + Math.sin(time * 0.1 + i * 0.1) * 0.5;
             }
 
-            // Bubble scaling effect
+            // Bubble scaling effect (same as main)
             const bubbleScale = 1 + userData.bubblePhase * 0.3;
             const pulseScale = 1 + Math.sin(time * userData.pulseSpeed + i * 0.02) * 0.05;
-            const progressScale = 1 + progress * 0.1;
+            const progressScale = 1 + reverseProgress * 0.1;
             const lightScale = 1 + userData.lightIntensity * 0.4;
-            
+
             particle.scale.setScalar(
-              Math.max(0.8, Math.min(1.5, 
+              Math.max(0.9, Math.min(1.2,
                 bubbleScale * pulseScale * progressScale * lightScale
               ))
             );
@@ -476,7 +461,7 @@ const LogoParticleAnimation = () => {
         });
       }
 
-      // Enhanced camera movement
+      // Simplified camera movement (same as main)
       camera.position.x = Math.sin(time * 0.05) * 0.08;
       camera.position.y = Math.cos(time * 0.04) * 0.05;
       camera.lookAt(0, 0, 0);
@@ -557,51 +542,29 @@ const LogoParticleAnimation = () => {
   }, [handleScroll, handleMouseMove]);
 
   return (
-    <div className="relative">
-      {/* Fixed 3D Scene */}
+    <div className="relative w-full h-full">
+      {/* Fixed 3D Scene for reverse scroll effect */}
       <div
         className="fixed inset-0 w-full h-screen"
         style={{
-          background: "#000000",
+          background: "transparent",
           cursor: "none",
-          zIndex: 1,
+          zIndex: 5,
+          pointerEvents: "none",
         }}
       >
         <div ref={mountRef} className="w-full h-full" />
       </div>
 
-      {/* Custom Cursor */}
-      <div
-        className="fixed w-2 h-2 bg-white rounded-full pointer-events-none transition-transform duration-75"
-        style={{
-          left: mousePos.x,
-          top: mousePos.y,
-          transform: "translate(-50%, -50%)",
-          mixBlendMode: "difference",
-          zIndex: 50,
-        }}
-      />
-
-      {/* Cursor Trail */}
-      <div
-        className="fixed w-6 h-6 border border-white/30 rounded-full pointer-events-none transition-all duration-200"
-        style={{
-          left: mousePos.x,
-          top: mousePos.y,
-          transform: "translate(-50%, -50%)",
-          zIndex: 40,
-        }}
-      />
-
       {/* Content overlay */}
-      <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center">
+      <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center">
         <div className="text-center text-white/20 text-xs sm:text-sm lg:text-base">
           <div className="mb-2">OPX Groups</div>
-          <div className="text-xs sm:text-sm opacity-50">Scroll to explore</div>
+          <div className="text-xs sm:text-sm opacity-50">Reverse Flow</div>
         </div>
       </div>
     </div>
   );
 };
 
-export default LogoParticleAnimation;
+export default ReverseLogoScroll;
