@@ -112,7 +112,7 @@ const ReverseLogoScroll = () => {
     const createFallbackLogo = () => {
       const fallbackGeometry = new THREE.BoxGeometry(20, 20, 20); // Same size as main
       const fallbackMaterial = new THREE.MeshPhysicalMaterial({
-        color: 0x64ffda, // Same cyan color
+        color: 0x888888, // Same cyan color
         metalness: 0.1,
         roughness: 0.1,
         transparent: true,
