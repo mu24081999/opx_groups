@@ -493,26 +493,11 @@ const LogoParticleAnimation = () => {
         }}
       />
 
-      {/* Scrollable content with responsive design */}
-      <div
-        className="relative"
-        style={{
-          height: "400vh", // Reduced height for logo animation only
-          zIndex: 10,
-          pointerEvents: "none",
-        }}
-      >
-        {/* Responsive content sections for smooth scrolling */}
-        <div className="h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-          <div className="text-transparent text-sm sm:text-base lg:text-lg">Scroll to animate</div>
-        </div>
-
-        {/* Logo completion indicator */}
-        <div className="h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-white/20 text-xs sm:text-sm lg:text-base">
-            <div className="mb-2">OPX Groups</div>
-            <div className="text-xs sm:text-sm opacity-50">Continue scrolling</div>
-          </div>
+      {/* Content overlay for logo animation */}
+      <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center">
+        <div className="text-center text-white/20 text-xs sm:text-sm lg:text-base">
+          <div className="mb-2">OPX Groups</div>
+          <div className="text-xs sm:text-sm opacity-50">Scroll to explore</div>
         </div>
       </div>
     </div>
