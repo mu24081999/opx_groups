@@ -356,8 +356,8 @@ const Parallax3DLayout = () => {
       className="relative w-full"
       style={{ height: totalHeight }}
     >
-      {/* Navigation */}
-      <div className="fixed left-6 top-1/2 -translate-y-1/2 z-50 flex flex-col space-y-4">
+      {/* Responsive Navigation */}
+      <div className={`fixed z-50 flex ${isMobile ? 'bottom-6 left-1/2 -translate-x-1/2 flex-row space-x-3' : 'left-3 sm:left-6 top-1/2 -translate-y-1/2 flex-col space-y-3 sm:space-y-4'}`}>
         {sections.map((sec, index) => {
           const isActive = isSectionActive(index);
           const titles = [
@@ -380,15 +380,17 @@ const Parallax3DLayout = () => {
                     : "bg-white/15 border-white/25 hover:bg-white/30 group-hover:scale-125"
                 }`}
               />
-              <span
-                className={`text-xs font-medium transition-all duration-500 whitespace-nowrap ${
-                  isActive
-                    ? "text-white font-semibold"
-                    : "text-white/60 group-hover:text-white/85"
-                }`}
-              >
-                {titles[index]}
-              </span>
+              {!isMobile && (
+                <span
+                  className={`text-xs sm:text-sm font-medium transition-all duration-500 whitespace-nowrap ${
+                    isActive
+                      ? "text-white font-semibold"
+                      : "text-white/60 group-hover:text-white/85"
+                  }`}
+                >
+                  {titles[index]}
+                </span>
+              )}
             </div>
           );
         })}
@@ -428,14 +430,14 @@ const Parallax3DLayout = () => {
                     : "polygon(0 0, 100% 60px, 100% 100%, 0% 100%)",
               }}
             >
-              <div className="flex flex-col items-center justify-center w-full max-w-5xl px-8 space-y-8">
+              <div className="flex flex-col items-center justify-center w-full max-w-5xl px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6 lg:space-y-8">
                 {/* Title */}
                 <h1
                   style={{
                     opacity: titleOpacity,
                     transform: titleTransform,
                   }}
-                  className="text-white text-4xl md:text-5xl lg:text-6xl font-bold text-center transition-all duration-1000 ease-out leading-tight"
+                  className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center transition-all duration-1000 ease-out leading-tight px-2 sm:px-0"
                 >
                   {sec.title}
                 </h1>
@@ -446,7 +448,7 @@ const Parallax3DLayout = () => {
                     opacity: descriptionOpacity,
                     transform: descriptionTransform,
                   }}
-                  className="text-white/85 text-lg md:text-xl text-center max-w-4xl leading-relaxed transition-all duration-1000 ease-out delay-200"
+                  className="text-white/85 text-sm sm:text-base md:text-lg lg:text-xl text-center max-w-4xl leading-relaxed transition-all duration-1000 ease-out delay-200 px-2 sm:px-4 lg:px-0"
                 >
                   {typeof sec.description === 'string' ? (
                     <p>{sec.description}</p>
