@@ -90,15 +90,30 @@ const App = () => {
   //   );
   // }
 
-  // Main site
+  // Main site with responsive design
   return (
-    <div className="bg-gradient-to-br from-black via-gray-900 to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-indigo-900">
       {/* <ParticleRingBackground /> */}
+
+      {/* Responsive Floating Navigation */}
       <FloatingNavBar />
-      <LogoScroll />
-      <div>
-        <Parallax3DLayout />
+
+      {/* Logo Animation Section */}
+      <div className="relative">
+        <LogoScroll />
       </div>
+
+      {/* Parallax Layout Section - Only shows after logo animation */}
+      {showParallax && (
+        <div
+          className="relative min-h-screen"
+          style={{
+            transform: `translateY(${Math.max(0, logoScrollY - window.innerHeight * 3.6)}px)`,
+          }}
+        >
+          <Parallax3DLayout />
+        </div>
+      )}
     </div>
   );
 };
