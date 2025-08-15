@@ -139,10 +139,46 @@ const Parallax3DLayout = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
+    let ticking = false;
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Enhanced smooth scroll function
+  const smoothScrollTo = (targetY) => {
+    const startY = window.pageYOffset;
+    const distance = targetY - startY;
+    const duration = Math.min(Math.abs(distance) / 2, 1000); // Dynamic duration
+    let start = null;
+
+    const step = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = timestamp - start;
+      const percentage = Math.min(progress / duration, 1);
+
+      // Easing function for smooth animation
+      const easing = 1 - Math.pow(1 - percentage, 3);
+
+      window.scrollTo(0, startY + distance * easing);
+
+      if (progress < duration) {
+        requestAnimationFrame(step);
+      }
+    };
+
+    requestAnimationFrame(step);
+  };
 
   const sections = [
     {
