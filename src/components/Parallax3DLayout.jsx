@@ -299,10 +299,10 @@ const Parallax3DLayout = () => {
         {sections.map((sec, index) => {
           const isActive = isSectionActive(index);
           const titles = [
-            "Automated Call Center",
-            "Intellex AI Chatbot",
+            "Creative Digital Experiences",
+            "OPX AI Chat",
+            "OPX Stat Analysis",
             "OPX Software Development",
-            "OPX Statistics & Analysis",
           ];
 
           return (
