@@ -296,15 +296,25 @@ const ReverseLogoScroll = () => {
       const time = currentTime * 0.001;
       const progress = scrollProgressRef.current; // Already reversed
 
-      // Logo animation - reverse rotation
+      // Logo animation - perfectly centered at end
       if (logoGroupRef.current && frameCount % 2 === 0) {
         logoGroupRef.current.position.set(0, 0, 0);
-        logoGroupRef.current.rotation.y = -progress * Math.PI * 4; // Negative for reverse
-        logoGroupRef.current.rotation.x = progress * Math.PI * 0.5; // Additional axis
 
-        // Enhanced logo pulse effect with red color
+        // Only rotate when there's significant progress, end perfectly straight
+        if (progress > 0.99) {
+          logoGroupRef.current.rotation.y = 0; // Perfectly straight at end
+          logoGroupRef.current.rotation.x = 0; // No tilt at end
+        } else if (progress > 0.01) {
+          logoGroupRef.current.rotation.y = -progress * Math.PI * 4; // Negative for reverse
+          logoGroupRef.current.rotation.x = progress * Math.PI * 0.5; // Additional axis
+        } else {
+          logoGroupRef.current.rotation.y = 0; // Straight when not active
+          logoGroupRef.current.rotation.x = 0;
+        }
+
+        // Enhanced logo pulse effect
         if (logoModel && logoModel.material) {
-          const pulsePower = 0.4 + Math.sin(time * 1.5) * 0.3;
+          const pulsePower = 0.3 + Math.sin(time * 2) * 0.2;
           if (logoModel.material.emissiveIntensity !== undefined) {
             logoModel.material.emissiveIntensity = pulsePower * progress;
           }
