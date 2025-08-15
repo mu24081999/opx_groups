@@ -423,19 +423,25 @@ const ReverseLogoScroll = () => {
             }
           }
 
-          // Enhanced animations for active particles
+          // Enhanced animations for active particles (same as main)
           if (showParticle && opacity > 0) {
             userData.active = true;
             activeParticlesRef.current.push(particle);
 
-            // Reverse bubble scaling effect
-            const bubbleScale = 1 + userData.bubblePhase * 0.4;
-            const pulseScale = 1 + Math.sin(time * userData.pulseSpeed + i * 0.03) * 0.08;
-            const progressScale = 1 + progress * 0.15;
-            const lightScale = 1 + userData.lightIntensity * 0.5;
-            
+            // Floating animation (same as main)
+            if (reverseProgress <= 0.66) {
+              particle.position.z =
+                userData.originalHeight + Math.sin(time * 0.1 + i * 0.1) * 0.5;
+            }
+
+            // Bubble scaling effect (same as main)
+            const bubbleScale = 1 + userData.bubblePhase * 0.3;
+            const pulseScale = 1 + Math.sin(time * userData.pulseSpeed + i * 0.02) * 0.05;
+            const progressScale = 1 + reverseProgress * 0.1;
+            const lightScale = 1 + userData.lightIntensity * 0.4;
+
             particle.scale.setScalar(
-              Math.max(0.7, Math.min(1.8, 
+              Math.max(0.9, Math.min(1.2,
                 bubbleScale * pulseScale * progressScale * lightScale
               ))
             );
