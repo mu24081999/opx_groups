@@ -267,9 +267,9 @@ const ReverseLogoScroll = () => {
       particlePoolRef.current.push(particle);
     }
 
-    // Sort particles by ring index for inside-out wave effect
-    particlePoolRef.current.sort((a, b) => 
-      b.userData.ringIndex - a.userData.ringIndex // Reverse order
+    // Sort particles by distance from center for reverse wave effect
+    particlePoolRef.current.sort((a, b) =>
+      b.userData.distanceFromCenter - a.userData.distanceFromCenter // Outside to inside
     );
 
     scene.add(particles);
