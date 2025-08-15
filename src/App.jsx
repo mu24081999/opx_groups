@@ -19,6 +19,7 @@ const App = () => {
   const [loadingFinished, setLoadingFinished] = useState(false);
   const [showParallax, setShowParallax] = useState(false);
   const [logoScrollY, setLogoScrollY] = useState(0);
+  const [showReverseScroll, setShowReverseScroll] = useState(false);
 
   // Scroll detection for component transition
   useEffect(() => {
@@ -26,6 +27,8 @@ const App = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const windowHeight = window.innerHeight;
       const logoAnimationHeight = windowHeight * 4; // 400vh from LogoScroll
+      const parallaxSectionHeight = windowHeight * 3 * 4; // 4 sections * 3vh each
+      const reverseScrollStartPosition = logoAnimationHeight + parallaxSectionHeight;
 
       setLogoScrollY(scrollTop);
 
@@ -34,6 +37,13 @@ const App = () => {
         setShowParallax(true);
       } else {
         setShowParallax(false);
+      }
+
+      // Show reverse scroll only when we reach the very end
+      if (scrollTop >= reverseScrollStartPosition) {
+        setShowReverseScroll(true);
+      } else {
+        setShowReverseScroll(false);
       }
     };
 
