@@ -63,8 +63,8 @@ const Button = styled.button`
 `;
 
 const WaveContainer = styled.svg`
-  width: 80px;
-  height: 20px;
+  width: 60px;
+  height: 15px;
   cursor: pointer;
   path {
     fill: none;
@@ -76,6 +76,17 @@ const WaveContainer = styled.svg`
 
   /* Glass effect for 3D look */
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+
+  /* Responsive adjustments */
+  @media (min-width: 640px) {
+    width: 80px;
+    height: 20px;
+  }
+
+  @media (max-width: 480px) {
+    width: 50px;
+    height: 12px;
+  }
 `;
 
 const FloatingNavBar = () => {
