@@ -236,27 +236,27 @@ const ReverseLogoScroll = () => {
         Math.sin(angle) * radius + (Math.random() - 0.5) * clusterVariation;
       particle.position.z = height;
 
+      const bottomY = particle.position.y - 15;
       const distanceFromCenter = Math.sqrt(
-        particle.position.x * particle.position.x + 
+        particle.position.x * particle.position.x +
         particle.position.y * particle.position.y
       );
 
       particle.userData = {
+        originalAngle: angle,
+        originalRadius: radius,
+        originalHeight: height,
         originalX: particle.position.x,
         originalY: particle.position.y,
-        originalZ: particle.position.z,
+        bottomY: bottomY,
         distanceFromCenter: distanceFromCenter,
-        ringIndex: ringIndex,
-        angle: angle,
-        spiralOffset: spiralOffset,
-        radius: radius,
         speed: 0.02 + Math.random() * 0.08,
         floatSpeed: 0.05 + Math.random() * 0.15,
         phase: Math.random() * Math.PI * 2,
         amplitude: 0.1 + Math.random() * 0.2,
-        maxOpacity: 0.7 + Math.random() * 0.3,
+        maxOpacity: 0.6 + Math.random() * 0.4,
         originalSize: particleSizes[sizeIndex],
-        pulseSpeed: 0.4 + Math.random() * 1.2,
+        pulseSpeed: 0.3 + Math.random() * 1.0,
         bubblePhase: 0,
         lightIntensity: 0,
         sequenceIndex: i,
