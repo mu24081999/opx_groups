@@ -654,47 +654,60 @@ const LogoParticleAnimation = () => {
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // Optimized scroll handler with throttling
+  // Enhanced scroll handler with smooth progress calculation
   const handleScroll = useCallback(() => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const logoSectionHeight = window.innerHeight * 4;
-    let scrollProgress = Math.min(
-      scrollTop / Math.max(logoSectionHeight, 1),
-      1
-    );
+
+    // Smooth progress calculation with easing
+    let rawProgress = scrollTop / Math.max(logoSectionHeight, 1);
+
+    // Apply easing function for smoother transitions
+    let scrollProgress = Math.min(rawProgress, 1);
+
+    // Use cubic easing for smoother animation feel
+    if (scrollProgress < 1) {
+      scrollProgress = scrollProgress * scrollProgress * (3 - 2 * scrollProgress);
+    }
 
     if (scrollProgress >= 0.99) {
-      setTimeout(() => {
-        // Reset pulse wave
-        pulseWaveRef.current = { position: 0, active: false, time: 0 };
+      // Smooth reset with delay
+      if (!particlesRef.current.isResetting) {
+        particlesRef.current.isResetting = true;
+        setTimeout(() => {
+          // Reset pulse wave
+          pulseWaveRef.current = { position: 0, active: false, time: 0 };
 
-        // Smooth reset particles
-        if (particlesRef.current) {
-          particlesRef.current.children.forEach((particle) => {
-            if (particle.material) {
-              particle.material.opacity = 0;
-              particle.material.emissive = new THREE.Color(0x000000);
-              particle.material.emissiveIntensity = 0;
-            }
-            const userData = particle.userData;
-            if (userData) {
-              particle.position.x = userData.originalX;
-              particle.position.y = userData.bottomY || userData.originalY - 15;
-              particle.position.z = userData.originalHeight;
-              particle.scale.setScalar(1);
-              userData.bubblePhase = 0;
-              userData.lightIntensity = 0;
-            }
-          });
-        }
+          // Smooth reset particles
+          if (particlesRef.current) {
+            particlesRef.current.children.forEach((particle) => {
+              if (particle.material) {
+                particle.material.opacity = 0;
+                particle.material.emissive = new THREE.Color(0x000000);
+                particle.material.emissiveIntensity = 0;
+              }
+              const userData = particle.userData;
+              if (userData) {
+                particle.position.x = userData.originalX;
+                particle.position.y = userData.bottomY || userData.originalY - 15;
+                particle.position.z = userData.originalHeight;
+                particle.scale.setScalar(1);
+                userData.bubblePhase = 0;
+                userData.lightIntensity = 0;
+              }
+            });
+          }
 
-        if (logoGroupRef.current) {
-          logoGroupRef.current.rotation.y = 0;
-        }
+          if (logoGroupRef.current) {
+            logoGroupRef.current.rotation.y = 0;
+          }
 
-        scrollProgressRef.current = 0;
-      }, 100);
+          scrollProgressRef.current = 0;
+          particlesRef.current.isResetting = false;
+        }, 150);
+      }
     } else {
+      particlesRef.current.isResetting = false;
       scrollProgressRef.current = scrollProgress;
     }
   }, []);
@@ -947,21 +960,28 @@ const LogoParticleAnimation = () => {
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     const animate = (currentTime) => {
-      animationIdRef.current = requestAnimationFrame(animate);
+    animationIdRef.current = requestAnimationFrame(animate);
 
-      const time = currentTime * 0.001;
-      const progress = scrollProgressRef.current;
+    const time = currentTime * 0.001;
+    const progress = scrollProgressRef.current;
 
-      // Smooth the scroll progress using linear interpolation
-      if (!particlesRef.current.userData.smoothProgress) {
-        particlesRef.current.userData.smoothProgress = progress;
-      }
-      const smoothedProgress = THREE.MathUtils.lerp(
-        particlesRef.current.userData.smoothProgress,
-        progress,
-        0.08
-      );
-      particlesRef.current.userData.smoothProgress = smoothedProgress;
+    // Enhanced smooth progress with easing
+    if (!particlesRef.current.userData.smoothProgress) {
+      particlesRef.current.userData.smoothProgress = progress;
+    }
+
+    // Use different lerp speeds for different scroll directions
+    const target = progress;
+    const current = particlesRef.current.userData.smoothProgress;
+    const diff = Math.abs(target - current);
+
+    // Adaptive lerp speed based on scroll difference
+    let lerpSpeed = 0.12; // Increased base speed
+    if (diff > 0.1) lerpSpeed = 0.18; // Faster for big jumps
+    if (diff < 0.01) lerpSpeed = 0.06; // Slower for fine movements
+
+    const smoothedProgress = THREE.MathUtils.lerp(current, target, lerpSpeed);
+    particlesRef.current.userData.smoothProgress = smoothedProgress;
 
       // Logo animation - perfectly centered at start
       if (logoGroupRef.current) {
