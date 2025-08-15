@@ -24,11 +24,13 @@ const App = () => {
   // Scroll detection for component transition
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
       const windowHeight = window.innerHeight;
       const logoAnimationHeight = windowHeight * 4; // 400vh from LogoScroll
       const parallaxSectionHeight = windowHeight * 3 * 4; // 4 sections * 3vh each
-      const reverseScrollStartPosition = logoAnimationHeight + parallaxSectionHeight;
+      const reverseScrollStartPosition =
+        logoAnimationHeight + parallaxSectionHeight;
 
       setLogoScrollY(scrollTop);
 
@@ -50,8 +52,8 @@ const App = () => {
     // Initialize on mount
     handleScroll();
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleLanguageSelect = (lang) => {
@@ -105,15 +107,22 @@ const App = () => {
   // }
 
   // Calculate total document height for sequential flow
-  const logoSectionHeight = typeof window !== 'undefined' ? window.innerHeight * 4 : 4000; // 400vh
-  const parallaxSectionHeight = typeof window !== 'undefined' ? window.innerHeight * 3 * 4 : 12000; // 4 sections * 3vh each
-  const reverseLogoSectionHeight = typeof window !== 'undefined' ? window.innerHeight * 3 : 3000; // 300vh
-  const totalHeight = logoSectionHeight + parallaxSectionHeight + reverseLogoSectionHeight;
+  const logoSectionHeight =
+    typeof window !== "undefined" ? window.innerHeight * 4 : 4000; // 400vh
+  const parallaxSectionHeight =
+    typeof window !== "undefined" ? window.innerHeight * 3 * 4 : 12000; // 4 sections * 3vh each
+  const reverseLogoSectionHeight =
+    typeof window !== "undefined" ? window.innerHeight * 3 : 3000; // 300vh
+  const totalHeight =
+    logoSectionHeight + parallaxSectionHeight + reverseLogoSectionHeight;
   const isLogoComplete = logoScrollY >= logoSectionHeight * 0.8;
 
   // Main site with responsive design
   return (
-    <div style={{ height: totalHeight + 'px' }} className="relative">
+    <div
+      style={{ height: totalHeight + "px" }}
+      className="relative bg-gradient-to-br from-black via-gray-900 to-indigo-900"
+    >
       {/* <ParticleRingBackground /> */}
 
       {/* Responsive Floating Navigation */}
@@ -123,7 +132,7 @@ const App = () => {
       <div className="fixed bottom-4 left-4 z-50 bg-black/80 text-white px-3 py-2 text-xs rounded backdrop-blur">
         <div>Scroll: {Math.round(logoScrollY)}</div>
         <div>Logo Height: {logoSectionHeight}</div>
-        <div>Logo Complete: {isLogoComplete ? 'YES' : 'NO'}</div>
+        <div>Logo Complete: {isLogoComplete ? "YES" : "NO"}</div>
       </div>
 
       {/* Logo Animation Section - Fixed positioning during animation */}
@@ -134,7 +143,10 @@ const App = () => {
       )}
 
       {/* Spacer for logo section scroll */}
-      <div style={{ height: logoSectionHeight + 'px' }} className="relative z-10" />
+      <div
+        style={{ height: logoSectionHeight + "px" }}
+        className="relative z-10"
+      />
 
       {/* Parallax Layout Section - Starts after logo completes */}
       <div className="relative z-30 min-h-screen bg-gradient-to-br from-black via-gray-900 to-indigo-900">
@@ -149,7 +161,10 @@ const App = () => {
       )}
 
       {/* Spacer for reverse scroll section */}
-      <div style={{ height: reverseLogoSectionHeight + 'px' }} className="relative z-10" />
+      <div
+        style={{ height: reverseLogoSectionHeight + "px" }}
+        className="relative z-10"
+      />
     </div>
   );
 };

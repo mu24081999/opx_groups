@@ -15,8 +15,8 @@ const TabSlider = ({ tabs, interval = 4000 }) => {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Auto-advance tabs with progress tracking
@@ -78,7 +78,11 @@ const TabSlider = ({ tabs, interval = 4000 }) => {
   return (
     <div className="bg-black/20 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl max-w-xs sm:max-w-lg lg:max-w-2xl mx-auto">
       {/* Tab Headers */}
-      <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-2'} gap-2 sm:gap-3 mb-4 sm:mb-6 lg:mb-8`}>
+      {/* <div
+        className={`grid ${
+          isMobile ? "grid-cols-1" : "grid-cols-2"
+        } gap-2 sm:gap-3 mb-4 sm:mb-6 lg:mb-8`}
+      >
         {tabs.map((tab, index) => (
           <button
             key={index}
@@ -89,7 +93,6 @@ const TabSlider = ({ tabs, interval = 4000 }) => {
                 : "bg-white/5 hover:bg-white/10 border border-white/5"
             }`}
           >
-            {/* Active tab progress indicator */}
             {index === activeTab && (
               <div
                 className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-blue-400 to-indigo-400 transition-all duration-100 ease-linear"
@@ -106,7 +109,7 @@ const TabSlider = ({ tabs, interval = 4000 }) => {
             </h4>
           </button>
         ))}
-      </div>
+      </div> */}
 
       {/* Tab Content */}
       <div className="relative min-h-[80px] sm:min-h-[100px] lg:min-h-[120px]">
@@ -160,8 +163,8 @@ const Parallax3DLayout = () => {
     };
 
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   useEffect(() => {
@@ -361,7 +364,13 @@ const Parallax3DLayout = () => {
       style={{ height: totalHeight }}
     >
       {/* Responsive Navigation */}
-      <div className={`fixed z-50 flex ${isMobile ? 'bottom-6 left-1/2 -translate-x-1/2 flex-row space-x-3' : 'left-3 sm:left-6 top-1/2 -translate-y-1/2 flex-col space-y-3 sm:space-y-4'}`}>
+      <div
+        className={`fixed z-50 flex ${
+          isMobile
+            ? "bottom-6 left-1/2 -translate-x-1/2 flex-row space-x-3"
+            : "left-3 sm:left-6 top-1/2 -translate-y-1/2 flex-col space-y-3 sm:space-y-4"
+        }`}
+      >
         {sections.map((sec, index) => {
           const isActive = isSectionActive(index);
           const titles = [
@@ -426,7 +435,7 @@ const Parallax3DLayout = () => {
             id={`section-${i}`}
           >
             <div
-              className="sticky top-0 h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-indigo-900"
+              className="sticky top-0 h-screen flex items-center lg:px-20 justify-end bg-gradient-to-br from-black via-gray-900 to-indigo-900"
               style={{
                 clipPath:
                   i % 2 === 0
@@ -434,14 +443,14 @@ const Parallax3DLayout = () => {
                     : "polygon(0 0, 100% 60px, 100% 100%, 0% 100%)",
               }}
             >
-              <div className="flex flex-col items-center justify-center w-full max-w-5xl px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6 lg:space-y-8">
+              <div className="flex flex-col items-center justify-center w-full max-w-xl px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6 lg:space-y-8">
                 {/* Title */}
                 <h1
                   style={{
                     opacity: titleOpacity,
                     transform: titleTransform,
                   }}
-                  className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center transition-all duration-1000 ease-out leading-tight px-2 sm:px-0"
+                  className="text-white text-lg sm:text-xl md:text-2xl lg:text3xl xl:text-4xl font-bold text-center transition-all duration-1000 ease-out leading-tight px-2 sm:px-0"
                 >
                   {sec.title}
                 </h1>
@@ -452,9 +461,9 @@ const Parallax3DLayout = () => {
                     opacity: descriptionOpacity,
                     transform: descriptionTransform,
                   }}
-                  className="text-white/85 text-sm sm:text-base md:text-lg lg:text-xl text-center max-w-4xl leading-relaxed transition-all duration-1000 ease-out delay-200 px-2 sm:px-4 lg:px-0"
+                  className="text-white/85 text-sm sm:text-base md:text-sm lg:text-sm text-left max-w-4xl leading-relaxed transition-all duration-1000 ease-out delay-200 px-2 sm:px-4 lg:px-0"
                 >
-                  {typeof sec.description === 'string' ? (
+                  {typeof sec.description === "string" ? (
                     <p>{sec.description}</p>
                   ) : (
                     sec.description

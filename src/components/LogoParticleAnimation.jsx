@@ -13,7 +13,7 @@ const LogoParticleAnimation = () => {
   const pulseWaveRef = useRef({ position: 0, active: false, time: 0 });
 
   // Reduced particle count for better performance
-  const particleCount = 1000;
+  const particleCount = 2500;
   const particlePoolRef = useRef([]);
   const activeParticlesRef = useRef([]);
 
@@ -23,13 +23,16 @@ const LogoParticleAnimation = () => {
   const handleScroll = useCallback(() => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const logoSectionHeight = window.innerHeight * 4;
-    let scrollProgress = Math.min(scrollTop / Math.max(logoSectionHeight, 1), 1);
+    let scrollProgress = Math.min(
+      scrollTop / Math.max(logoSectionHeight, 1),
+      1
+    );
 
     if (scrollProgress >= 0.99) {
       setTimeout(() => {
         // Reset pulse wave
         pulseWaveRef.current = { position: 0, active: false, time: 0 };
-        
+
         // Smooth reset particles
         if (particlesRef.current) {
           particlesRef.current.children.forEach((particle) => {
@@ -179,7 +182,10 @@ const LogoParticleAnimation = () => {
             logoModel.traverse((child) => {
               if (child.isMesh) {
                 child.material = new THREE.MeshPhysicalMaterial({
-                  color: 0x64ffda,
+                  // color: 0x64ffda,
+                  // emissive: new THREE.Color(0x64ffda),
+                  color: 0x888888,
+                  emissive: new THREE.Color(0x888888),
                   metalness: 0.1,
                   roughness: 0.1,
                   transparent: true,
@@ -188,7 +194,6 @@ const LogoParticleAnimation = () => {
                   ior: 1.5,
                   clearcoat: 1,
                   clearcoatRoughness: 0,
-                  emissive: new THREE.Color(0x64ffda),
                   emissiveIntensity: 0.3,
                 });
               }
@@ -225,20 +230,33 @@ const LogoParticleAnimation = () => {
     // Initialize particle pool with glass materials
     for (let i = 0; i < particleCount; i++) {
       const sizeIndex = Math.floor(Math.random() * sharedGeometries.length);
-      
+
       // Create glass material for each particle
       const glassMaterial = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(0xffffff),
+        // color: new THREE.Color(0xffffff),
+        // metalness: 0,
+        // roughness: 0,
+        // transparent: true,
+        // opacity: 0,
+        // transmission: 0.95, // High transmission for glass effect
+        // ior: 1.5, // Index of refraction for glass
+        // thickness: 0.5,
+        // clearcoat: 1,
+        // clearcoatRoughness: 0,
+        // emissive: new THREE.Color(0x000000),
+        // emissiveIntensity: 0,
+        // reflectivity: 0.9,
+        color: new THREE.Color(0x888888), // soft gray base
+        emissive: new THREE.Color(0x888888), // gray glow when lit
         metalness: 0,
         roughness: 0,
         transparent: true,
-        opacity: 0,
-        transmission: 0.95, // High transmission for glass effect
-        ior: 1.5, // Index of refraction for glass
+        opacity: 0.5, // fully transparent at start
+        transmission: 0.95, // glass effect
+        ior: 1.5,
         thickness: 0.5,
         clearcoat: 1,
         clearcoatRoughness: 0,
-        emissive: new THREE.Color(0x000000),
         emissiveIntensity: 0,
         reflectivity: 0.9,
       });
@@ -261,8 +279,8 @@ const LogoParticleAnimation = () => {
 
       const bottomY = particle.position.y - 15;
       const distanceFromCenter = Math.sqrt(
-        particle.position.x * particle.position.x + 
-        particle.position.y * particle.position.y
+        particle.position.x * particle.position.x +
+          particle.position.y * particle.position.y
       );
 
       particle.userData = {
@@ -291,15 +309,15 @@ const LogoParticleAnimation = () => {
     }
 
     // Sort particles by distance from center for sequential wave effect
-    particlePoolRef.current.sort((a, b) => 
-      a.userData.distanceFromCenter - b.userData.distanceFromCenter
+    particlePoolRef.current.sort(
+      (a, b) => a.userData.distanceFromCenter - b.userData.distanceFromCenter
     );
 
     scene.add(particles);
     particlesRef.current = particles;
 
     camera.position.set(0, 0, 40);
-
+    window.scrollTo(0, 324);
     handleScroll();
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -321,7 +339,7 @@ const LogoParticleAnimation = () => {
 
       // Logo animation - perfectly centered at start
       if (logoGroupRef.current && frameCount % 2 === 0) {
-        logoGroupRef.current.position.set(0, 0, 0);
+        logoGroupRef.current.position.set(0, -5, 0);
 
         // Only rotate when there's scroll progress, start perfectly straight
         if (progress > 0.01) {
@@ -348,7 +366,7 @@ const LogoParticleAnimation = () => {
       if (progress > 0 && progress < 0.99) {
         pulseWaveRef.current.active = true;
         pulseWaveRef.current.time = time;
-        
+
         // Wave travels from center outward in cycles
         const wavePosition = (Math.sin(time * 0.5) * 0.5 + 0.5) * 30; // Max radius
         pulseWaveRef.current.position = wavePosition;
@@ -398,19 +416,22 @@ const LogoParticleAnimation = () => {
           // Pulse wave effect
           if (pulseWaveRef.current.active && showParticle) {
             const wavePosition = pulseWaveRef.current.position;
-            const distanceFromWave = Math.abs(userData.distanceFromCenter - wavePosition);
-            
+            const distanceFromWave = Math.abs(
+              userData.distanceFromCenter - wavePosition
+            );
+
             // Wave influence zone
             const waveInfluence = Math.max(0, 1 - distanceFromWave / 3);
-            
+
             if (waveInfluence > 0) {
               // Light pulse effect
-              const pulsePower = waveInfluence * (0.5 + Math.sin(time * 4 + i * 0.1) * 0.3);
+              const pulsePower =
+                waveInfluence * (0.5 + Math.sin(time * 4 + i * 0.1) * 0.3);
               userData.lightIntensity = pulsePower;
-              
+
               // Bubble effect on light pass
               userData.bubblePhase = Math.min(userData.bubblePhase + 0.1, 1);
-              
+
               // Enhanced emissive glow
               if (particle.material.emissive) {
                 particle.material.emissive.setRGB(
@@ -424,7 +445,7 @@ const LogoParticleAnimation = () => {
               // Fade out light intensity
               userData.lightIntensity *= 0.95;
               userData.bubblePhase *= 0.98;
-              
+
               if (particle.material.emissive) {
                 particle.material.emissive.multiplyScalar(0.95);
                 particle.material.emissiveIntensity *= 0.95;
@@ -437,10 +458,11 @@ const LogoParticleAnimation = () => {
             particle.material.opacity = showParticle
               ? Math.max(0, Math.min(0.8, opacity))
               : 0;
-              
+
             // Enhance transmission for glass effect
-            particle.material.transmission = 0.95 - userData.lightIntensity * 0.3;
-            
+            particle.material.transmission =
+              0.95 - userData.lightIntensity * 0.3;
+
             // Add subtle iridescence
             if (userData.lightIntensity > 0) {
               const iridescence = Math.sin(time * 2 + i * 0.2) * 0.1 + 0.9;
@@ -461,14 +483,19 @@ const LogoParticleAnimation = () => {
 
             // Bubble scaling effect
             const bubbleScale = 1 + userData.bubblePhase * 0.3;
-            const pulseScale = 1 + Math.sin(time * userData.pulseSpeed + i * 0.02) * 0.05;
+            const pulseScale =
+              1 + Math.sin(time * userData.pulseSpeed + i * 0.02) * 0.05;
             const progressScale = 1 + progress * 0.1;
             const lightScale = 1 + userData.lightIntensity * 0.4;
-            
+
             particle.scale.setScalar(
-              Math.max(0.8, Math.min(1.5, 
-                bubbleScale * pulseScale * progressScale * lightScale
-              ))
+              Math.max(
+                0.8,
+                Math.min(
+                  1.5,
+                  bubbleScale * pulseScale * progressScale * lightScale
+                )
+              )
             );
           } else {
             userData.active = false;

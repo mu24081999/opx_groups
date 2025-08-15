@@ -27,12 +27,16 @@ const ReverseLogoScroll = () => {
 
     // Calculate when this component should be active
     const componentStartPosition = logoSectionHeight + parallaxHeight;
-    const componentEndPosition = componentStartPosition + reverseLogoSectionHeight;
+    const componentEndPosition =
+      componentStartPosition + reverseLogoSectionHeight;
 
-    if (scrollTop >= componentStartPosition && scrollTop <= componentEndPosition) {
+    if (
+      scrollTop >= componentStartPosition &&
+      scrollTop <= componentEndPosition
+    ) {
       // Calculate reverse progress (1 to 0 as user scrolls down)
       const localScroll = scrollTop - componentStartPosition;
-      const reverseProgress = 1 - (localScroll / reverseLogoSectionHeight);
+      const reverseProgress = 1 - localScroll / reverseLogoSectionHeight;
       scrollProgressRef.current = Math.max(0, Math.min(1, reverseProgress));
     } else {
       scrollProgressRef.current = 0; // Hide when not in this section
@@ -191,7 +195,7 @@ const ReverseLogoScroll = () => {
 
     // Enhanced particle system with different arrangement
     const particles = new THREE.Group();
-    const particleSizes = [0.02, 0.04, 0.06, 0.10, 0.15, 0.20];
+    const particleSizes = [0.02, 0.04, 0.06, 0.1, 0.15, 0.2];
 
     // Create shared geometries
     const sharedGeometries = particleSizes.map(
@@ -201,7 +205,7 @@ const ReverseLogoScroll = () => {
     // Initialize particle pool with reverse color scheme
     for (let i = 0; i < particleCount; i++) {
       const sizeIndex = Math.floor(Math.random() * sharedGeometries.length);
-      
+
       // Create glass material with red/orange tints
       const glassMaterial = new THREE.MeshPhysicalMaterial({
         color: new THREE.Color(0xffffff),
@@ -239,7 +243,7 @@ const ReverseLogoScroll = () => {
       const bottomY = particle.position.y - 15;
       const distanceFromCenter = Math.sqrt(
         particle.position.x * particle.position.x +
-        particle.position.y * particle.position.y
+          particle.position.y * particle.position.y
       );
 
       particle.userData = {
@@ -268,8 +272,8 @@ const ReverseLogoScroll = () => {
     }
 
     // Sort particles by distance from center for reverse wave effect
-    particlePoolRef.current.sort((a, b) =>
-      b.userData.distanceFromCenter - a.userData.distanceFromCenter // Outside to inside
+    particlePoolRef.current.sort(
+      (a, b) => b.userData.distanceFromCenter - a.userData.distanceFromCenter // Outside to inside
     );
 
     scene.add(particles);
@@ -329,10 +333,11 @@ const ReverseLogoScroll = () => {
       if (progress > 0) {
         pulseWaveRef.current.active = true;
         pulseWaveRef.current.time = time;
-        
+
         // Wave travels from outside inward in reverse
         const maxRadius = 20;
-        const wavePosition = maxRadius * (1 - progress) + Math.sin(time * 0.8) * 3;
+        const wavePosition =
+          maxRadius * (1 - progress) + Math.sin(time * 0.8) * 3;
         pulseWaveRef.current.position = wavePosition;
       }
 
@@ -383,25 +388,28 @@ const ReverseLogoScroll = () => {
           // Reverse pulse wave effect (from outside to inside)
           if (pulseWaveRef.current.active && showParticle) {
             const wavePosition = pulseWaveRef.current.position;
-            const distanceFromWave = Math.abs(userData.distanceFromCenter - wavePosition);
-            
+            const distanceFromWave = Math.abs(
+              userData.distanceFromCenter - wavePosition
+            );
+
             // Wave influence zone
             const waveInfluence = Math.max(0, 1 - distanceFromWave / 4);
-            
+
             if (waveInfluence > 0) {
               // Light pulse effect with red/orange colors
-              const pulsePower = waveInfluence * (0.6 + Math.sin(time * 3 + i * 0.15) * 0.4);
+              const pulsePower =
+                waveInfluence * (0.6 + Math.sin(time * 3 + i * 0.15) * 0.4);
               userData.lightIntensity = pulsePower;
-              
+
               // Bubble effect on light pass
               userData.bubblePhase = Math.min(userData.bubblePhase + 0.12, 1);
-              
+
               // Enhanced emissive glow with cyan colors (same as main)
               if (particle.material.emissive) {
                 particle.material.emissive.setRGB(
-                  0.4 * pulsePower,      // Red component
-                  1.0 * pulsePower,      // Green component
-                  0.85 * pulsePower      // Blue component (cyan = #64ffda)
+                  0.4 * pulsePower, // Red component
+                  1.0 * pulsePower, // Green component
+                  0.85 * pulsePower // Blue component (cyan = #64ffda)
                 );
                 particle.material.emissiveIntensity = pulsePower * 2;
               }
@@ -409,7 +417,7 @@ const ReverseLogoScroll = () => {
               // Fade out light intensity
               userData.lightIntensity *= 0.94;
               userData.bubblePhase *= 0.96;
-              
+
               if (particle.material.emissive) {
                 particle.material.emissive.multiplyScalar(0.94);
                 particle.material.emissiveIntensity *= 0.94;
@@ -422,10 +430,11 @@ const ReverseLogoScroll = () => {
             particle.material.opacity = showParticle
               ? Math.max(0, Math.min(0.7, opacity))
               : 0;
-              
+
             // Enhance transmission for glass effect
-            particle.material.transmission = 0.9 - userData.lightIntensity * 0.2;
-            
+            particle.material.transmission =
+              0.9 - userData.lightIntensity * 0.2;
+
             // Add warm iridescence
             if (userData.lightIntensity > 0) {
               const iridescence = Math.sin(time * 1.8 + i * 0.25) * 0.15 + 0.85;
@@ -446,14 +455,19 @@ const ReverseLogoScroll = () => {
 
             // Bubble scaling effect (same as main)
             const bubbleScale = 1 + userData.bubblePhase * 0.3;
-            const pulseScale = 1 + Math.sin(time * userData.pulseSpeed + i * 0.02) * 0.05;
+            const pulseScale =
+              1 + Math.sin(time * userData.pulseSpeed + i * 0.02) * 0.05;
             const progressScale = 1 + reverseProgress * 0.1;
             const lightScale = 1 + userData.lightIntensity * 0.4;
 
             particle.scale.setScalar(
-              Math.max(0.9, Math.min(1.2,
-                bubbleScale * pulseScale * progressScale * lightScale
-              ))
+              Math.max(
+                0.9,
+                Math.min(
+                  1.2,
+                  bubbleScale * pulseScale * progressScale * lightScale
+                )
+              )
             );
           } else {
             userData.active = false;
@@ -542,7 +556,7 @@ const ReverseLogoScroll = () => {
   }, [handleScroll, handleMouseMove]);
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full bg-black">
       {/* Fixed 3D Scene for reverse scroll effect */}
       <div
         className="fixed inset-0 w-full h-screen"
