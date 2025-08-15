@@ -101,6 +101,13 @@ const App = () => {
       {/* Responsive Floating Navigation */}
       <FloatingNavBar />
 
+      {/* Debug scroll indicator */}
+      <div className="fixed bottom-4 left-4 z-50 bg-black/80 text-white px-3 py-2 text-xs rounded backdrop-blur">
+        <div>Scroll: {Math.round(logoScrollY)}</div>
+        <div>Threshold: {Math.round(window.innerHeight * 4 * 0.7)}</div>
+        <div>Show Parallax: {showParallax ? 'YES' : 'NO'}</div>
+      </div>
+
       {/* Logo Animation Section */}
       <div className="relative">
         <LogoScroll />
