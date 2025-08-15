@@ -947,21 +947,28 @@ const LogoParticleAnimation = () => {
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     const animate = (currentTime) => {
-      animationIdRef.current = requestAnimationFrame(animate);
+    animationIdRef.current = requestAnimationFrame(animate);
 
-      const time = currentTime * 0.001;
-      const progress = scrollProgressRef.current;
+    const time = currentTime * 0.001;
+    const progress = scrollProgressRef.current;
 
-      // Smooth the scroll progress using linear interpolation
-      if (!particlesRef.current.userData.smoothProgress) {
-        particlesRef.current.userData.smoothProgress = progress;
-      }
-      const smoothedProgress = THREE.MathUtils.lerp(
-        particlesRef.current.userData.smoothProgress,
-        progress,
-        0.08
-      );
-      particlesRef.current.userData.smoothProgress = smoothedProgress;
+    // Enhanced smooth progress with easing
+    if (!particlesRef.current.userData.smoothProgress) {
+      particlesRef.current.userData.smoothProgress = progress;
+    }
+
+    // Use different lerp speeds for different scroll directions
+    const target = progress;
+    const current = particlesRef.current.userData.smoothProgress;
+    const diff = Math.abs(target - current);
+
+    // Adaptive lerp speed based on scroll difference
+    let lerpSpeed = 0.12; // Increased base speed
+    if (diff > 0.1) lerpSpeed = 0.18; // Faster for big jumps
+    if (diff < 0.01) lerpSpeed = 0.06; // Slower for fine movements
+
+    const smoothedProgress = THREE.MathUtils.lerp(current, target, lerpSpeed);
+    particlesRef.current.userData.smoothProgress = smoothedProgress;
 
       // Logo animation - perfectly centered at start
       if (logoGroupRef.current) {
