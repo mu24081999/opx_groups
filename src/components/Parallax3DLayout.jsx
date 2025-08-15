@@ -6,6 +6,18 @@ const TabSlider = ({ tabs, interval = 4000 }) => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const intervalRef = useRef(null);
   const [progress, setProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Responsive detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Auto-advance tabs with progress tracking
   useEffect(() => {
