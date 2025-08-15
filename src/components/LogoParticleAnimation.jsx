@@ -319,10 +319,16 @@ const LogoParticleAnimation = () => {
       const time = currentTime * 0.001;
       const progress = scrollProgressRef.current;
 
-      // Logo animation
+      // Logo animation - perfectly centered at start
       if (logoGroupRef.current && frameCount % 2 === 0) {
         logoGroupRef.current.position.set(0, 0, 0);
-        logoGroupRef.current.rotation.y = progress * Math.PI * 5;
+
+        // Only rotate when there's scroll progress, start perfectly straight
+        if (progress > 0.01) {
+          logoGroupRef.current.rotation.y = progress * Math.PI * 5;
+        } else {
+          logoGroupRef.current.rotation.y = 0; // Perfectly straight at start
+        }
 
         // Enhance logo pulse effect
         if (logoModel && logoModel.material) {
