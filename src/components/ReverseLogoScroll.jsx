@@ -548,9 +548,9 @@ const ReverseLogoScroll = () => {
 
       {/* Content overlay */}
       <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center">
-        <div className="text-center text-white/30 text-xs sm:text-sm lg:text-base">
-          <div className="mb-2 text-red-300/40">OPX Groups</div>
-          <div className="text-xs sm:text-sm opacity-50 text-orange-200/30">Reverse Flow</div>
+        <div className="text-center text-white/20 text-xs sm:text-sm lg:text-base">
+          <div className="mb-2">OPX Groups</div>
+          <div className="text-xs sm:text-sm opacity-50">Reverse Flow</div>
         </div>
       </div>
     </div>
