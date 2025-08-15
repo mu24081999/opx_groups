@@ -5,7 +5,7 @@ import Preloader from "./components/PreLoader";
 // import ScrollCube from "./components/ScrollCube";
 import Parallax3DLayout from "./components/Parallax3DLayout";
 import FloatingNavBar from "./components/Navbar";
-// import LogoScroll from "./components/LogoScroll";
+import LogoScroll from "./components/LogoParticleAnimation";
 
 const App = () => {
   const orbRef = useRef(null);
@@ -15,16 +15,8 @@ const App = () => {
   };
 
   const [language, setLanguage] = useState(null);
-  const [showContact, setShowContact] = useState(false);
-  const [showAbout, setShowAbout] = useState(false);
-  const [loadingFinished, setLoadingFinished] = useState(false);
-  const workRef = useRef(null);
-  const homeRef = useRef(null);
 
-  const handleCloseModals = () => {
-    setShowContact(false);
-    setShowAbout(false);
-  };
+  const [loadingFinished, setLoadingFinished] = useState(false);
 
   const handleLanguageSelect = (lang) => {
     const orb = orbRef.current;
@@ -52,11 +44,11 @@ const App = () => {
     return <Preloader onFinish={() => setLoadingFinished(true)} />;
   }
 
-  // Language selection screen
+  // // Language selection screen
   // if (!language) {
   //   return (
-  //     <div className="flex items-center justify-center h-screen bg-black text-[#888888] relative overflow-hidden">
-  //       <div className="flex space-x-10 relative z-10">
+  //     <div className="flex items-center justify-center h-screen bg-black relative overflow-hidden">
+  //       <div className="flex">
   //         <button
   //           ref={buttonRefs.en}
   //           onClick={() => handleLanguageSelect("en")}
@@ -72,10 +64,6 @@ const App = () => {
   //           العربية
   //         </button>
   //       </div>
-  //       <div
-  //         ref={orbRef}
-  //         className="absolute w-6 h-6 rounded-full animate-orb-bounce z-0"
-  //       ></div>
   //     </div>
   //   );
   // }
@@ -85,7 +73,7 @@ const App = () => {
     <div className="bg-gradient-to-br from-black via-gray-900 to-indigo-900">
       {/* <ParticleRingBackground /> */}
       <FloatingNavBar />
-      {/* <LogoScroll /> */}
+      <LogoScroll />
       <div>
         <Parallax3DLayout />
       </div>
