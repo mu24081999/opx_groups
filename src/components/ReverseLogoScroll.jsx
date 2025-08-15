@@ -275,7 +275,7 @@ const ReverseLogoScroll = () => {
     scene.add(particles);
     particlesRef.current = particles;
 
-    camera.position.set(0, 0, 35);
+    camera.position.set(0, 0, 40);
 
     handleScroll();
 
