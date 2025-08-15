@@ -146,7 +146,7 @@ const ReverseLogoScroll = () => {
             }
 
             logoModel = gltf.scene;
-            logoModel.scale.setScalar(80); // Smaller than main logo
+            logoModel.scale.setScalar(120); // Same size as main logo
 
             const box = new THREE.Box3().setFromObject(logoModel);
             const center = box.getCenter(new THREE.Vector3());
@@ -156,17 +156,17 @@ const ReverseLogoScroll = () => {
             logoModel.traverse((child) => {
               if (child.isMesh) {
                 child.material = new THREE.MeshPhysicalMaterial({
-                  color: 0xff6b6b, // Red color for reverse
-                  metalness: 0.2,
+                  color: 0x64ffda, // Same cyan color
+                  metalness: 0.1,
                   roughness: 0.1,
                   transparent: true,
                   opacity: 0.9,
-                  transmission: 0.2,
+                  transmission: 0.3,
                   ior: 1.5,
                   clearcoat: 1,
                   clearcoatRoughness: 0,
-                  emissive: new THREE.Color(0xff6b6b),
-                  emissiveIntensity: 0.4,
+                  emissive: new THREE.Color(0x64ffda),
+                  emissiveIntensity: 0.3,
                 });
               }
             });
