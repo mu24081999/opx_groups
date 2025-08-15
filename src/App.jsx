@@ -28,13 +28,16 @@ const App = () => {
 
       setLogoScrollY(scrollTop);
 
-      // Show parallax layout after logo animation completes
-      if (scrollTop >= logoAnimationHeight * 0.9) {
+      // Show parallax layout after logo animation starts finishing (70% complete)
+      if (scrollTop >= logoAnimationHeight * 0.7) {
         setShowParallax(true);
       } else {
         setShowParallax(false);
       }
     };
+
+    // Initialize on mount
+    handleScroll();
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
