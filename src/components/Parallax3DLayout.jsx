@@ -379,15 +379,19 @@ const Parallax3DLayout = () => {
                 </h1>
 
                 {/* Description */}
-                <p
+                <div
                   style={{
                     opacity: descriptionOpacity,
                     transform: descriptionTransform,
                   }}
                   className="text-white/85 text-lg md:text-xl text-center max-w-4xl leading-relaxed transition-all duration-1000 ease-out delay-200"
                 >
-                  {sec.description}
-                </p>
+                  {typeof sec.description === 'string' ? (
+                    <p>{sec.description}</p>
+                  ) : (
+                    sec.description
+                  )}
+                </div>
 
                 {/* Tab Slider Component */}
                 {sec.hasSlider && sec.tabsData.length > 0 && (
