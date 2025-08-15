@@ -224,19 +224,17 @@ const ReverseLogoScroll = () => {
         glassMaterial
       );
 
-      // Different arrangement pattern for reverse effect
-      const rings = 6;
-      const particlesPerRing = particleCount / rings;
-      const ringIndex = Math.floor(i / particlesPerRing);
-      const particleInRing = i % particlesPerRing;
-      
-      const radius = 2 + ringIndex * 3; // Tighter spiral
-      const angle = (particleInRing / particlesPerRing) * Math.PI * 2;
-      const spiralOffset = ringIndex * 0.3; // Spiral effect
-      
-      particle.position.x = Math.cos(angle + spiralOffset) * radius;
-      particle.position.y = Math.sin(angle + spiralOffset) * radius;
-      particle.position.z = (Math.random() - 0.5) * 15;
+      // Same arrangement as main logo
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 0.5 + Math.random() * 25;
+      const height = (Math.random() - 0.5) * 20;
+      const clusterVariation = Math.random() * 8;
+
+      particle.position.x =
+        Math.cos(angle) * radius + (Math.random() - 0.5) * clusterVariation;
+      particle.position.y =
+        Math.sin(angle) * radius + (Math.random() - 0.5) * clusterVariation;
+      particle.position.z = height;
 
       const distanceFromCenter = Math.sqrt(
         particle.position.x * particle.position.x + 
