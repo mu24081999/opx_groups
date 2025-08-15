@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import Preloader from "./components/PreLoader";
 // import ParticleRingBackground from "./components/ParticleRingBackground";
@@ -15,8 +15,33 @@ const App = () => {
   };
 
   const [language, setLanguage] = useState(null);
-
   const [loadingFinished, setLoadingFinished] = useState(false);
+  const [showParallax, setShowParallax] = useState(false);
+  const [logoScrollY, setLogoScrollY] = useState(0);
+
+  // Scroll detection for component transition
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const logoAnimationHeight = windowHeight * 4; // 400vh from LogoScroll
+
+      setLogoScrollY(scrollTop);
+
+      // Show parallax layout after logo animation starts finishing (70% complete)
+      if (scrollTop >= logoAnimationHeight * 0.7) {
+        setShowParallax(true);
+      } else {
+        setShowParallax(false);
+      }
+    };
+
+    // Initialize on mount
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleLanguageSelect = (lang) => {
     const orb = orbRef.current;
@@ -68,13 +93,37 @@ const App = () => {
   //   );
   // }
 
-  // Main site
+  // Calculate total document height for sequential flow
+  const logoSectionHeight = typeof window !== 'undefined' ? window.innerHeight * 4 : 4000; // 400vh
+  const isLogoComplete = logoScrollY >= logoSectionHeight * 0.8;
+
+  // Main site with responsive design
   return (
-    <div className="bg-gradient-to-br from-black via-gray-900 to-indigo-900">
+    <div style={{ height: logoSectionHeight + 'px' }} className="relative">
       {/* <ParticleRingBackground /> */}
+
+      {/* Responsive Floating Navigation */}
       <FloatingNavBar />
-      <LogoScroll />
-      <div>
+
+      {/* Debug scroll indicator */}
+      <div className="fixed bottom-4 left-4 z-50 bg-black/80 text-white px-3 py-2 text-xs rounded backdrop-blur">
+        <div>Scroll: {Math.round(logoScrollY)}</div>
+        <div>Logo Height: {logoSectionHeight}</div>
+        <div>Logo Complete: {isLogoComplete ? 'YES' : 'NO'}</div>
+      </div>
+
+      {/* Logo Animation Section - Fixed positioning during animation */}
+      {!isLogoComplete && (
+        <div className="fixed inset-0 z-20">
+          <LogoScroll />
+        </div>
+      )}
+
+      {/* Spacer for logo section scroll */}
+      <div style={{ height: logoSectionHeight + 'px' }} className="relative z-10" />
+
+      {/* Parallax Layout Section - Starts after logo completes */}
+      <div className="relative z-30 min-h-screen bg-gradient-to-br from-black via-gray-900 to-indigo-900">
         <Parallax3DLayout />
       </div>
     </div>

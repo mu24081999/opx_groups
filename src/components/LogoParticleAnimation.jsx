@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from "three";
-import Parallax3DLayout from "./Parallax3DLayout";
 
 const LogoParticleAnimation = () => {
   const mountRef = useRef(null);
@@ -22,9 +21,8 @@ const LogoParticleAnimation = () => {
   // Optimized scroll handler with throttling
   const handleScroll = useCallback(() => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
-    let scrollProgress = Math.min(scrollTop / Math.max(scrollHeight, 1), 1);
+    const logoSectionHeight = window.innerHeight * 4; // Match App.jsx
+    let scrollProgress = Math.min(scrollTop / Math.max(logoSectionHeight, 1), 1);
 
     // Reset logic: when scroll reaches 100%, reset to 0 after a brief moment
     if (scrollProgress >= 0.99) {
@@ -494,18 +492,11 @@ const LogoParticleAnimation = () => {
         }}
       />
 
-      {/* Scrollable content */}
-      <div
-        className="relative"
-        style={{
-          height: "500vh",
-          zIndex: 10,
-          pointerEvents: "none",
-        }}
-      >
-        {/* Content sections for smooth scrolling */}
-        <div className="h-screen flex items-center justify-center">
-          <div className="text-transparent">Scroll to animate</div>
+      {/* Content overlay for logo animation */}
+      <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center">
+        <div className="text-center text-white/20 text-xs sm:text-sm lg:text-base">
+          <div className="mb-2">OPX Groups</div>
+          <div className="text-xs sm:text-sm opacity-50">Scroll to explore</div>
         </div>
       </div>
     </div>

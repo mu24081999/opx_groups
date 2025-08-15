@@ -224,15 +224,15 @@ const ContactModal = ({ onClose }) => {
       </div>
 
       {/* Main content container */}
-      <div className="flex flex-col W-FULL items-center justify-center h-full px-8">
+      <div className="flex flex-col w-full items-center justify-center h-full px-4 sm:px-6 lg:px-8">
         {/* Contact Us Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mb-16"
+          className="mb-8 sm:mb-12 lg:mb-16"
         >
-          <h1 className="text-sm font-light tracking-[0.3em] text-gray-300 text-center">
+          <h1 className="text-xs sm:text-sm font-light tracking-[0.2em] sm:tracking-[0.3em] text-gray-300 text-center">
             ◊ CONTACT US ◊
           </h1>
         </motion.div>
@@ -242,9 +242,9 @@ const ContactModal = ({ onClose }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mb-20"
+          className="mb-10 sm:mb-16 lg:mb-20"
         >
-          <div className="flex items-center gap-8 text-6xl md:text-8xl font-light tracking-wider">
+          <div className="flex items-center gap-2 sm:gap-4 lg:gap-8 text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-light tracking-wider">
             <span className="text-white">LAX</span>
             <span className="text-gray-400">→</span>
             <span className="text-white">NYC</span>
@@ -258,7 +258,7 @@ const ContactModal = ({ onClose }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="flex items-end justify-between w-full max-w-6xl"
+          className="flex flex-col sm:flex-row items-center sm:items-end justify-between w-full max-w-6xl gap-6 sm:gap-0"
         >
           {/* Left side - Social and links */}
           <div className="flex flex-col gap-6">
