@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import Preloader from "./components/PreLoader";
 // import ParticleRingBackground from "./components/ParticleRingBackground";
@@ -15,8 +15,9 @@ const App = () => {
   };
 
   const [language, setLanguage] = useState(null);
-
   const [loadingFinished, setLoadingFinished] = useState(false);
+  const [showParallax, setShowParallax] = useState(false);
+  const [logoScrollY, setLogoScrollY] = useState(0);
 
   const handleLanguageSelect = (lang) => {
     const orb = orbRef.current;
