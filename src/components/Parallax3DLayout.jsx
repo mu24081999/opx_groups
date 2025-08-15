@@ -170,7 +170,11 @@ const Parallax3DLayout = () => {
     const onScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
+          const scrollTop = window.scrollY;
+          const logoSectionHeight = window.innerHeight * 4;
+          // Only start calculating scroll within parallax section
+          const parallaxScrollY = Math.max(0, scrollTop - logoSectionHeight);
+          setScrollY(parallaxScrollY);
           ticking = false;
         });
         ticking = true;
