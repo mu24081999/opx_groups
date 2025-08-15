@@ -21,9 +21,8 @@ const LogoParticleAnimation = () => {
   // Optimized scroll handler with throttling
   const handleScroll = useCallback(() => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
-    let scrollProgress = Math.min(scrollTop / Math.max(scrollHeight, 1), 1);
+    const logoSectionHeight = window.innerHeight * 4; // Match App.jsx
+    let scrollProgress = Math.min(scrollTop / Math.max(logoSectionHeight, 1), 1);
 
     // Reset logic: when scroll reaches 100%, reset to 0 after a brief moment
     if (scrollProgress >= 0.99) {
