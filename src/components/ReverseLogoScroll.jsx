@@ -386,14 +386,14 @@ const ReverseLogoScroll = () => {
               // Bubble effect on light pass
               userData.bubblePhase = Math.min(userData.bubblePhase + 0.12, 1);
               
-              // Enhanced emissive glow with warm colors
+              // Enhanced emissive glow with cyan colors (same as main)
               if (particle.material.emissive) {
                 particle.material.emissive.setRGB(
-                  1.0 * pulsePower,      // More red
-                  0.4 * pulsePower,      // Less green
-                  0.1 * pulsePower       // Minimal blue
+                  0.4 * pulsePower,      // Red component
+                  1.0 * pulsePower,      // Green component
+                  0.85 * pulsePower      // Blue component (cyan = #64ffda)
                 );
-                particle.material.emissiveIntensity = pulsePower * 2.5;
+                particle.material.emissiveIntensity = pulsePower * 2;
               }
             } else {
               // Fade out light intensity
